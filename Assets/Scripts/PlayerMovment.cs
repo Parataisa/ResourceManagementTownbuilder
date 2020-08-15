@@ -34,6 +34,11 @@ public class PlayerMovment : MonoBehaviour
         float horizontalAxis = Input.GetAxis("Horizontal");
         float verticalAxis = Input.GetAxis("Vertical");
         moveDirection = new Vector3(horizontalAxis, 0, verticalAxis);
+          
+        if (Input.GetButtonDown("Jump") && groundedPlayer)
+            {
+            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            }
         if (moveDirection.magnitude >= 0.01f)
             {
             float targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
@@ -42,11 +47,6 @@ public class PlayerMovment : MonoBehaviour
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
             controller.Move(moveDir * playerSpeed * Time.deltaTime);
-            }
-          
-        if (Input.GetButtonDown("Jump") && groundedPlayer)
-            {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
             }
 
         playerVelocity.y += gravityValue * Time.deltaTime;

@@ -7,8 +7,8 @@ public class MeshGenerator : MonoBehaviour
     Vector3[] vertices;
     int[] triangles;
     Transform parentTransform;
-    private readonly int xSize = 64;
-    private readonly int zSize = 64;
+    private readonly int xSize = 128;
+    private readonly int zSize = 128;
     void Start()
         {
         mesh = new Mesh();
