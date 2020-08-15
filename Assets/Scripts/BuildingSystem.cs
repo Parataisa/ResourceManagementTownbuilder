@@ -50,6 +50,11 @@ public class BuildingSystem : MonoBehaviour
         currentPlaceableObject = Instantiate(placeableObjectPrefabs[Int32.Parse(buildingId)]);
 
         }
+    public void ClearCurser()
+        {
+        Destroy(currentPlaceableObject);
+        currentPlaceableObject = null;
+        }
 
     private void HandleNewObjectHotkey()
         {
