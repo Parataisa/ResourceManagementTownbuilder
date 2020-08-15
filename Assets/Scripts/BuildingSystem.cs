@@ -1,14 +1,33 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+
 
 public class BuildingSystem : MonoBehaviour
     {
+    
+    Dictionary<string, int> buildingDirectory = new Dictionary<string, int>();
     [SerializeField]
-    private GameObject[] placeableObjectPrefabs = null;
+    public GameObject[] placeableObjectPrefabs = null;
 
     private GameObject currentPlaceableObject;
 
     private float mouseWheelRotation;
     private int currentPrefabIndex = -1;
+
+
+    private void Start()
+        {
+        AddingItemToDictionary();
+        }
+
+    private void AddingItemToDictionary()
+        {
+        for (int i = 0; i < placeableObjectPrefabs.Length; i++)
+            {
+            buildingDirectory.Add(placeableObjectPrefabs[i].name, i);
+            }
+        }
 
     private void Update()
         {
@@ -19,6 +38,21 @@ public class BuildingSystem : MonoBehaviour
             MoveCurrentObjectToMouse();
             RotateFromMouseWheel();
             ReleaseIfClicked();
+            }
+        }
+    public void OnButtonClick(String buildingId)
+        {
+        //ToDo: fix Bug when the Button is clicked the Object is still placed
+        if (currentPlaceableObject == null)
+            {
+            currentPlaceableObject = Instantiate(placeableObjectPrefabs[Int32.Parse(buildingId)]);
+            MoveCurrentObjectToMouse();
+            RotateFromMouseWheel();
+            ReleaseIfClicked();
+            }
+        else
+            {
+            Destroy(currentPlaceableObject);
             }
         }
 
@@ -43,7 +77,6 @@ public class BuildingSystem : MonoBehaviour
                     currentPlaceableObject = Instantiate(placeableObjectPrefabs[i]);
                     currentPrefabIndex = i;
                     }
-
                 break;
                 }
             }
