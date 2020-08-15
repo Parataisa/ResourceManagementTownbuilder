@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.EventSystems;
 
 public class BuildingSystem : MonoBehaviour
     {
@@ -32,8 +32,7 @@ public class BuildingSystem : MonoBehaviour
     private void Update()
         {
         HandleNewObjectHotkey();
-
-        if (currentPlaceableObject != null)
+        if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
             {
             MoveCurrentObjectToMouse();
             RotateFromMouseWheel();
@@ -42,18 +41,14 @@ public class BuildingSystem : MonoBehaviour
         }
     public void OnButtonClick(String buildingId)
         {
-        //ToDo: fix Bug when the Button is clicked the Object is still placed
-        if (currentPlaceableObject == null)
-            {
-            currentPlaceableObject = Instantiate(placeableObjectPrefabs[Int32.Parse(buildingId)]);
-            MoveCurrentObjectToMouse();
-            RotateFromMouseWheel();
-            ReleaseIfClicked();
-            }
-        else
+        if (currentPlaceableObject != null)
             {
             Destroy(currentPlaceableObject);
+            currentPlaceableObject = null;
+            return;
             }
+        currentPlaceableObject = Instantiate(placeableObjectPrefabs[Int32.Parse(buildingId)]);
+
         }
 
     private void HandleNewObjectHotkey()
