@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class BuildingSystem : MonoBehaviour
     {
-    
+
+    public GameObject buildingPanel;
+    public GameObject buttonPrefab;
     Dictionary<string, int> buildingDirectory = new Dictionary<string, int>();
+
     [SerializeField]
     public GameObject[] placeableObjectPrefabs = null;
 
@@ -14,7 +18,6 @@ public class BuildingSystem : MonoBehaviour
 
     private float mouseWheelRotation;
     private int currentPrefabIndex = -1;
-
 
     private void Start()
         {
