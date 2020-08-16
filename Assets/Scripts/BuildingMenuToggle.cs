@@ -13,4 +13,5 @@ public class BuildingMenuToggle : MonoBehaviour
             panel.SetActive(!isActive);
             }
         }
+    
 }

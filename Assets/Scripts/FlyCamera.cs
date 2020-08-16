@@ -2,7 +2,6 @@
 
 public class FlyCamera : MonoBehaviour
     {
-    public Transform target;
     float cameraSpeed = 40f;
     public float distance = 2.0f;
     public float distanceMin = 10f;

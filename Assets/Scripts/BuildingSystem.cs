@@ -6,11 +6,8 @@ using UnityEngine.EventSystems;
 
 public class BuildingSystem : MonoBehaviour
     {
-
     public GameObject buildingPanel;
-    public GameObject buttonPrefab;
-    Dictionary<string, int> buildingDirectory = new Dictionary<string, int>();
-
+    public static Dictionary<int, string> buildingDirectory = new Dictionary<int, string>();
     [SerializeField]
     public GameObject[] placeableObjectPrefabs = null;
 
@@ -22,19 +19,21 @@ public class BuildingSystem : MonoBehaviour
     private void Start()
         {
         AddingItemToDictionary();
+
         }
 
     private void AddingItemToDictionary()
         {
         for (int i = 0; i < placeableObjectPrefabs.Length; i++)
             {
-            buildingDirectory.Add(placeableObjectPrefabs[i].name, i);
+            buildingDirectory.Add(i, placeableObjectPrefabs[i].name);
             }
         }
 
     private void Update()
         {
         HandleNewObjectHotkey();
+
         if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
             {
             MoveCurrentObjectToMouse();
@@ -50,7 +49,7 @@ public class BuildingSystem : MonoBehaviour
             currentPlaceableObject = null;
             return;
             }
-        currentPlaceableObject = Instantiate(placeableObjectPrefabs[Int32.Parse(buildingId)]);
+            currentPlaceableObject = Instantiate(placeableObjectPrefabs[Int32.Parse(buildingId)]);
 
         }
     public void ClearCurser()
@@ -76,7 +75,6 @@ public class BuildingSystem : MonoBehaviour
                         {
                         Destroy(currentPlaceableObject);
                         }
-
                     currentPlaceableObject = Instantiate(placeableObjectPrefabs[i]);
                     currentPrefabIndex = i;
                     }
