@@ -8,8 +8,7 @@ public class BuildingSystem : MonoBehaviour
     {
     public GameObject buildingPanel;
     public static Dictionary<int, string> buildingDirectory = new Dictionary<int, string>();
-    [SerializeField]
-    public GameObject[] placeableObjectPrefabs = null;
+    public GameObject[] placeableObjectPrefabs;
 
     private GameObject currentPlaceableObject;
 
@@ -41,7 +40,7 @@ public class BuildingSystem : MonoBehaviour
             ReleaseIfClicked();
             }
         }
-    public void OnButtonClick(String buildingId)
+    public void OnButtonClick(int buildingId)
         {
         if (currentPlaceableObject != null)
             {
@@ -49,7 +48,7 @@ public class BuildingSystem : MonoBehaviour
             currentPlaceableObject = null;
             return;
             }
-            currentPlaceableObject = Instantiate(placeableObjectPrefabs[Int32.Parse(buildingId)]);
+            currentPlaceableObject = Instantiate(placeableObjectPrefabs[buildingId]);
 
         }
     public void ClearCurser()
@@ -92,8 +91,7 @@ public class BuildingSystem : MonoBehaviour
         {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        RaycastHit hitInfo;
-        if (Physics.Raycast(ray, out hitInfo))
+        if (Physics.Raycast(ray, out RaycastHit hitInfo))
             {
             currentPlaceableObject.transform.position = hitInfo.point;
             currentPlaceableObject.transform.rotation = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
