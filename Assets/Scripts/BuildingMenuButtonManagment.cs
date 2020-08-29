@@ -30,7 +30,7 @@ public class BuildingMenuButtonManagment : MonoBehaviour
                     {
                     break;
                     }
-                string nameOfTheObject = BuildingSystem.buildingDirectory[i];
+                string nameOfTheObject = BuildingSystem.buildingDirectory[buttonId];
                 buttonPrefab.name = nameOfTheObject;
                 var newButton = Instantiate(buttonPrefab, panel.transform);
                 Vector3 localVector3 = new Vector3(120f + 220f * i, (1000 - 120) - 220f * (currentRow - 1), 0);
@@ -38,7 +38,7 @@ public class BuildingMenuButtonManagment : MonoBehaviour
                 newButton.GetComponent<BuildingMenuToggle>().panel = this.panel;
                 newButton.GetComponent<ButtonManagment>().buttonId = buttonId;
                 newButton.GetComponent<ButtonManagment>().objectToBuild = nameOfTheObject;
-                aktiveButtons[i] = newButton;
+                aktiveButtons[buttonId] = newButton;
                 buttonId++;
                 if (buttonId % 6 == 0)
                     {
