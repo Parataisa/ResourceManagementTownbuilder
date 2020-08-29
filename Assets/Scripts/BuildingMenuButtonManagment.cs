@@ -9,26 +9,42 @@ public class BuildingMenuButtonManagment : MonoBehaviour
     public GameObject panel;
     public GameObject[] aktiveButtons;
     public int buttonId;
-    private Quaternion quaternion;
     private void Start()
         {
-        Invoke("CreateButtons", 0.1f );
+        Invoke("CreateButtons", 0.1f);
         }
     public void CreateButtons()
         {
         buttonId = 0;
+        int numberOfButtons = BuildingSystem.buildingDirectory.Count;
+        int rows = numberOfButtons / 6;
+        int numberOfButtonsInLastRow = numberOfButtons % rows;
+        int currentRow = 0;
         aktiveButtons = new GameObject[BuildingSystem.buildingDirectory.Count];
-        for (int i = 0; i < BuildingSystem.buildingDirectory.Count; i++)
+        for (int y = 0; y <= rows; y++)
             {
-            string nameOfTheObject = BuildingSystem.buildingDirectory[i];
-            Vector3 localPosition = new Vector3(101.5f * (i + 1)  , this.transform.parent.localPosition.y + 171f);
-            Instantiate(buttonPrefab, localPosition , quaternion , panel.transform);
-            buttonPrefab.GetComponent<BuildingMenuToggle>().panel = this.panel;
-            buttonPrefab.GetComponent<ButtonManagment>().buttonId = buttonId;
-            buttonPrefab.GetComponent<ButtonManagment>().objectToBuild = nameOfTheObject;
-            buttonPrefab.name = nameOfTheObject;
-            aktiveButtons[i] = buttonPrefab;
-            buttonId++;
+            for (int i = 0; i <= 5; i++)
+                {
+                string nameOfTheObject = BuildingSystem.buildingDirectory[i];
+                buttonPrefab.name = nameOfTheObject;
+                var newButton = Instantiate(buttonPrefab, panel.transform);
+                Vector3 localVector3 = new Vector3(120f + 220f * i, (1000 - 120) - 220f * currentRow, 0);
+                newButton.GetComponent<RectTransform>().localPosition = localVector3;
+                newButton.GetComponent<BuildingMenuToggle>().panel = this.panel;
+                newButton.GetComponent<ButtonManagment>().buttonId = buttonId;
+                newButton.GetComponent<ButtonManagment>().objectToBuild = nameOfTheObject;
+                aktiveButtons[i] = newButton;
+                buttonId++;
+                if (currentRow == rows)
+                    {
+                    i =-numberOfButtonsInLastRow + 6;
+                    }
+                }
+                if (buttonId % 6 == 0)
+                    {
+                    currentRow++;
+                    }
+
             }
         }
     }
