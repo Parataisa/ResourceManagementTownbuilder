@@ -173,6 +173,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonId: 2
   objectToBuild: Cube
+  buttonWidth: 0
+  buttonHeight: 0
 --- !u!1 &2738728862471658263
 GameObject:
   m_ObjectHideFlags: 0
