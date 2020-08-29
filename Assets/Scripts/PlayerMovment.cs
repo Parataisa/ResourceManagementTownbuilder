@@ -12,9 +12,9 @@ public class PlayerMovment : MonoBehaviour
     private bool groundedPlayer;
     [SerializeField]
     private float playerSpeed = 0.5f;
-    private float jumpHeight = 1.0f;
-    private float gravityValue = -9.81f;
-    private float turnSmoothTime = 0.1f;
+    private readonly float jumpHeight = 1.0f;
+    private readonly float gravityValue = -9.81f;
+    private readonly float turnSmoothTime = 0.1f;
     private float turnSmoothVerlocity = 0.1f;
     private Vector3 moveDirection;
     private void Start()
