@@ -1016,9 +1016,44 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6547335902550141248, guid: e4184f6fd25dffd42aadc1b392e186f3,
         type: 3}
+      propertyPath: placeableObjectPrefabs.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6547335902550141248, guid: e4184f6fd25dffd42aadc1b392e186f3,
+        type: 3}
       propertyPath: buildingPanel
       value: 
       objectReference: {fileID: 917635955}
+    - target: {fileID: 6547335902550141248, guid: e4184f6fd25dffd42aadc1b392e186f3,
+        type: 3}
+      propertyPath: placeableObjectPrefabs.Array.data[4]
+      value: 
+      objectReference: {fileID: 628682382620441871, guid: f3291593da303a4438762224bc8398c2,
+        type: 3}
+    - target: {fileID: 6547335902550141248, guid: e4184f6fd25dffd42aadc1b392e186f3,
+        type: 3}
+      propertyPath: placeableObjectPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 6854440573167214315, guid: 0af3dc3bf6da92647bf3da119467a71e,
+        type: 3}
+    - target: {fileID: 6547335902550141248, guid: e4184f6fd25dffd42aadc1b392e186f3,
+        type: 3}
+      propertyPath: placeableObjectPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 1754619858230820803, guid: dd47e8cecb70c5c45ab7d43fa9dbb686,
+        type: 3}
+    - target: {fileID: 6547335902550141248, guid: e4184f6fd25dffd42aadc1b392e186f3,
+        type: 3}
+      propertyPath: placeableObjectPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 1153659773751496233, guid: 8c2e8e10513599d45bb82e00635e71fc,
+        type: 3}
+    - target: {fileID: 6547335902550141248, guid: e4184f6fd25dffd42aadc1b392e186f3,
+        type: 3}
+      propertyPath: placeableObjectPrefabs.Array.data[3]
+      value: 
+      objectReference: {fileID: 6404118490084307283, guid: 9360048086c8b2c4eb07367f18a8cece,
+        type: 3}
     - target: {fileID: 6547335902550141249, guid: e4184f6fd25dffd42aadc1b392e186f3,
         type: 3}
       propertyPath: m_Name
