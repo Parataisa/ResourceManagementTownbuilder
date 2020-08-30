@@ -8,13 +8,9 @@ public class BuildingMenuButtonManagment : MonoBehaviour
     {
     public GameObject buttonPrefab;
     public GameObject panel;
+    public GameObject buildingSystem;
     public GameObject[] aktiveButtons;
-    public int buttonId;
-
-    private void Start()
-        {
-        UpdateButtons();
-        }
+    private int buttonId;
 
     public void CreateButtons()
         {
@@ -47,8 +43,10 @@ public class BuildingMenuButtonManagment : MonoBehaviour
                 newButton.GetComponentInChildren<Text>().text = nameOfTheObject;
                 newButton.GetComponent<RectTransform>().localPosition = localVector3;
                 newButton.GetComponent<BuildingMenuToggle>().panel = panel;
+                newButton.GetComponent<BuildingMenuToggle>().buildingSystem = buildingSystem;
                 newButton.GetComponent<ButtonManagment>().buttonId = buttonId;
                 newButton.GetComponent<ButtonManagment>().objectToBuild = nameOfTheObject;
+                newButton.GetComponent<Button>().onClick.AddListener(delegate { buildingSystem.GetComponent<BuildingSystem>().OnButtonClick(newButton.GetComponent<ButtonManagment>().buttonId); });
                 aktiveButtons[buttonId] = newButton;
                 buttonId++;
                 if (buttonId % NumberOfButtonsPerRow == 0)

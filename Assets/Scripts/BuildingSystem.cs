@@ -9,7 +9,6 @@ public class BuildingSystem : MonoBehaviour
     public GameObject buildingPanel;
     public static Dictionary<int, string> buildingDirectory = new Dictionary<int, string>();
     public GameObject[] placeableObjectPrefabs;
-
     private GameObject currentPlaceableObject;
 
     private float mouseWheelRotation;
@@ -32,7 +31,7 @@ public class BuildingSystem : MonoBehaviour
             }
         }
 
-    private void UpdateItemsInDictionary()
+    public void UpdateItemsInDictionary()
         {
         if (buildingDirectory.Count == 0)
             {
