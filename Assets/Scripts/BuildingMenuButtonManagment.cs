@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -12,8 +13,9 @@ public class BuildingMenuButtonManagment : MonoBehaviour
 
     private void Start()
         {
-        Invoke("CreateButtons", 0.1f);
+        UpdateButtons();
         }
+
     public void CreateButtons()
         {
         int buttonWidth = (int)buttonPrefab.GetComponent<RectTransform>().rect.width;
@@ -21,6 +23,7 @@ public class BuildingMenuButtonManagment : MonoBehaviour
         int panelWidth = (int)panel.GetComponent<RectTransform>().rect.width;
         int panelHeight = (int)panel.GetComponent<RectTransform>().rect.height;
         int NumberOfButtonsPerRow = (int)panelWidth / (buttonWidth + 20);
+        // ToDo: Implement some sort of scrolling when the max number of rows is reached.
         int NumberOfMaxRows = (int)panelHeight / (buttonHeight + 20);
 
         buttonId = 0;
@@ -56,7 +59,21 @@ public class BuildingMenuButtonManagment : MonoBehaviour
 
             }
         }
-
+    public void UpdateButtons()
+        {
+        if (panel.transform.childCount == 0)
+            {
+            Invoke("CreateButtons", 0.1f);
+            }
+        else
+            {
+            foreach (Transform child in panel.transform)
+                {
+                Destroy(child.gameObject);
+                }
+            Invoke("CreateButtons", 0.1f);
+            }
+        }
 
     private int GetNumberOfRows(int NumberOfButtons, int NumberOfButtonsPerRow)
         {

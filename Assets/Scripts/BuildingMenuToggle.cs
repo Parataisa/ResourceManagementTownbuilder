@@ -10,6 +10,7 @@ public class BuildingMenuToggle : MonoBehaviour
         if (panel != null)
             {
             bool isActive = panel.activeSelf;
+            panel.GetComponent<BuildingMenuButtonManagment>().UpdateButtons();
             panel.SetActive(!isActive);
             }
         }
