@@ -17,15 +17,30 @@ public class BuildingSystem : MonoBehaviour
 
     private void Start()
         {
-        AddingItemToDictionary();
-
+        UpdateItemsInDictionary();
+        }
+    private void OnValidate()
+        {
+        UpdateItemsInDictionary();
+        buildingPanel.GetComponent<BuildingMenuButtonManagment>().UpdateButtons();
         }
 
-    private void AddingItemToDictionary()
+    private void UpdateItemsInDictionary()
         {
-        for (int i = 0; i < placeableObjectPrefabs.Length; i++)
+        if (buildingDirectory.Count == 0)
             {
-            buildingDirectory.Add(i, placeableObjectPrefabs[i].name);
+             for (int i = 0; i < placeableObjectPrefabs.Length; i++)
+                 {
+                 buildingDirectory.Add(i, placeableObjectPrefabs[i].name);
+                 }
+            }
+        else
+            {
+            buildingDirectory.Clear();
+            for (int i = 0; i < placeableObjectPrefabs.Length; i++)
+                {
+                buildingDirectory.Add(i, placeableObjectPrefabs[i].name);
+                }
             }
         }
 
