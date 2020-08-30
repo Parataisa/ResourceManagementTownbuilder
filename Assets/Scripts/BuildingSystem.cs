@@ -19,10 +19,17 @@ public class BuildingSystem : MonoBehaviour
         {
         UpdateItemsInDictionary();
         }
-    private void OnValidate()
+    private void LateUpdate()
         {
-        UpdateItemsInDictionary();
-        buildingPanel.GetComponent<BuildingMenuButtonManagment>().UpdateButtons();
+        if (placeableObjectPrefabs.Length == buildingDirectory.Count)
+            {
+            return;
+            }
+        else
+            {
+            UpdateItemsInDictionary();
+            buildingPanel.GetComponent<BuildingMenuButtonManagment>().UpdateButtons();
+            }
         }
 
     private void UpdateItemsInDictionary()

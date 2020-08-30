@@ -465,8 +465,14 @@ MonoBehaviour:
   buttonPrefab: {fileID: 1136103755384267511, guid: 4242303e18941e24080d1f21b35662eb,
     type: 3}
   panel: {fileID: 917635955}
-  aktiveButtons: []
-  buttonId: 1
+  aktiveButtons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  buttonId: 6
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,24 +856,6 @@ MonoBehaviour:
   buildingPanel: {fileID: 917635955}
   placeableObjectPrefabs:
   - {fileID: 3777358636978655216, guid: 377894b8e848b8e4fa93360f3d27cb1d, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
-  - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
   - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
   - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}
   - {fileID: 9168492098041247111, guid: 7bc293861bd3170489b2d41960c1aa2f, type: 3}

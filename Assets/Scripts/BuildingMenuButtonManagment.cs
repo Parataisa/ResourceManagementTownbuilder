@@ -67,9 +67,12 @@ public class BuildingMenuButtonManagment : MonoBehaviour
             }
         else
             {
+            int i = 0;
             foreach (Transform child in panel.transform)
                 {
-                Destroy(child.gameObject);
+                    Destroy(child.gameObject);
+                    Destroy(aktiveButtons[i].gameObject);
+                    i++;
                 }
             Invoke("CreateButtons", 0.1f);
             }
