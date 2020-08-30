@@ -6,7 +6,6 @@ public class ButtonManagment : MonoBehaviour
 {
     public int buttonId;
     public string objectToBuild;
-    public int buttonWidth;
-    public int buttonHeight;
+
 
 }
