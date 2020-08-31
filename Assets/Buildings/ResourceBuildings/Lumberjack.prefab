@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 8763411070101250937}
   - component: {fileID: 769349606315208397}
   - component: {fileID: 2167865634145132894}
-  m_Layer: 0
-  m_Name: Cube
+  m_Layer: 2
+  m_Name: Lumberjack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

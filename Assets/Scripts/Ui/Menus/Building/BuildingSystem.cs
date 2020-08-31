@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -35,10 +33,10 @@ public class BuildingSystem : MonoBehaviour
         {
         if (buildingDirectory.Count == 0)
             {
-             for (int i = 0; i < placeableObjectPrefabs.Length; i++)
-                 {
-                 buildingDirectory.Add(i, placeableObjectPrefabs[i].name);
-                 }
+            for (int i = 0; i < placeableObjectPrefabs.Length; i++)
+                {
+                buildingDirectory.Add(i, placeableObjectPrefabs[i].name);
+                }
             }
         else
             {
@@ -69,7 +67,7 @@ public class BuildingSystem : MonoBehaviour
             currentPlaceableObject = null;
             return;
             }
-            currentPlaceableObject = Instantiate(placeableObjectPrefabs[buildingId]);
+        currentPlaceableObject = Instantiate(placeableObjectPrefabs[buildingId]);
 
         }
     public void ClearCurser()

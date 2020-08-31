@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 9105646521885920449}
   - component: {fileID: 967541441495908725}
   - component: {fileID: 1861654581330251494}
-  m_Layer: 0
-  m_Name: Cube 3
+  m_Layer: 2
+  m_Name: Farm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
