@@ -149,8 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonId: 0
   objectToBuild: 
-  aktiveButtons: []
-  nameOfTheObject: 
+  buildingPrefab: {fileID: 0}
 --- !u!114 &1136103755384267466
 MonoBehaviour:
   m_ObjectHideFlags: 0

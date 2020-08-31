@@ -1,8 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using UnityEditor.SceneManagement;
-using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class BuildingMenuButtonManagment : MonoBehaviour
@@ -39,13 +35,14 @@ public class BuildingMenuButtonManagment : MonoBehaviour
                 string nameOfTheObject = BuildingSystem.buildingDirectory[buttonId];
                 buttonPrefab.name = nameOfTheObject;
                 var newButton = Instantiate(buttonPrefab, panel.transform);
-                Vector3 localVector3 = new Vector3((buttonDimension.x / 2 + 20) + (buttonDimension.x + 20) * i, (1000 - (buttonDimension.y/ 2) - 20) - (buttonDimension.y + 20) * (currentRow - 1), 0);
+                Vector3 localVector3 = new Vector3((buttonDimension.x / 2 + 20) + (buttonDimension.x + 20) * i, (1000 - (buttonDimension.y / 2) - 20) - (buttonDimension.y + 20) * (currentRow - 1), 0);
                 newButton.GetComponent<RectTransform>().localPosition = localVector3;
                 newButton.GetComponentInChildren<Text>().text = nameOfTheObject;
                 newButton.GetComponent<BuildingMenuToggle>().panel = panel;
                 newButton.GetComponent<BuildingMenuToggle>().buildingSystem = buildingSystem;
                 newButton.GetComponent<BuildingButton>().buttonId = buttonId;
                 newButton.GetComponent<BuildingButton>().objectToBuild = nameOfTheObject;
+                newButton.GetComponent<BuildingButton>().buildingPrefab = buildingSystem.GetComponent<BuildingSystem>().placeableObjectPrefabs[buttonId];
                 newButton.GetComponent<Button>().onClick.AddListener(delegate { buildingSystem.GetComponent<BuildingSystem>().OnButtonClick(newButton.GetComponent<BuildingButton>().buttonId); });
                 aktiveButtons[buttonId] = newButton;
                 buttonId++;
@@ -68,9 +65,9 @@ public class BuildingMenuButtonManagment : MonoBehaviour
             int i = 0;
             foreach (Transform child in panel.transform)
                 {
-                    Destroy(child.gameObject);
-                    Destroy(aktiveButtons[i].gameObject);
-                    i++;
+                Destroy(child.gameObject);
+                Destroy(aktiveButtons[i].gameObject);
+                i++;
                 }
             Invoke("CreateButtons", 0.1f);
             }
@@ -78,9 +75,11 @@ public class BuildingMenuButtonManagment : MonoBehaviour
 
     private Vector2 GetButtonDimension(GameObject buttonPrefab)
         {
-        Vector2 vector2 = new Vector2();
-        vector2.x = (int)buttonPrefab.GetComponent<RectTransform>().rect.width;
-        vector2.y = (int)buttonPrefab.GetComponent<RectTransform>().rect.height;
+        Vector2 vector2 = new Vector2
+            {
+            x = (int)buttonPrefab.GetComponent<RectTransform>().rect.width,
+            y = (int)buttonPrefab.GetComponent<RectTransform>().rect.height
+            };
         return vector2;
         }
 

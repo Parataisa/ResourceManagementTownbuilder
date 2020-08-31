@@ -1,60 +1,48 @@
 ﻿using UnityEngine;
-
+//https://gamedevacademy.org/unity-rts-camera-tutorial/
 public class FlyCamera : MonoBehaviour
     {
-    float cameraSpeed = 40f;
-    public float distance = 2.0f;
-    public float distanceMin = 10f;
-    public float distanceMax = 10f;
-    float rotationYAxis = 0.0f;
-    float rotationXAxis = 0.0f;
-    float velocityX = 0.0f;
-    float velocityY = 0.0f;
-    public float yMinLimit = -90f;
-    public float yMaxLimit = 90f;
-    public float smoothTime = 2f;
+    public float moveSpeed;
+    public float zoomSpeed;
 
-    private Vector3 GetBaseInput()
+    public float minZoomDist;
+    public float maxZoomDist;
+
+    private Camera cam;
+
+    void Awake()
         {
-        Vector3 p_Velocity = new Vector3();
-        if (Input.GetKey(KeyCode.W))
-            {
-            p_Velocity += new Vector3(0, 0, cameraSpeed);
-            }
-        if (Input.GetKey(KeyCode.S))
-            {
-            p_Velocity += new Vector3(0, 0, -cameraSpeed);
-            }
-        if (Input.GetKey(KeyCode.A))
-            {
-            p_Velocity += new Vector3(-cameraSpeed, 0, 0);
-            }
-        if (Input.GetKey(KeyCode.D))
-            {
-            p_Velocity += new Vector3(cameraSpeed, 0, 0);
-            }
-        return p_Velocity;
+        cam = Camera.main;
         }
-    private void LateUpdate()
+    void Update()
         {
-        Vector3 p = GetBaseInput();
-        p *= Time.deltaTime;
-        Vector3 newPosition = transform.position;
-        transform.Translate(p);
-        newPosition.x = transform.position.x;
-        newPosition.z = transform.position.z;
-        transform.position = newPosition;
-        if (Input.GetMouseButton(1))
-            {
-            rotationYAxis += cameraSpeed * 2 *  Input.GetAxis("Mouse X") * distance * 0.02f;
-            rotationXAxis -= cameraSpeed * 3 * Input.GetAxis("Mouse Y") * 0.02f;
-            }
-        Quaternion toRotation = Quaternion.Euler(rotationXAxis, rotationYAxis, 0);
-        Quaternion rotation = toRotation;
+        Move();
+        Zoom();
+        }
 
-        transform.position = newPosition;
-        transform.rotation = rotation;
-        velocityX = Mathf.Lerp(velocityX, 0, Time.deltaTime * smoothTime);
-        velocityY = Mathf.Lerp(velocityY, 0, Time.deltaTime * smoothTime);
+    void Move()
+        {
+        float xInput = Input.GetAxis("Horizontal");
+        float zInput = Input.GetAxis("Vertical");
+        Vector3 dir = transform.forward * zInput + transform.right * xInput;
+
+        transform.position += dir * moveSpeed * Time.deltaTime;
+        }
+
+    void Zoom()
+        {
+        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+        float dist = Vector3.Distance(transform.position, cam.transform.position);
+
+        if (dist < minZoomDist && scrollInput > 0.0f)
+            return;
+        else if (dist > maxZoomDist && scrollInput < 0.0f)
+            return;
+
+        cam.transform.position += cam.transform.forward * scrollInput * zoomSpeed;
+        }
+    public void FocusOnPosition(Vector3 pos)
+        {
+        transform.position = pos;
         }
     }
