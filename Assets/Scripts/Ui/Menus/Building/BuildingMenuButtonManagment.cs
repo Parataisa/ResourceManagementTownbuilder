@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -10,18 +11,17 @@ public class BuildingMenuButtonManagment : MonoBehaviour
     public GameObject panel;
     public GameObject buildingSystem;
     public GameObject[] aktiveButtons;
+
     private int buttonId;
 
     public void CreateButtons()
         {
-        int buttonWidth = (int)buttonPrefab.GetComponent<RectTransform>().rect.width;
-        int buttonHeight = (int)buttonPrefab.GetComponent<RectTransform>().rect.height;
+        Vector2 buttonDimension = GetButtonDimension(buttonPrefab);
         int panelWidth = (int)panel.GetComponent<RectTransform>().rect.width;
         int panelHeight = (int)panel.GetComponent<RectTransform>().rect.height;
-        int NumberOfButtonsPerRow = (int)panelWidth / (buttonWidth + 20);
+        int NumberOfButtonsPerRow = (int)panelWidth / ((int)buttonDimension.x + 20);
         // ToDo: Implement some sort of scrolling when the max number of rows is reached.
-        int NumberOfMaxRows = (int)panelHeight / (buttonHeight + 20);
-
+        int NumberOfMaxRows = (int)panelHeight / ((int)buttonDimension.y + 20);
         buttonId = 0;
         int numberOfButtons = BuildingSystem.buildingDirectory.Count;
         int rows = GetNumberOfRows(numberOfButtons, NumberOfButtonsPerRow);
@@ -39,14 +39,14 @@ public class BuildingMenuButtonManagment : MonoBehaviour
                 string nameOfTheObject = BuildingSystem.buildingDirectory[buttonId];
                 buttonPrefab.name = nameOfTheObject;
                 var newButton = Instantiate(buttonPrefab, panel.transform);
-                Vector3 localVector3 = new Vector3((buttonWidth / 2 + 20) + (buttonWidth + 20) * i, (1000 - (buttonHeight/2) - 20) - (buttonHeight + 20) * (currentRow - 1), 0);
-                newButton.GetComponentInChildren<Text>().text = nameOfTheObject;
+                Vector3 localVector3 = new Vector3((buttonDimension.x / 2 + 20) + (buttonDimension.x + 20) * i, (1000 - (buttonDimension.y/ 2) - 20) - (buttonDimension.y + 20) * (currentRow - 1), 0);
                 newButton.GetComponent<RectTransform>().localPosition = localVector3;
+                newButton.GetComponentInChildren<Text>().text = nameOfTheObject;
                 newButton.GetComponent<BuildingMenuToggle>().panel = panel;
                 newButton.GetComponent<BuildingMenuToggle>().buildingSystem = buildingSystem;
-                newButton.GetComponent<ButtonManagment>().buttonId = buttonId;
-                newButton.GetComponent<ButtonManagment>().objectToBuild = nameOfTheObject;
-                newButton.GetComponent<Button>().onClick.AddListener(delegate { buildingSystem.GetComponent<BuildingSystem>().OnButtonClick(newButton.GetComponent<ButtonManagment>().buttonId); });
+                newButton.GetComponent<BuildingButton>().buttonId = buttonId;
+                newButton.GetComponent<BuildingButton>().objectToBuild = nameOfTheObject;
+                newButton.GetComponent<Button>().onClick.AddListener(delegate { buildingSystem.GetComponent<BuildingSystem>().OnButtonClick(newButton.GetComponent<BuildingButton>().buttonId); });
                 aktiveButtons[buttonId] = newButton;
                 buttonId++;
                 if (buttonId % NumberOfButtonsPerRow == 0)
@@ -74,6 +74,14 @@ public class BuildingMenuButtonManagment : MonoBehaviour
                 }
             Invoke("CreateButtons", 0.1f);
             }
+        }
+
+    private Vector2 GetButtonDimension(GameObject buttonPrefab)
+        {
+        Vector2 vector2 = new Vector2();
+        vector2.x = (int)buttonPrefab.GetComponent<RectTransform>().rect.width;
+        vector2.y = (int)buttonPrefab.GetComponent<RectTransform>().rect.height;
+        return vector2;
         }
 
     private int GetNumberOfRows(int NumberOfButtons, int NumberOfButtonsPerRow)

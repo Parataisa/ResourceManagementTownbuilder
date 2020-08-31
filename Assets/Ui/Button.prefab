@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1136103755384267467}
   - component: {fileID: 1136103755384267508}
   - component: {fileID: 1136103755384267509}
+  - component: {fileID: 3445248754698665061}
   - component: {fileID: 1136103755384267466}
-  - component: {fileID: 6763606602820155444}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -135,6 +135,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3445248754698665061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136103755384267511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43817b2f7b7bba042bdbc3936df747f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonId: 0
+  objectToBuild: 
+  aktiveButtons: []
+  nameOfTheObject: 
 --- !u!114 &1136103755384267466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,21 +164,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 0}
-  buildingSystem: {fileID: 0}
---- !u!114 &6763606602820155444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1136103755384267511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34499df1a8068be44a65de6d043f3166, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonId: 0
-  objectToBuild: 
+  buildingSystem: {fileID: 6547335902550141249, guid: e4184f6fd25dffd42aadc1b392e186f3,
+    type: 3}
 --- !u!1 &2738728862471658263
 GameObject:
   m_ObjectHideFlags: 0
