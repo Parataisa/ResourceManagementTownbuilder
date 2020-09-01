@@ -10,13 +10,17 @@ public class BuildingSystem : MonoBehaviour
     private GameObject currentPlaceableObject;
 
     private float mouseWheelRotation;
-    private int currentPrefabIndex = -1;
+    //private int currentPrefabIndex = -1;
 
+#pragma warning disable IDE0051 // Remove unused private members
     private void Start()
+#pragma warning restore IDE0051 // Remove unused private members
         {
         UpdateItemsInDictionary();
         }
+#pragma warning disable IDE0051 // Remove unused private members
     private void LateUpdate()
+#pragma warning restore IDE0051 // Remove unused private members
         {
         if (placeableObjectPrefabs.Length == buildingDirectory.Count)
             {
@@ -48,9 +52,11 @@ public class BuildingSystem : MonoBehaviour
             }
         }
 
+#pragma warning disable IDE0051 // Remove unused private members
     private void Update()
+#pragma warning restore IDE0051 // Remove unused private members
         {
-        HandleNewObjectHotkey();
+        //HandleNewObjectHotkey();
 
         if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
             {
@@ -76,38 +82,39 @@ public class BuildingSystem : MonoBehaviour
         currentPlaceableObject = null;
         }
 
-    private void HandleNewObjectHotkey()
-        {
-        for (int i = 0; i < placeableObjectPrefabs.Length; i++)
-            {
-            if (Input.GetKeyDown(KeyCode.Alpha0 + 1 + i))
-                {
-                if (PressedKeyOfCurrentPrefab(i))
-                    {
-                    Destroy(currentPlaceableObject);
-                    currentPrefabIndex = -1;
-                    }
-                else
-                    {
-                    if (currentPlaceableObject != null)
-                        {
-                        Destroy(currentPlaceableObject);
-                        }
-                    currentPlaceableObject = Instantiate(placeableObjectPrefabs[i]);
-                    currentPrefabIndex = i;
-                    }
-                break;
-                }
-            }
-        }
+    //private void HandleNewObjectHotkey()
+    //    {
+    //    for (int i = 0; i < placeableObjectPrefabs.Length; i++)
+    //        {
+    //        if (Input.GetKeyDown(KeyCode.Alpha0 + 1 + i))
+    //            {
+    //            if (PressedKeyOfCurrentPrefab(i))
+    //                {
+    //                Destroy(currentPlaceableObject);
+    //                currentPrefabIndex = -1;
+    //                }
+    //            else
+    //                {
+    //                if (currentPlaceableObject != null)
+    //                    {
+    //                    Destroy(currentPlaceableObject);
+    //                    }
+    //                currentPlaceableObject = Instantiate(placeableObjectPrefabs[i]);
+    //                currentPrefabIndex = i;
+    //                }
+    //            break;
+    //            }
+    //        }
+    //    }
 
-    private bool PressedKeyOfCurrentPrefab(int i)
-        {
-        return currentPlaceableObject != null && currentPrefabIndex == i;
-        }
+    //private bool PressedKeyOfCurrentPrefab(int i)
+    //    {
+    //    return currentPlaceableObject != null && currentPrefabIndex == i;
+    //    }
 
     private void MoveCurrentObjectToMouse()
         {
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hitInfo))
@@ -127,7 +134,7 @@ public class BuildingSystem : MonoBehaviour
         {
         if (Input.GetMouseButtonDown(0))
             {
-            currentPlaceableObject.layer = 0;
+            currentPlaceableObject.layer = 8;
             currentPlaceableObject = null;
             }
         }

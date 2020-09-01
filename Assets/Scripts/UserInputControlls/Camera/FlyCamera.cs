@@ -10,11 +10,15 @@ public class FlyCamera : MonoBehaviour
 
     private Camera cam;
 
+#pragma warning disable IDE0051 // Remove unused private members
     void Awake()
+#pragma warning restore IDE0051 // Remove unused private members
         {
         cam = Camera.main;
         }
+#pragma warning disable IDE0051 // Remove unused private members
     void Update()
+#pragma warning restore IDE0051 // Remove unused private members
         {
         Move();
         Zoom();

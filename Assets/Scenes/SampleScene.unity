@@ -585,7 +585,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 30
   zoomSpeed: 40
-  minZoomDist: 10
+  minZoomDist: 20
   maxZoomDist: 80
 --- !u!850595691 &1331052614
 LightingSettings:
