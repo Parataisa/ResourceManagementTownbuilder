@@ -7,36 +7,37 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
         public int sizeOfTheResource;
         public int quantityOfTheResource;
         public string nameOfTheResource;
-        public Vector2 positionOfThePatch;
+        public Vector3 positionOfThePatch;
         public GameObject ResourcePrefab;
-        public Mesh mesh;
+        public Vector3 positionOnTheMap;
 
         public ResourceBase(string nameOfTheResource)
             {
             this.nameOfTheResource = nameOfTheResource;
             this.quantityOfTheResource = GetQuantityOfTheResource();
             this.sizeOfTheResource = GetSizeOfTheResource();
-            Vector2 positonOnTheMesh = GetPositionOfResource(mesh);
+            Vector3 positonOnTheMesh = GetPositionOfResource();
             this.positionOfThePatch = positonOnTheMesh;
 
             }
         public int GetQuantityOfTheResource()
             {
-            //Some random calc
+            int quantity = Random.Range(1,600);
 
-            return 0;
+            return quantity;
             }
         public int GetSizeOfTheResource()
             {
-            //Some random calc
+            int size = Random.Range(1, 100);
 
-            return 0;
+            return size;
             }
-        public Vector2 GetPositionOfResource(Mesh mesh)
+        public Vector3 GetPositionOfResource()
             {
-            Vector2 position = new Vector2();
-
-            //Some random calc
+            Vector3 position = new Vector3();
+            position.x = Random.Range(0, 256);
+            position.z = Random.Range(0, 256);
+            position.y = 0;//ToDo Get height of the Prefab and add half of that value.
             return position;
             }
         }

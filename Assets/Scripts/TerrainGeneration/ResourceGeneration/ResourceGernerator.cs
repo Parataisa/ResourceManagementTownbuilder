@@ -10,8 +10,16 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
 
         void Start()
             {
-            ResourceBase newresourceBase = new ResourceBase("");
             
+            }
+        private void Update()
+            {
+            int i = 0;
+            if (terrainMesh != null && i<4)
+                {
+                ResourceBase newresourceBase = new ResourceBase("");
+                i++;
+                }
             }
         }
     }
