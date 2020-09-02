@@ -2,5 +2,9 @@
     {
     class Wild : ResourceBase
         {
+        public Wild() : base("Meat")
+            {
+
+            }
         }
     }

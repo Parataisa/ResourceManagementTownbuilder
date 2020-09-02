@@ -2,5 +2,9 @@
     {
     class Copper : ResourceBase
         {
+        public Copper() : base("Copper")
+            {
+
+            }
         }
     }
