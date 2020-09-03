@@ -627,9 +627,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 808ef0c88f5b3724c9503bcf66c2799c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 30
-  zoomSpeed: 40
-  minZoomDist: 20
+  moveSpeed: 35
+  zoomSpeed: 20
+  minZoomDist: 15
   maxZoomDist: 80
 --- !u!850595691 &1331052614
 LightingSettings:

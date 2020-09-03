@@ -1,25 +1,16 @@
 ﻿using Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariationen;
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
     {
     class ResourceGernerator : MonoBehaviour
         {
+        public static Dictionary<GameObject, ResourceBase> ResourceTyps = new Dictionary<GameObject, ResourceBase>();
         public Mesh terrainMesh;
-
-        void Start()
+        private void Start()
             {
             
-            }
-        private void Update()
-            {
-            int i = 0;
-            if (terrainMesh != null && i<4)
-                {
-                ResourceBase newresourceBase = new ResourceBase("");
-                i++;
-                }
             }
         }
     }

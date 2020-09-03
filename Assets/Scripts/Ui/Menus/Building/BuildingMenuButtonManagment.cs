@@ -34,7 +34,7 @@ public class BuildingMenuButtonManagment : MonoBehaviour
                     }
                 string nameOfTheObject = BuildingSystem.buildingDirectory[buttonId];
                 buttonPrefab.name = nameOfTheObject;
-                var newButton = Instantiate(buttonPrefab, panel.transform);
+                var newButton = Instantiate(buttonPrefab, panel.transform) as GameObject;
                 Vector3 localVector3 = new Vector3((buttonDimension.x / 2 + 20) + (buttonDimension.x + 20) * i, (1000 - (buttonDimension.y / 2) - 20) - (buttonDimension.y + 20) * (currentRow - 1), 0);
                 newButton.GetComponent<RectTransform>().localPosition = localVector3;
                 newButton.GetComponentInChildren<Text>().text = nameOfTheObject;

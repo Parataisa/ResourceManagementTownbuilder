@@ -7,19 +7,21 @@ public class MeshGenerator : MonoBehaviour
     Mesh mesh;
     Vector3[] vertices;
     int[] triangles;
-    Transform parentTransform;
+    //Transform parentTransform;
     private readonly int xSize = 256;
     private readonly int zSize = 256;
     void Start()
         {
-        mesh = new Mesh();
-        mesh.name = "mainMapMesh";
+        mesh = new Mesh
+            {
+            name = "mainMapMesh"
+            };
         GetComponent<MeshFilter>().mesh = mesh;
         GetComponentInChildren<ResourceGernerator>().terrainMesh = mesh;
         CreateShape();
         UpdadeMesh();
         GetComponent<MeshCollider>().sharedMesh = mesh;
-        parentTransform = GetComponent<Transform>().parent;
+        //parentTransform = GetComponent<Transform>().parent;
         }
 
 
