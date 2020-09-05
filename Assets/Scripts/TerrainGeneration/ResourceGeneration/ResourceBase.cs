@@ -47,13 +47,13 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
             {
             float x = UnityEngine.Random.Range(0, 256);
             if (x <= area) return x;
-            else return x - area;
+            else return x - area / 2;
             }
         public static Vector2 GetAreaOfTheResource(Vector3 sizeModel, int size)
             {
             Vector2 area;
-            area.x = UnityEngine.Random.Range(1, 1.2f) * sizeModel.x * size;
-            area.y = UnityEngine.Random.Range(1, 1.2f) * sizeModel.z * size;
+            area.x = UnityEngine.Random.Range(1, 1.1f) * sizeModel.x * size;
+            area.y = UnityEngine.Random.Range(1, 1.1f) * sizeModel.z * size;
             return area;
             }
         }
