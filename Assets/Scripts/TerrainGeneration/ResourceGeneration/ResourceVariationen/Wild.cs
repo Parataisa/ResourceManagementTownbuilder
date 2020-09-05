@@ -2,15 +2,13 @@
 
 namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariationen
     {
-    class Wild : MonoBehaviour
+    class Wild : ResourceBase
         {
-        public int quantityOfTheResource;
-        public string nameOfTheResource;
-        void Start()
+        public string ResourceName;
+        protected override void Start()
             {
-            ResourceBase resourceBase = new ResourceBase();
-            nameOfTheResource = this.GetType().Name;
-            quantityOfTheResource = resourceBase.GetQuantityOfTheResource();
+            base.Start();
+            ResourceName = this.GetType().Name;
             }
         }
     }

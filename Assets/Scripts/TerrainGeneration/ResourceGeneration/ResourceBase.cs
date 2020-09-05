@@ -1,47 +1,50 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariationen
     {
-    public class ResourceBase
+    public class ResourceBase : MonoBehaviour
         {
-        //private int sizeOfTheResource;
-        //private int quantityOfTheResource;
-        //private string nameOfTheResource;
-        public Vector3 positionOfThePatch;
-        public GameObject ResourcePrefab;
+        public int sizeOfTheResource;
+        public int quantityOfTheResource;
         public Vector3 positionOnTheMap;
+        public event Action<ResourceBase> ResourceGenerated;
+        public event Action<GameObject> ResourceGenerated2;
 
 
-        //public ResourceBase(string nameOfTheResource)
-        //    {
-        //    this.nameOfTheResource = nameOfTheResource;
-        //    this.quantityOfTheResource = GetQuantityOfTheResource();
-        //    this.sizeOfTheResource = GetSizeOfTheResource();
-        //    Vector3 positonOnTheMesh = GetPositionOfResource();
-        //    this.positionOfThePatch = positonOnTheMesh;
-
-        //    }
+        protected virtual void Start()
+            {
+            this.quantityOfTheResource = GetQuantityOfTheResource();
+            this.sizeOfTheResource = GetSizeOfTheResource();
+            this.positionOnTheMap = GetPositionOfResource();
+            if (ResourceGenerated != null)
+                {
+                ResourceGenerated(this);
+                }
+            if (ResourceGenerated2 != null)
+                {
+                ResourceGenerated2(this.gameObject);
+                }
+            }
         public int GetQuantityOfTheResource()
             {
-            int quantity = Random.Range(1, 600);
+            int quantity = UnityEngine.Random.Range(1, 600);
 
             return quantity;
             }
         public int GetSizeOfTheResource()
             {
-            int size = Random.Range(1, 20);
+            int size = UnityEngine.Random.Range(1, 20);
 
             return size;
             }
-        public Vector3 GetPositionOfResource()
+        public static Vector3 GetPositionOfResource()
             {
             Vector3 position;
-            position.x = Random.Range(0, 256);
-            position.z = Random.Range(0, 256);
+            position.x = UnityEngine.Random.Range(0, 256);
+            position.z = UnityEngine.Random.Range(0, 256);
             position.y = 0.5f;//ToDo Get height of the Prefab and add half of that value.
             return position;
             }
-
-
         }
     }
