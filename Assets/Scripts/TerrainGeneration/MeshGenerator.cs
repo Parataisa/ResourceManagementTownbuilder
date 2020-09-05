@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.TerrainGeneration.RecourceGeneration;
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
@@ -7,9 +8,11 @@ public class MeshGenerator : MonoBehaviour
     Mesh mesh;
     Vector3[] vertices;
     int[] triangles;
-    //Transform parentTransform;
     private readonly int xSize = 256;
     private readonly int zSize = 256;
+
+    public event Action MapGeneratedEvent;
+
     void Start()
         {
         mesh = new Mesh
@@ -21,7 +24,6 @@ public class MeshGenerator : MonoBehaviour
         CreateShape();
         UpdadeMesh();
         GetComponent<MeshCollider>().sharedMesh = mesh;
-        //parentTransform = GetComponent<Transform>().parent;
         }
 
 
@@ -63,5 +65,9 @@ public class MeshGenerator : MonoBehaviour
         mesh.Clear();
         mesh.vertices = vertices;
         mesh.triangles = triangles;
+        if (MapGeneratedEvent != null)
+            {
+            MapGeneratedEvent();
+            }
         }
 }

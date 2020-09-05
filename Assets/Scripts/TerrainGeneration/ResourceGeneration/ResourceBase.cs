@@ -4,9 +4,9 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
     {
     public class ResourceBase
         {
-        private int sizeOfTheResource;
-        private int quantityOfTheResource;
-        private string nameOfTheResource;
+        //private int sizeOfTheResource;
+        //private int quantityOfTheResource;
+        //private string nameOfTheResource;
         public Vector3 positionOfThePatch;
         public GameObject ResourcePrefab;
         public Vector3 positionOnTheMap;
@@ -29,16 +29,16 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
             }
         public int GetSizeOfTheResource()
             {
-            int size = Random.Range(1, 100);
+            int size = Random.Range(1, 20);
 
             return size;
             }
-        public static Vector3 GetPositionOfResource()
+        public Vector3 GetPositionOfResource()
             {
             Vector3 position;
             position.x = Random.Range(0, 256);
             position.z = Random.Range(0, 256);
-            position.y = 0;//ToDo Get height of the Prefab and add half of that value.
+            position.y = 0.5f;//ToDo Get height of the Prefab and add half of that value.
             return position;
             }
 
