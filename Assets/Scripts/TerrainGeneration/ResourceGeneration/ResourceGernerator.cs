@@ -12,7 +12,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
         public Mesh terrainMesh;
         public void Start()
             {
-            NumberOfResources = UnityEngine.Random.Range(1, 10);
+            NumberOfResources = UnityEngine.Random.Range(1, 20);
             UnityEngine.Object[] subListObjects = Resources.LoadAll("ResourceVariationen", typeof(GameObject));
             foreach (GameObject gameObject in subListObjects)
                 {
@@ -32,26 +32,49 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
             {
             var resourceToSpawn = Instantiate<GameObject>(resourceType);
             var scriptOfTheResource = resourceToSpawn.GetComponent<ResourceBase>();
-            FindObjectOfType<ResourceBase>(resourceToSpawn).ResourceGenerated2 += Test;
-            FindObjectOfType<ResourceBase>(scriptOfTheResource).ResourceGenerated += generatResources;
+            scriptOfTheResource.GetComponent<ResourceBase>().sizeOfTheModel = resourceType.gameObject.transform.localScale;
+            FindObjectOfType<ResourceBase>(resourceToSpawn).ResourceGenerated2 += SetLocationOfTheResouurce;
+            FindObjectOfType<ResourceBase>(scriptOfTheResource).ResourceGenerated += GeneratResources;
             }
 
-        private void Test(GameObject resourceToSpawn)
+        private void SetLocationOfTheResouurce(GameObject resourceToSpawn)
             {
             resourceToSpawn.GetComponent<Transform>().transform.position = resourceToSpawn.GetComponent<ResourceBase>().positionOnTheMap;
             }
 
-        private void generatResources(ResourceBase scriptOfTheResource)
+        private void GeneratResources(ResourceBase scriptOfTheResource)
             {
-            int size = scriptOfTheResource.sizeOfTheResource - 2;
+            int size = scriptOfTheResource.sizeOfTheResource;
+            Vector2 area = scriptOfTheResource.areaOfTheResource;
+            Vector3 sizeOfTheModel = RandomSizeSelector(); ;
+            scriptOfTheResource.sizeOfTheModel = sizeOfTheModel;
             GameObject child = scriptOfTheResource.transform.GetChild(0).gameObject;
-            for (int i = 0; i <= size; i++)
+            for (int i = 0; i < size; i++)
                 {
                 GameObject _ = Instantiate<GameObject>(child, scriptOfTheResource.transform);
-                Vector3 vector3 = new Vector3(child.transform.localPosition.x + i + 1, 0.5f, child.transform.localPosition.z + i + 1);
+                var localYTransform = _.GetComponent<Transform>().localScale = scriptOfTheResource.sizeOfTheModel;
+                Vector2 localPositon = GetlocalPositon(area);
+                Vector3 vector3 = new Vector3(localPositon.x, localYTransform.y / 2, localPositon.y);
                 _.GetComponent<Transform>().localPosition = vector3;
                    }
+            Destroy(child);
                 }
-        
+
+        private Vector2 GetlocalPositon(Vector2 area)
+            {
+            Vector2 position;
+            position.x = UnityEngine.Random.Range(0, area.x);
+            position.y = UnityEngine.Random.Range(0, area.y);
+            return position;
+            }
+
+        private Vector3 RandomSizeSelector()
+            {
+            Vector3 size;
+            size.x = UnityEngine.Random.Range(0.5f, 4f);
+            size.y = UnityEngine.Random.Range(0.5f, 2f);
+            size.z = UnityEngine.Random.Range(0.5f, 4f);
+            return size;
+            }
         }
     }
