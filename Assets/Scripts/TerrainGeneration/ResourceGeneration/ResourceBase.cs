@@ -11,26 +11,37 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
         public Vector2 areaOfTheResource;
         public Vector3 sizeOfTheModel;
         public event Action<ResourceBase> ResourceGenerated;
-        public event Action<GameObject> ResourceGenerated2;
+        public event Action<GameObject> ChooseLocationEvent;
 
 
         protected virtual void Start()
             {
             this.quantityOfTheResource = GetQuantityOfTheResource();
             this.sizeOfTheResource = GetSizeOfTheResource(quantityOfTheResource);
+            this.sizeOfTheModel = GetRandomSizeForTheModel();
             this.areaOfTheResource = GetAreaOfTheResource(sizeOfTheModel, sizeOfTheResource);
             this.positionOnTheMap = GetPositionOfResource(areaOfTheResource);
+            ChooseLocationEvent?.Invoke(this.gameObject);
             ResourceGenerated?.Invoke(this);
-            ResourceGenerated2?.Invoke(this.gameObject);
             }
+
+
         public static int GetQuantityOfTheResource()
             {
-            int quantity = UnityEngine.Random.Range(40000, 60000);
+            int quantity = UnityEngine.Random.Range(50000, 80000);
             return quantity;
             }
         public static int GetSizeOfTheResource(int quantity)
             {
-            int size = quantity / UnityEngine.Random.Range(600, 2000);
+            int size = quantity / UnityEngine.Random.Range(1000, 4000);
+            return size;
+            }
+        private Vector3 GetRandomSizeForTheModel()
+            {
+            Vector3 size;
+            size.x = UnityEngine.Random.Range(0.5f, 2.5f);
+            size.y = UnityEngine.Random.Range(0.5f, 2f);
+            size.z = UnityEngine.Random.Range(0.5f, 2.5f);
             return size;
             }
         public static Vector3 GetPositionOfResource(Vector2 area)
@@ -45,15 +56,15 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
 
         private static float GetPositionMinusArea(float area)
             {
-            float x = UnityEngine.Random.Range(0, 256);
-            if (x <= area) return x;
-            else return x - area / 2;
+            float x = UnityEngine.Random.Range(area / 2, 256 - area / 2);
+            //if (x <= 256 - area / 2) return x;
+            return x;
             }
         public static Vector2 GetAreaOfTheResource(Vector3 sizeModel, int size)
             {
             Vector2 area;
-            area.x = UnityEngine.Random.Range(1, 1.1f) * sizeModel.x * size;
-            area.y = UnityEngine.Random.Range(1, 1.1f) * sizeModel.z * size;
+            area.x = UnityEngine.Random.Range(1, 1.1f) * sizeModel.x * size / 1.5f;
+            area.y = UnityEngine.Random.Range(1, 1.1f) * sizeModel.z * size / 1.5f;
             return area;
             }
         }

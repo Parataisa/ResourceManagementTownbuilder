@@ -36,7 +36,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
             var resourceToSpawn = Instantiate<GameObject>(resourceType);
             var scriptOfTheResource = resourceToSpawn.GetComponent<ResourceBase>();
             scriptOfTheResource.GetComponent<ResourceBase>().sizeOfTheModel = resourceType.gameObject.transform.localScale;
-            FindObjectOfType<ResourceBase>(resourceToSpawn).ResourceGenerated2 += SetLocationOfTheResouurce;
+            FindObjectOfType<ResourceBase>(resourceToSpawn).ChooseLocationEvent += SetLocationOfTheResouurce;
             FindObjectOfType<ResourceBase>(scriptOfTheResource).ResourceGenerated += GeneratResources;
             }
 
@@ -69,7 +69,8 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                 else
                     {
                     points.Add(PositonOnTheMap, spawnPopintArea);
-                    while (points.Count > 0)
+                    int numberOfInnerLoops = 0;
+                    while (points.Count > 0 || numberOfIterationen <= numberOfInnerLoops)
                         {
                         int loopcount = 0;
                         foreach (var savedPoint in spawnedPoints)
@@ -85,12 +86,13 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                             newArea.Height = (int)spawnPopintArea.y;
                             newArea.X = (int)(PositonOnTheMap.x - spawnPopintArea.x / 2);
                             newArea.Y = (int)(PositonOnTheMap.z - spawnPopintArea.y / 2);
-                            if (!newArea.IntersectsWith(savedArea))
+                            if (!newArea.IntersectsWith(savedArea) && PositonOnTheMap.x < 256 - spawnPopintArea.x / 2 && PositonOnTheMap.z < 256 - spawnPopintArea.y / 2)
                                 {
                                 loopcount++;
                                 if (loopcount == spawnedPoints.Count)
                                     {
                                     resourceToSpawn.GetComponent<Transform>().transform.position = PositonOnTheMap;
+                                    resourceToSpawn.GetComponent<ResourceBase>().positionOnTheMap = PositonOnTheMap;
                                     spawnedPoints.Add(new Vector2(PositonOnTheMap.x, PositonOnTheMap.z), spawnPopintArea);
                                     points.Remove(PositonOnTheMap);
                                     return true;
@@ -101,12 +103,14 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                                 points.Remove(PositonOnTheMap);
                                 var newPickedPoint = ResourceBase.GetPositionOfResource(spawnPopintArea);
                                 PositonOnTheMap = newPickedPoint;
+                                numberOfInnerLoops++;
                                 loopcount = 0;
                                 points.Add(PositonOnTheMap, spawnPopintArea);
                                 break;
                                 }
                             }
                         }
+                    points.Remove(PositonOnTheMap);
                     }
                 }
 
@@ -117,8 +121,6 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
             {
             int size = scriptOfTheResource.sizeOfTheResource;
             Vector2 area = scriptOfTheResource.areaOfTheResource;
-            Vector3 sizeOfTheModel = RandomSizeSelector(); ;
-            scriptOfTheResource.sizeOfTheModel = sizeOfTheModel;
             GameObject child = scriptOfTheResource.transform.GetChild(0).gameObject;
             for (int i = 0; i < size; i++)
                 {
@@ -134,18 +136,9 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
         private Vector2 GetlocalPositon(Vector2 area)
             {
             Vector2 position;
-            position.x = UnityEngine.Random.Range(0, area.x);
-            position.y = UnityEngine.Random.Range(0, area.y);
+            position.x = UnityEngine.Random.Range(-area.x / 2 , area.x / 2);
+            position.y = UnityEngine.Random.Range(-area.y / 2, area.y / 2);
             return position;
-            }
-
-        private Vector3 RandomSizeSelector()
-            {
-            Vector3 size;
-            size.x = UnityEngine.Random.Range(0.5f, 4f);
-            size.y = UnityEngine.Random.Range(0.5f, 2f);
-            size.z = UnityEngine.Random.Range(0.5f, 4f);
-            return size;
             }
         }
     }
