@@ -7,10 +7,11 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
         {
         public int sizeOfTheResource;
         public int quantityOfTheResource;
+        public int numberOfIterationen = 20;
         public Vector3 positionOnTheMap;
         public Vector2 areaOfTheResource;
         public Vector3 sizeOfTheModel;
-        public event Action<ResourceBase> ResourceGenerated;
+        public event Action<ResourceBase, int> ResourceGenerated;
         public event Action<GameObject> ChooseLocationEvent;
 
 
@@ -22,7 +23,7 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
             this.areaOfTheResource = GetAreaOfTheResource(sizeOfTheModel, sizeOfTheResource);
             this.positionOnTheMap = GetPositionOfResource(areaOfTheResource);
             ChooseLocationEvent?.Invoke(this.gameObject);
-            ResourceGenerated?.Invoke(this);
+            ResourceGenerated?.Invoke(this, numberOfIterationen);
             }
 
 
@@ -63,8 +64,8 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
         public static Vector2 GetAreaOfTheResource(Vector3 sizeModel, int size)
             {
             Vector2 area;
-            area.x = UnityEngine.Random.Range(1, 1.1f) * sizeModel.x * size / 1.5f;
-            area.y = UnityEngine.Random.Range(1, 1.1f) * sizeModel.z * size / 1.5f;
+            area.x = UnityEngine.Random.Range(0.8f, 1.1f) * sizeModel.x * size / 2f;
+            area.y = UnityEngine.Random.Range(0.8f, 1.1f) * sizeModel.z * size / 2f;
             return area;
             }
         }
