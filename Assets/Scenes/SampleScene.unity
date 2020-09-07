@@ -582,6 +582,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de0a8e57b6fb9c94fbf0aae9dadffac5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numberOfIterationen: 20
+  NumberOfResources: 40
   terrainMesh: {fileID: 0}
 --- !u!1 &1155724638
 GameObject:
