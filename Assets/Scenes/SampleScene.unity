@@ -583,7 +583,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfIterationen: 20
-  NumberOfResources: 40
+  NumberOfResources: 20
   terrainMesh: {fileID: 0}
 --- !u!1 &1155724638
 GameObject:

@@ -36,14 +36,7 @@ public class BuildingMenuButtonManagment : MonoBehaviour
                 buttonPrefab.name = nameOfTheObject;
                 var newButton = Instantiate(buttonPrefab, panel.transform) as GameObject;
                 Vector3 localVector3 = new Vector3((buttonDimension.x / 2 + 20) + (buttonDimension.x + 20) * i, (1000 - (buttonDimension.y / 2) - 20) - (buttonDimension.y + 20) * (currentRow - 1), 0);
-                newButton.GetComponent<RectTransform>().localPosition = localVector3;
-                newButton.GetComponentInChildren<Text>().text = nameOfTheObject;
-                newButton.GetComponent<BuildingMenuToggle>().panel = panel;
-                newButton.GetComponent<BuildingMenuToggle>().buildingSystem = buildingSystem;
-                newButton.GetComponent<BuildingButton>().buttonId = buttonId;
-                newButton.GetComponent<BuildingButton>().objectToBuild = nameOfTheObject;
-                newButton.GetComponent<BuildingButton>().buildingPrefab = buildingSystem.GetComponent<BuildingSystem>().placeableObjectPrefabs[buttonId];
-                newButton.GetComponent<Button>().onClick.AddListener(delegate { buildingSystem.GetComponent<BuildingSystem>().OnButtonClick(newButton.GetComponent<BuildingButton>().buttonId); });
+                AddingButtonParameter(nameOfTheObject, newButton, localVector3);
                 aktiveButtons[buttonId] = newButton;
                 buttonId++;
                 if (buttonId % NumberOfButtonsPerRow == 0)
@@ -54,6 +47,7 @@ public class BuildingMenuButtonManagment : MonoBehaviour
 
             }
         }
+
     public void UpdateButtons()
         {
         if (panel.transform.childCount == 0)
@@ -71,6 +65,17 @@ public class BuildingMenuButtonManagment : MonoBehaviour
                 }
             Invoke("CreateButtons", 0.1f);
             }
+        }
+    private void AddingButtonParameter(string nameOfTheObject, GameObject newButton, Vector3 localVector3)
+        {
+        newButton.GetComponent<RectTransform>().localPosition = localVector3;
+        newButton.GetComponentInChildren<Text>().text = nameOfTheObject;
+        newButton.GetComponent<BuildingMenuToggle>().panel = panel;
+        newButton.GetComponent<BuildingMenuToggle>().buildingSystem = buildingSystem;
+        newButton.GetComponent<BuildingButton>().buttonId = buttonId;
+        newButton.GetComponent<BuildingButton>().objectToBuild = nameOfTheObject;
+        newButton.GetComponent<BuildingButton>().buildingPrefab = buildingSystem.GetComponent<BuildingSystem>().placeableObjectPrefabs[buttonId];
+        newButton.GetComponent<Button>().onClick.AddListener(delegate { buildingSystem.GetComponent<BuildingSystem>().OnButtonClick(newButton.GetComponent<BuildingButton>().buttonId); });
         }
 
     private Vector2 GetButtonDimension(GameObject buttonPrefab)
