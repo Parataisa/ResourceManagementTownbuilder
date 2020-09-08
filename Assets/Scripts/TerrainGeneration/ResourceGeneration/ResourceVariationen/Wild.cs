@@ -9,6 +9,10 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
             {
             base.Start();
             ResourceName = this.GetType().Name;
+            var treescript = GetComponent<Wood>();
+            this.positionOnTheMap = treescript.positionOnTheMap;
+            this.areaOfTheResource = treescript.areaOfTheResource;
+            this.sizeOfTheModel = treescript.sizeOfTheModel;
             }
         }
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
     {
-    class ResourceGernerator : MonoBehaviour
+    class ResourceGenerator : MonoBehaviour
         {
         public static List<GameObject> ResourcePrefabs = new List<GameObject>();
         private static Dictionary<Vector2, Vector2> spawnedPoints = new Dictionary<Vector2, Vector2>();
@@ -15,14 +15,13 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
         public Mesh terrainMesh;
         public void Start()
             {
-            NumberOfResources -= 1;//UnityEngine.Random.Range(1, 20);
             UnityEngine.Object[] subListObjects = Resources.LoadAll("ResourceVariationen", typeof(GameObject));
             foreach (GameObject gameObject in subListObjects)
                 {
                 GameObject lo = (GameObject)gameObject;
                 ResourcePrefabs.Add(lo);
                 }
-            for (int i = 0; i <= NumberOfResources; i++)
+            for (int i = 1; i <= NumberOfResources; i++)
                 {
                 int randomResouce = UnityEngine.Random.Range(0, ResourcePrefabs.Count);
                 ChooseResouceToGenerate(ResourcePrefabs[randomResouce]);
