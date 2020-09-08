@@ -27,8 +27,6 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                 int randomResouce = UnityEngine.Random.Range(0, ResourcePrefabs.Count);
                 ChooseResouceToGenerate(ResourcePrefabs[randomResouce]);
                 }
-
-
             }
 
         private void ChooseResouceToGenerate(GameObject resourceType)

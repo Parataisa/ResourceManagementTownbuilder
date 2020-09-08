@@ -19,7 +19,7 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
             {
             this.quantityOfTheResource = GetQuantityOfTheResource();
             this.sizeOfTheResource = GetSizeOfTheResource(quantityOfTheResource);
-            this.sizeOfTheModel = GetRandomSizeForTheModel();
+            this.sizeOfTheModel = GetRandomSizeForTheModel(quantityOfTheResource, sizeOfTheResource);
             this.areaOfTheResource = GetAreaOfTheResource(sizeOfTheModel, sizeOfTheResource);
             this.positionOnTheMap = GetPositionOfResource(areaOfTheResource);
             ChooseLocationEvent?.Invoke(this.gameObject);
@@ -37,12 +37,13 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
             int size = quantity / UnityEngine.Random.Range(1000, 4000);
             return size;
             }
-        private Vector3 GetRandomSizeForTheModel()
+        private Vector3 GetRandomSizeForTheModel(int quantity, int patchSize)
             {
+            //ToDo: Inplement a better size system 
             Vector3 size;
-            size.x = UnityEngine.Random.Range(0.5f, 2.5f);
-            size.y = UnityEngine.Random.Range(0.5f, 2f);
-            size.z = UnityEngine.Random.Range(0.5f, 2.5f);
+            size.x = UnityEngine.Random.Range(0.95f, 1.05f) * quantity / patchSize / 1000;
+            size.y = size.x; // UnityEngine.Random.Range(0.5f, 2f);
+            size.z = size.x;  //UnityEngine.Random.Range(0.5f, 2.5f);
             return size;
             }
         public static Vector3 GetPositionOfResource(Vector2 area)
