@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 
 public class PlayerMovment : MonoBehaviour
     {
@@ -11,7 +7,7 @@ public class PlayerMovment : MonoBehaviour
     private Vector3 playerVelocity;
     private bool groundedPlayer;
     [SerializeField]
-    private float playerSpeed = 0.5f;
+    private readonly float playerSpeed = 0.5f;
     private readonly float jumpHeight = 1.0f;
     private readonly float gravityValue = -9.81f;
     private readonly float turnSmoothTime = 0.1f;
@@ -34,7 +30,7 @@ public class PlayerMovment : MonoBehaviour
         float horizontalAxis = Input.GetAxis("Horizontal");
         float verticalAxis = Input.GetAxis("Vertical");
         moveDirection = new Vector3(horizontalAxis, 0, verticalAxis);
-          
+
         if (Input.GetButtonDown("Jump") && groundedPlayer)
             {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);

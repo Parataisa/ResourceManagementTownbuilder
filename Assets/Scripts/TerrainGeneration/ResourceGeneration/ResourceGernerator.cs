@@ -54,42 +54,38 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                 }
             }
 
-        private bool PointIteration(GameObject resourceToSpawn, Vector2 spawnPopintArea, Vector3 PositonOnTheMap)
+        private bool PointIteration(GameObject resourceToSpawn, Vector2 spawnPointArea, Vector3 PositonOnTheMap)
             {
             if (spawnedPoints.Count == 0)
                 {
                 resourceToSpawn.GetComponent<Transform>().transform.position = PositonOnTheMap;
-                spawnedPoints.Add(new Vector2(PositonOnTheMap.x, PositonOnTheMap.z), spawnPopintArea);
+                spawnedPoints.Add(new Vector2(PositonOnTheMap.x, PositonOnTheMap.z), spawnPointArea);
                 return true;
                 }
             else
                 {
-                points.Add(PositonOnTheMap, spawnPopintArea);
+                points.Add(PositonOnTheMap, spawnPointArea);
                 int numberOfInnerLoops = 0;
                 while (!(numberOfIterationen <= numberOfInnerLoops))
                     {
                     int loopcount = 0;
                     foreach (var savedPoint in spawnedPoints)
                         {
-                        Rectangle savedArea;
-                        savedArea.Width = Mathf.CeilToInt(savedPoint.Value.x);
-                        savedArea.Height = Mathf.CeilToInt(savedPoint.Value.y);
-                        savedArea.X = Mathf.CeilToInt((savedPoint.Key.x - savedPoint.Value.x / 2));
-                        savedArea.Y = Mathf.CeilToInt((savedPoint.Key.y - savedPoint.Value.y / 2));
+                        Vector2 savedPointKey = new Vector2(savedPoint.Key.x, savedPoint.Key.y);
+                        Vector3 savedPointValue = new Vector3(savedPoint.Value.x, 0 , savedPoint.Value.y);
+                        Rectangle savedArea = GetRectangle(savedPointValue, savedPointKey);
 
-                        Rectangle newArea;
-                        newArea.Width = Mathf.CeilToInt(spawnPopintArea.x);
-                        newArea.Height = Mathf.CeilToInt(spawnPopintArea.y);
-                        newArea.X = Mathf.CeilToInt((PositonOnTheMap.x - spawnPopintArea.x / 2));
-                        newArea.Y = Mathf.CeilToInt((PositonOnTheMap.z - spawnPopintArea.y / 2));
-                        if (!newArea.IntersectsWith(savedArea) && PositonOnTheMap.x < 256 - spawnPopintArea.x / 2 && PositonOnTheMap.z < 256 - spawnPopintArea.y / 2)
+
+                        Rectangle newArea = GetRectangle(new Vector3(spawnPointArea.x,0,spawnPointArea.y), new Vector2(PositonOnTheMap.x, PositonOnTheMap.z));
+
+                        if (!newArea.IntersectsWith(savedArea) && PositonOnTheMap.x < 256 - spawnPointArea.x / 2 && PositonOnTheMap.z < 256 - spawnPointArea.y / 2)
                             {
                             loopcount++;
                             if (loopcount == spawnedPoints.Count)
                                 {
                                 resourceToSpawn.GetComponent<Transform>().transform.position = PositonOnTheMap;
                                 resourceToSpawn.GetComponent<ResourceBase>().positionOnTheMap = PositonOnTheMap;
-                                spawnedPoints.Add(new Vector2(PositonOnTheMap.x, PositonOnTheMap.z), spawnPopintArea);
+                                spawnedPoints.Add(new Vector2(PositonOnTheMap.x, PositonOnTheMap.z), spawnPointArea);
                                 points.Remove(PositonOnTheMap);
                                 return true;
                                 }
@@ -97,11 +93,11 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                         else
                             {
                             points.Remove(PositonOnTheMap);
-                            var newPickedPoint = ResourceBase.GetPositionOfResource(spawnPopintArea);
+                            var newPickedPoint = ResourceBase.GetPositionOfResource(spawnPointArea);
                             PositonOnTheMap = newPickedPoint;
                             numberOfInnerLoops++;
                             loopcount = 0;
-                            points.Add(PositonOnTheMap, spawnPopintArea);
+                            points.Add(PositonOnTheMap, spawnPointArea);
                             break;
                             }
                         }

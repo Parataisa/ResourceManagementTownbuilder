@@ -45,8 +45,7 @@ public class DragMouseOrbit : MonoBehaviour
             Quaternion rotation = toRotation;
 
             distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 5, distanceMin, distanceMax);
-            RaycastHit hit;
-            if (Physics.Linecast(target.position, transform.position, out hit))
+            if (Physics.Linecast(target.position, transform.position, out RaycastHit hit))
                 {
                 distance -= hit.distance;
                 }

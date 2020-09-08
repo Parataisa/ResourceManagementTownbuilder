@@ -14,7 +14,6 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
         public event Action<ResourceBase, int> ResourceGenerated;
         public event Action<GameObject> ChooseLocationEvent;
 
-
         protected virtual void Start()
             {
             this.quantityOfTheResource = GetQuantityOfTheResource();
@@ -25,7 +24,6 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
             ChooseLocationEvent?.Invoke(this.gameObject);
             ResourceGenerated?.Invoke(this, numberOfIterationen);
             }
-
 
         public static int GetQuantityOfTheResource()
             {
@@ -54,12 +52,9 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
             position.y = 0;
             return position;
             }
-
-
         private static float GetPositionMinusArea(float area)
             {
             float x = UnityEngine.Random.Range(area / 2, 256 - area / 2);
-            //if (x <= 256 - area / 2) return x;
             return x;
             }
         public static Vector2 GetAreaOfTheResource(Vector3 sizeModel, int size)
