@@ -8,6 +8,7 @@ public class BuildingSystem : MonoBehaviour
     public static Dictionary<int, string> buildingDirectory = new Dictionary<int, string>();
     public GameObject[] placeableObjectPrefabs;
     private GameObject currentPlaceableObject;
+    private bool objectPlacable;
 
 #pragma warning disable IDE0051 // Remove unused private members
     private void Start()
@@ -80,19 +81,46 @@ public class BuildingSystem : MonoBehaviour
 
     private void MoveCurrentObjectToMouse()
         {
-
+        float gameObjectSizeOffsetX = currentPlaceableObject.transform.localScale.x / 2;
+        float gameObjectSizeOffsetY = currentPlaceableObject.transform.localScale.y / 2;
+        float gameObjectSizeOffsetZ = currentPlaceableObject.transform.localScale.z / 2;
+        GameObject hitObject;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
         if (Physics.Raycast(ray, out RaycastHit hitInfo))
             {
+
             currentPlaceableObject.transform.position = hitInfo.point;
-            currentPlaceableObject.transform.rotation = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
+            if (currentPlaceableObject.transform.position.y != gameObjectSizeOffsetY)
+                {
+                currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x, gameObjectSizeOffsetY, hitInfo.point.z);
+                }
+            if (hitInfo.transform.gameObject.layer == 9 || hitInfo.transform.gameObject.layer == 8)
+                {
+                if (hitInfo.transform.gameObject)
+                    {
+                    hitObject = hitInfo.transform.gameObject;
+                    objectPlacable = false;
+                    currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x - gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z - gameObjectSizeOffsetZ);
+                    if (hitObject.transform.position.x > hitInfo.point.x)
+                        {
+                        currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x - gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z - gameObjectSizeOffsetZ);
+                        }
+                    else if (hitObject.transform.position.x < hitInfo.point.x)
+                        {
+                        currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x + gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z - gameObjectSizeOffsetZ);
+                        }
+                    }
+                }
+            else
+                {
+                objectPlacable = true;
+                }
             }
         }
 
     private void ReleaseIfClicked()
         {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && objectPlacable)
             {
             currentPlaceableObject.layer = 8;
             currentPlaceableObject = null;

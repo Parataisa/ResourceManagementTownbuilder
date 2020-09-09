@@ -46,7 +46,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeOfTheResource: 0
   quantityOfTheResource: 0
-  nameOfTheResource: 
+  numberOfIterationen: 20
+  positionOnTheMap: {x: 0, y: 0, z: 0}
+  areaOfTheResource: {x: 0, y: 0}
+  sizeOfTheModel: {x: 0, y: 0, z: 0}
+  ResourceName: 
 --- !u!1 &5496926467362478414
 GameObject:
   m_ObjectHideFlags: 0
@@ -59,7 +63,7 @@ GameObject:
   - component: {fileID: 2035594010744597792}
   - component: {fileID: 7144748524158593065}
   - component: {fileID: 2568311249581951031}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Wheat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
