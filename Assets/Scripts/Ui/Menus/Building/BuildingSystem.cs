@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.Buildings;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -103,11 +104,25 @@ public class BuildingSystem : MonoBehaviour
                     currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x - gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z - gameObjectSizeOffsetZ);
                     if (hitObject.transform.position.x > hitInfo.point.x)
                         {
-                        currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x - gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z - gameObjectSizeOffsetZ);
+                        if (hitObject.transform.position.z > hitInfo.point.z)
+                            {
+                            currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x - gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z - gameObjectSizeOffsetZ);
+                            }
+                        else if (hitObject.transform.position.z < hitInfo.point.z)
+                            {
+                            currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x - gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z + gameObjectSizeOffsetZ);
+                            }
                         }
                     else if (hitObject.transform.position.x < hitInfo.point.x)
                         {
-                        currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x + gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z - gameObjectSizeOffsetZ);
+                        if (hitObject.transform.position.z > hitInfo.point.z)
+                            {
+                            currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x + gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z - gameObjectSizeOffsetZ);
+                            }
+                        else if (hitObject.transform.position.z < hitInfo.point.z)
+                            {
+                            currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x + gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z + gameObjectSizeOffsetZ);
+                            }
                         }
                     }
                 }
@@ -123,6 +138,7 @@ public class BuildingSystem : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && objectPlacable)
             {
             currentPlaceableObject.layer = 8;
+            currentPlaceableObject.AddComponent<ResourcBuildingBase>();
             currentPlaceableObject = null;
             }
         }
