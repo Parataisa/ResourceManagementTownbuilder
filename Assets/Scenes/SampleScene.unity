@@ -879,7 +879,7 @@ GameObject:
   - component: {fileID: 2068711347}
   - component: {fileID: 2068711346}
   - component: {fileID: 2068711350}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TerrainMeshGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariationen;
+﻿using ResourceGeneration.ResourceVariationen;
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;

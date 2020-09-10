@@ -1,15 +1,22 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariationen
+namespace ResourceGeneration.ResourceVariationen
     {
     class Wood : ResourceBase
         {
-        public string ResourceName;
+        public int WildSizeOfTheResource;
+        public int WildQuantityOfTheResource;
         protected override void Start()
             {
             base.Start();
-            ResourceName = this.GetType().Name;
+            GetWildData();
+            }
+
+        private void GetWildData()
+            {
+            WildSizeOfTheResource = GetQuantityOfTheResource();
+            WildQuantityOfTheResource = GetSizeOfTheResource(WildSizeOfTheResource);
             }
         }
     }

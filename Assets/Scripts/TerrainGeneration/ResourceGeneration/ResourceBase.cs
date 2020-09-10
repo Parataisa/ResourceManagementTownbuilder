@@ -1,10 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariationen
+namespace ResourceGeneration.ResourceVariationen
     {
     public class ResourceBase : MonoBehaviour
         {
+        public string ResourceName;
         public int sizeOfTheResource;
         public int quantityOfTheResource;
         public int numberOfIterationen = 20;
@@ -13,9 +14,11 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
         public Vector3 sizeOfTheModel;
         public event Action<ResourceBase, int> ResourceGenerated;
         public event Action<GameObject> ChooseLocationEvent;
+        
 
         protected virtual void Start()
             {
+            this.ResourceName = GetResourceName();
             this.quantityOfTheResource = GetQuantityOfTheResource();
             this.sizeOfTheResource = GetSizeOfTheResource(quantityOfTheResource);
             this.sizeOfTheModel = GetRandomSizeForTheModel(quantityOfTheResource, sizeOfTheResource);
@@ -23,6 +26,12 @@ namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariatione
             this.positionOnTheMap = GetPositionOfResource(areaOfTheResource);
             ChooseLocationEvent?.Invoke(this.gameObject);
             ResourceGenerated?.Invoke(this, numberOfIterationen);
+            }
+
+        private string GetResourceName()
+            {
+            string resourceName = this.GetType().Name;
+            return resourceName;
             }
 
         public static int GetQuantityOfTheResource()
