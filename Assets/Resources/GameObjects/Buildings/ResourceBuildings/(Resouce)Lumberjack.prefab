@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2167865634145132894}
   - component: {fileID: 490675277923411979}
   m_Layer: 2
-  m_Name: Lumberjack
+  m_Name: (Resouce)Lumberjack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
