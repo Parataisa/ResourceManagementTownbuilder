@@ -8,14 +8,14 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
     class ResourceGenerator : MonoBehaviour
         {
         public static List<GameObject> ResourcePrefabs = new List<GameObject>();
-        private static Dictionary<Vector2, Vector2> spawnedPoints = new Dictionary<Vector2, Vector2>();
-        private static Dictionary<Vector2, Vector2> points = new Dictionary<Vector2, Vector2>();
+        private static readonly Dictionary<Vector2, Vector2> spawnedPoints = new Dictionary<Vector2, Vector2>();
+        private static readonly Dictionary<Vector2, Vector2> points = new Dictionary<Vector2, Vector2>();
         public int numberOfIterationen = 20;
         public int NumberOfResources = 10;
         public Mesh terrainMesh;
         public void Start()
             {
-            UnityEngine.Object[] subListObjects = Resources.LoadAll("ResourceVariationen", typeof(GameObject));
+            Object[] subListObjects = Resources.LoadAll("GameObjects/GatherableResources/ResourceVariationen", typeof(GameObject));
             foreach (GameObject gameObject in subListObjects)
                 {
                 GameObject lo = (GameObject)gameObject;

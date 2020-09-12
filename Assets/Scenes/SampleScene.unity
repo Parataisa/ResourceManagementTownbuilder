@@ -879,7 +879,7 @@ GameObject:
   - component: {fileID: 2068711347}
   - component: {fileID: 2068711346}
   - component: {fileID: 2068711350}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: TerrainMeshGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1062,6 +1062,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6547335902550141248, guid: e4184f6fd25dffd42aadc1b392e186f3,
+        type: 3}
+      propertyPath: placeableObjectPrefabs.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6547335902550141248, guid: e4184f6fd25dffd42aadc1b392e186f3,
         type: 3}
       propertyPath: buildingPanel

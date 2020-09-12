@@ -10,6 +10,7 @@ namespace ResourceGeneration.ResourceVariationen
         protected override void Start()
             {
             base.Start();
+            this.ResourceName = "Tree";
             GetWildData();
             }
 

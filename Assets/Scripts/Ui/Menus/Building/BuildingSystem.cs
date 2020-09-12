@@ -7,55 +7,57 @@ public class BuildingSystem : MonoBehaviour
     {
     public GameObject buildingPanel;
     public static Dictionary<int, string> buildingDirectory = new Dictionary<int, string>();
+    public Object[] ResouceBuildingsListObjects;
+    public Object[] SocialBuildingsListObjects;
     public GameObject[] placeableObjectPrefabs;
     private GameObject currentPlaceableObject;
     private bool objectPlacable;
 
-#pragma warning disable IDE0051 // Remove unused private members
     private void Start()
-#pragma warning restore IDE0051 // Remove unused private members
         {
-        UpdateItemsInDictionary();
-        }
-#pragma warning disable IDE0051 // Remove unused private members
-    private void LateUpdate()
-#pragma warning restore IDE0051 // Remove unused private members
-        {
-        if (placeableObjectPrefabs.Length == buildingDirectory.Count)
-            {
-            return;
-            }
-        else
-            {
-            UpdateItemsInDictionary();
-            buildingPanel.GetComponent<BuildingMenuButtonManagment>().UpdateButtons();
-            }
+        ResouceBuildingsListObjects = Resources.LoadAll("GameObjects/Buildings/ResourceBuildings", typeof(GameObject));
+        SocialBuildingsListObjects = Resources.LoadAll("GameObjects/Buildings/SocialBuildings", typeof(GameObject));
+        placeableObjectPrefabs = new GameObject[ResouceBuildingsListObjects.Length + SocialBuildingsListObjects.Length];
+        GetBuildingsInPlacableObjects(ResouceBuildingsListObjects, SocialBuildingsListObjects, placeableObjectPrefabs);
         }
 
-    public void UpdateItemsInDictionary()
+    private void GetBuildingsInPlacableObjects(Object[] resouceBuildingsListObjects, Object[] socialBuildingsListObjects, GameObject[] placeableObject)
         {
         if (buildingDirectory.Count == 0)
             {
-            for (int i = 0; i < placeableObjectPrefabs.Length; i++)
-                {
-                buildingDirectory.Add(i, placeableObjectPrefabs[i].name);
-                }
+            UpdatePlaceableObjects(resouceBuildingsListObjects, socialBuildingsListObjects, placeableObject);
             }
         else
             {
             buildingDirectory.Clear();
-            for (int i = 0; i < placeableObjectPrefabs.Length; i++)
-                {
-                buildingDirectory.Add(i, placeableObjectPrefabs[i].name);
-                }
+            UpdatePlaceableObjects(resouceBuildingsListObjects, socialBuildingsListObjects, placeableObject);
             }
         }
 
-#pragma warning disable IDE0051 // Remove unused private members
-    private void Update()
-#pragma warning restore IDE0051 // Remove unused private members
+    private static void UpdatePlaceableObjects(Object[] resouceBuildingsListObjects, Object[] socialBuildingsListObjects, GameObject[] placeableObject)
         {
-        //HandleNewObjectHotkey();
+        int i = 0;
+        foreach (var resouceBuilding in resouceBuildingsListObjects)
+            {
+            buildingDirectory.Add(i, resouceBuilding.name);
+            placeableObject[i] = (GameObject)resouceBuilding;
+            placeableObject[i].name = resouceBuilding.name;
+            i++;
+            }
+        foreach (var socialBuilding in socialBuildingsListObjects)
+            {
+            buildingDirectory.Add(i, socialBuilding.name);
+            placeableObject[i] = (GameObject)socialBuilding;
+            placeableObject[i].name = socialBuilding.name;
+            i++;
+            }
+        }
+
+
+
+
+    private void Update()
+        {
 
         if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
             {
@@ -95,7 +97,7 @@ public class BuildingSystem : MonoBehaviour
                 {
                 currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x, gameObjectSizeOffsetY, hitInfo.point.z);
                 }
-            if (hitInfo.transform.gameObject.layer == 9 || hitInfo.transform.gameObject.layer == 8)
+            if (hitInfo.transform.gameObject.layer == 8 || hitInfo.transform.gameObject.layer == 9 || hitInfo.transform.gameObject.layer == 10)
                 {
                 if (hitInfo.transform.gameObject)
                     {
@@ -137,9 +139,18 @@ public class BuildingSystem : MonoBehaviour
         {
         if (Input.GetMouseButtonDown(0) && objectPlacable)
             {
-            currentPlaceableObject.layer = 8;
-            currentPlaceableObject.AddComponent<ResourcBuildingBase>();
-            currentPlaceableObject = null;
+            if (currentPlaceableObject.name.Contains("Social"))
+                {
+                currentPlaceableObject.layer = 8;
+                currentPlaceableObject.AddComponent<SocialBuildingBase>();
+                currentPlaceableObject = null;
+                }
+            else if (currentPlaceableObject.name.Contains("Resouce"))
+                {
+                currentPlaceableObject.layer = 9;
+                currentPlaceableObject.AddComponent<ResourcBuildingBase>();
+                currentPlaceableObject = null;
+                }
             }
         }
     }

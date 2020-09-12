@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6847651506128566708}
   - component: {fileID: 5443017349664080617}
   - component: {fileID: 8291337201005960215}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Coal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,10 +139,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6e58634e31d57b4792472a90f85cd88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ResourceName: 
   sizeOfTheResource: 0
   quantityOfTheResource: 0
   numberOfIterationen: 20
   positionOnTheMap: {x: 0, y: 0, z: 0}
   areaOfTheResource: {x: 0, y: 0}
   sizeOfTheModel: {x: 0, y: 0, z: 0}
-  ResourceName: 
