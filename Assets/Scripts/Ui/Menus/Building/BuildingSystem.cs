@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.Buildings;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -6,62 +7,61 @@ public class BuildingSystem : MonoBehaviour
     {
     public GameObject buildingPanel;
     public static Dictionary<int, string> buildingDirectory = new Dictionary<int, string>();
+    public Object[] ResouceBuildingsListObjects;
+    public Object[] SocialBuildingsListObjects;
     public GameObject[] placeableObjectPrefabs;
     private GameObject currentPlaceableObject;
+    private bool objectPlacable;
 
-    private float mouseWheelRotation;
-    //private int currentPrefabIndex = -1;
-
-#pragma warning disable IDE0051 // Remove unused private members
     private void Start()
-#pragma warning restore IDE0051 // Remove unused private members
         {
-        UpdateItemsInDictionary();
-        }
-#pragma warning disable IDE0051 // Remove unused private members
-    private void LateUpdate()
-#pragma warning restore IDE0051 // Remove unused private members
-        {
-        if (placeableObjectPrefabs.Length == buildingDirectory.Count)
-            {
-            return;
-            }
-        else
-            {
-            UpdateItemsInDictionary();
-            buildingPanel.GetComponent<BuildingMenuButtonManagment>().UpdateButtons();
-            }
+        ResouceBuildingsListObjects = Resources.LoadAll("GameObjects/Buildings/ResourceBuildings", typeof(GameObject));
+        SocialBuildingsListObjects = Resources.LoadAll("GameObjects/Buildings/SocialBuildings", typeof(GameObject));
+        placeableObjectPrefabs = new GameObject[ResouceBuildingsListObjects.Length + SocialBuildingsListObjects.Length];
+        GetBuildingsInPlacableObjects(ResouceBuildingsListObjects, SocialBuildingsListObjects, placeableObjectPrefabs);
         }
 
-    public void UpdateItemsInDictionary()
+    private void GetBuildingsInPlacableObjects(Object[] resouceBuildingsListObjects, Object[] socialBuildingsListObjects, GameObject[] placeableObject)
         {
         if (buildingDirectory.Count == 0)
             {
-            for (int i = 0; i < placeableObjectPrefabs.Length; i++)
-                {
-                buildingDirectory.Add(i, placeableObjectPrefabs[i].name);
-                }
+            UpdatePlaceableObjects(resouceBuildingsListObjects, socialBuildingsListObjects, placeableObject);
             }
         else
             {
             buildingDirectory.Clear();
-            for (int i = 0; i < placeableObjectPrefabs.Length; i++)
-                {
-                buildingDirectory.Add(i, placeableObjectPrefabs[i].name);
-                }
+            UpdatePlaceableObjects(resouceBuildingsListObjects, socialBuildingsListObjects, placeableObject);
             }
         }
 
-#pragma warning disable IDE0051 // Remove unused private members
-    private void Update()
-#pragma warning restore IDE0051 // Remove unused private members
+    private static void UpdatePlaceableObjects(Object[] resouceBuildingsListObjects, Object[] socialBuildingsListObjects, GameObject[] placeableObject)
         {
-        //HandleNewObjectHotkey();
+        int i = 0;
+        foreach (var resouceBuilding in resouceBuildingsListObjects)
+            {
+            buildingDirectory.Add(i, resouceBuilding.name);
+            placeableObject[i] = (GameObject)resouceBuilding;
+            placeableObject[i].name = resouceBuilding.name;
+            i++;
+            }
+        foreach (var socialBuilding in socialBuildingsListObjects)
+            {
+            buildingDirectory.Add(i, socialBuilding.name);
+            placeableObject[i] = (GameObject)socialBuilding;
+            placeableObject[i].name = socialBuilding.name;
+            i++;
+            }
+        }
+
+
+
+
+    private void Update()
+        {
 
         if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
             {
             MoveCurrentObjectToMouse();
-            RotateFromMouseWheel();
             ReleaseIfClicked();
             }
         }
@@ -82,60 +82,75 @@ public class BuildingSystem : MonoBehaviour
         currentPlaceableObject = null;
         }
 
-    //private void HandleNewObjectHotkey()
-    //    {
-    //    for (int i = 0; i < placeableObjectPrefabs.Length; i++)
-    //        {
-    //        if (Input.GetKeyDown(KeyCode.Alpha0 + 1 + i))
-    //            {
-    //            if (PressedKeyOfCurrentPrefab(i))
-    //                {
-    //                Destroy(currentPlaceableObject);
-    //                currentPrefabIndex = -1;
-    //                }
-    //            else
-    //                {
-    //                if (currentPlaceableObject != null)
-    //                    {
-    //                    Destroy(currentPlaceableObject);
-    //                    }
-    //                currentPlaceableObject = Instantiate(placeableObjectPrefabs[i]);
-    //                currentPrefabIndex = i;
-    //                }
-    //            break;
-    //            }
-    //        }
-    //    }
-
-    //private bool PressedKeyOfCurrentPrefab(int i)
-    //    {
-    //    return currentPlaceableObject != null && currentPrefabIndex == i;
-    //    }
-
     private void MoveCurrentObjectToMouse()
         {
-
+        float gameObjectSizeOffsetX = currentPlaceableObject.transform.localScale.x / 2;
+        float gameObjectSizeOffsetY = currentPlaceableObject.transform.localScale.y / 2;
+        float gameObjectSizeOffsetZ = currentPlaceableObject.transform.localScale.z / 2;
+        GameObject hitObject;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
         if (Physics.Raycast(ray, out RaycastHit hitInfo))
             {
-            currentPlaceableObject.transform.position = hitInfo.point;
-            currentPlaceableObject.transform.rotation = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
-            }
-        }
 
-    private void RotateFromMouseWheel()
-        {
-        mouseWheelRotation += Input.mouseScrollDelta.y;
-        currentPlaceableObject.transform.Rotate(Vector3.up, mouseWheelRotation * 10f);
+            currentPlaceableObject.transform.position = hitInfo.point;
+            if (currentPlaceableObject.transform.position.y != gameObjectSizeOffsetY)
+                {
+                currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x, gameObjectSizeOffsetY, hitInfo.point.z);
+                }
+            if (hitInfo.transform.gameObject.layer == 8 || hitInfo.transform.gameObject.layer == 9 || hitInfo.transform.gameObject.layer == 10)
+                {
+                if (hitInfo.transform.gameObject)
+                    {
+                    hitObject = hitInfo.transform.gameObject;
+                    objectPlacable = false;
+                    currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x - gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z - gameObjectSizeOffsetZ);
+                    if (hitObject.transform.position.x > hitInfo.point.x)
+                        {
+                        if (hitObject.transform.position.z > hitInfo.point.z)
+                            {
+                            currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x - gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z - gameObjectSizeOffsetZ);
+                            }
+                        else if (hitObject.transform.position.z < hitInfo.point.z)
+                            {
+                            currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x - gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z + gameObjectSizeOffsetZ);
+                            }
+                        }
+                    else if (hitObject.transform.position.x < hitInfo.point.x)
+                        {
+                        if (hitObject.transform.position.z > hitInfo.point.z)
+                            {
+                            currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x + gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z - gameObjectSizeOffsetZ);
+                            }
+                        else if (hitObject.transform.position.z < hitInfo.point.z)
+                            {
+                            currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x + gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z + gameObjectSizeOffsetZ);
+                            }
+                        }
+                    }
+                }
+            else
+                {
+                objectPlacable = true;
+                }
+            }
         }
 
     private void ReleaseIfClicked()
         {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && objectPlacable)
             {
-            currentPlaceableObject.layer = 8;
-            currentPlaceableObject = null;
+            if (currentPlaceableObject.name.Contains("Social"))
+                {
+                currentPlaceableObject.layer = 8;
+                currentPlaceableObject.AddComponent<SocialBuildingBase>();
+                currentPlaceableObject = null;
+                }
+            else if (currentPlaceableObject.name.Contains("Resouce"))
+                {
+                currentPlaceableObject.layer = 9;
+                currentPlaceableObject.AddComponent<ResourcBuildingBase>();
+                currentPlaceableObject = null;
+                }
             }
         }
     }

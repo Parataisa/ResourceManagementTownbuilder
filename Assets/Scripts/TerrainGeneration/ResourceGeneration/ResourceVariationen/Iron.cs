@@ -1,18 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariationen
+namespace ResourceGeneration.ResourceVariationen
     {
-    class Iron : MonoBehaviour
+    class Iron : ResourceBase
         {
-        public int sizeOfTheResource;
-        public int quantityOfTheResource;
-        public string nameOfTheResource;
-        void Start()
+        protected override void Start()
             {
-            ResourceBase resourceBase = new ResourceBase();
-            nameOfTheResource = this.GetType().Name;
-            sizeOfTheResource = resourceBase.GetSizeOfTheResource();
-            quantityOfTheResource = resourceBase.GetQuantityOfTheResource();
+            base.Start();
             }
         }
     }

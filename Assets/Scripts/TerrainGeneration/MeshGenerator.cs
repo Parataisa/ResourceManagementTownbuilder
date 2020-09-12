@@ -20,7 +20,7 @@ public class MeshGenerator : MonoBehaviour
             name = "mainMapMesh"
             };
         GetComponent<MeshFilter>().mesh = mesh;
-        GetComponentInChildren<ResourceGernerator>().terrainMesh = mesh;
+        GetComponentInChildren<ResourceGenerator>().terrainMesh = mesh;
         CreateShape();
         UpdadeMesh();
         GetComponent<MeshCollider>().sharedMesh = mesh;

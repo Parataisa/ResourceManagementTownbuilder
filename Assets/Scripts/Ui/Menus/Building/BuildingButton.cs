@@ -6,3 +6,5 @@ public class BuildingButton : MonoBehaviour
     public string objectToBuild;
     public GameObject buildingPrefab;
     }
+
+

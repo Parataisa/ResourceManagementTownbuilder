@@ -1,24 +1,13 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Assets.Scripts.TerrainGeneration.ResourceGeneration.ResourceVariationen
+namespace ResourceGeneration.ResourceVariationen
     {
-    class Coal : MonoBehaviour
+    class Coal : ResourceBase
         {
-        public int sizeOfTheResource;
-        public int quantityOfTheResource;
-        public string nameOfTheResource;
-        public event Action ResourceGenerated; 
-        void Start()
+        protected override void Start()
             {
-            ResourceBase resourceBase = new ResourceBase();
-            nameOfTheResource = this.GetType().Name;
-            sizeOfTheResource = resourceBase.GetSizeOfTheResource();
-            quantityOfTheResource = resourceBase.GetQuantityOfTheResource();
-            if (ResourceGenerated != null)
-                {
-                ResourceGenerated();
-                }
+            base.Start();
             }
         }
     }
