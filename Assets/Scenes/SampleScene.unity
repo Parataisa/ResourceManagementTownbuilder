@@ -1064,11 +1064,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6547335902550141248, guid: e4184f6fd25dffd42aadc1b392e186f3,
         type: 3}
-      propertyPath: placeableObjectPrefabs.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6547335902550141248, guid: e4184f6fd25dffd42aadc1b392e186f3,
-        type: 3}
       propertyPath: buildingPanel
       value: 
       objectReference: {fileID: 917635955}
