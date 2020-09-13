@@ -65,9 +65,6 @@ public class MeshGenerator : MonoBehaviour
         mesh.Clear();
         mesh.vertices = vertices;
         mesh.triangles = triangles;
-        if (MapGeneratedEvent != null)
-            {
-            MapGeneratedEvent();
-            }
+        MapGeneratedEvent?.Invoke();
         }
 }

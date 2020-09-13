@@ -1,25 +1,24 @@
 ﻿using Assets.Scripts.Buildings.ResourceBuildings;
 using ResourceGeneration.ResourceVariationen;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Assets.Scripts.Buildings
+namespace Assets.Scripts.Buildings.ResourceBuildings
     {
-    class ResourcBuildingBase : MonoBehaviour
+    class ResourceBuildingBase : MonoBehaviour
         {
-        public int GatheredResourcesOverall;
         public List<ResouceQuantityTyps> GatherableResouces;
-        public int StortedResources;
-        public float ProduktionSpeed;
-        public int WorkingPeople;
-        private float ResourceCollectingRadius = 40;
-        public Vector3 BuildingPosition;
         private List<string> ListOfGatherableResources;
+        private float ResourceCollectingRadius = 20;
+        public Vector3 BuildingPosition;
         public List<GameObject> GatherableResouceInArea;
+        
 
         public class ResouceQuantityTyps
             {
+            public GameObject resoucePatch;
             public int resouceQuantity;
             public string resouceName;
             }
@@ -29,6 +28,16 @@ namespace Assets.Scripts.Buildings
             ListOfGatherableResources = GetComponent<IResourcBuilding>().ResouceToGather;
             GatherableResouceInArea = GetUsableResources(ListOfGatherableResources);
             GatherableResouces = GetResouceQuantityInArea(GatherableResouceInArea);
+            FindObjectOfType<ResouceBuildingsManagment>().UpdateResouces += UpdateResouces;
+            }
+
+        private void UpdateResouces(GameObject building)
+            {
+            var child = building.transform.GetChild(0);
+            var test = child.GetComponent<ResourceBuildingBase>().GatherableResouceInArea[0].GetComponent<ResourceBase>();
+            test.quantityOfTheResource -= 1;
+            building.GetComponent<ResouceBuildingsManagment>().GatheredResourcesOverall += 1;
+            building.GetComponent<ResouceBuildingsManagment>().StortedResources += 1;
             }
 
         private List<ResouceQuantityTyps> GetResouceQuantityInArea(List<GameObject> gatherableResouceInArea)
@@ -44,6 +53,7 @@ namespace Assets.Scripts.Buildings
                 if (resouceQuantityInArea.Count == 0)
                     {
                     resouceQuantityTyps.resouceQuantity = resouceScript.quantityOfTheResource;
+                    resouceQuantityTyps.resoucePatch = resouceScript.gameObject;
                     resouceQuantityInArea.Add(resouceQuantityTyps);
                     }
                 else
@@ -64,6 +74,7 @@ namespace Assets.Scripts.Buildings
                         else
                             {
                             resouceQuantityTyps.resouceQuantity = resouceScript.quantityOfTheResource;
+                            resouceQuantityTyps.resoucePatch = resouceScript.gameObject;
                             resouceQuantityInArea.Add(resouceQuantityTyps);
                             break;
                             }

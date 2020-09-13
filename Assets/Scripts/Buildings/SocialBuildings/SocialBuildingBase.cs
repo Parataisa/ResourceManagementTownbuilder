@@ -5,11 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.Scripts.Buildings
+namespace Assets.Scripts.Buildings.SocialBuildings
     {
     class SocialBuildingBase : MonoBehaviour
         {
-        public float BirthRate;
-        public int People;
+        public Vector3 BuildingPosition;
         }
     }

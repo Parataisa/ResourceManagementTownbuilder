@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Buildings;
+﻿using Assets.Scripts.Buildings.ResourceBuildings;
+using Assets.Scripts.Buildings.SocialBuildings;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -52,10 +53,6 @@ public class BuildingSystem : MonoBehaviour
             i++;
             }
         }
-
-
-
-
     private void Update()
         {
 
@@ -143,12 +140,24 @@ public class BuildingSystem : MonoBehaviour
                 {
                 currentPlaceableObject.layer = 8;
                 currentPlaceableObject.AddComponent<SocialBuildingBase>();
+                GameObject socilaBuildingMain = new GameObject
+                    {
+                    name = "SocilaBuildingMain"
+                    };
+                socilaBuildingMain.AddComponent<SocialBuildingManagment>();
+                currentPlaceableObject.transform.parent = socilaBuildingMain.transform;
                 currentPlaceableObject = null;
                 }
             else if (currentPlaceableObject.name.Contains("Resouce"))
                 {
                 currentPlaceableObject.layer = 9;
-                currentPlaceableObject.AddComponent<ResourcBuildingBase>();
+                currentPlaceableObject.AddComponent<ResourceBuildingBase>();
+                GameObject resouceBuildingMain = new GameObject
+                    {
+                    name = "ResouceBuildingMain"
+                    };
+                resouceBuildingMain.AddComponent<ResouceBuildingsManagment>();
+                currentPlaceableObject.transform.parent = resouceBuildingMain.transform;
                 currentPlaceableObject = null;
                 }
             }
