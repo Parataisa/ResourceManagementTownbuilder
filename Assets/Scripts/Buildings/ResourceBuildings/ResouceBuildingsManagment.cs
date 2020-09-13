@@ -16,7 +16,15 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
 
         private void Start()
             {
+            AddingChildsToList();
+            InvokeRepeating("UpdateResoucesMethode", 0.2f, 1f / ProduktionSpeed);
+
+            }
+
+        private void AddingChildsToList()
+            {
             int childCount = transform.childCount;
+            ListOfChildren.Clear();
             if (childCount != 0)
                 {
                 for (int i = 0; i < childCount; i++)
@@ -30,20 +38,23 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                 this.WorkingPeople = WorkingPeopleCapacity;
                 this.ProduktionSpeed = WorkingPeople;
                 }
-            InvokeRepeating("UpdateResoucesMethode", 0.2f, 1f / ProduktionSpeed);
             }
+
         private void Update()
             {
             if (ListOfChildren.Count.Equals(null))
                 {
                 return;
                 }
-            if (transform.childCount == ListOfChildren.Count && !(WorkingPeopleCapacity == ListOfChildren.Count * 10))
+            if (!(transform.childCount == ListOfChildren.Count))
                 {
+                AddingChildsToList();
                 this.WorkingPeopleCapacity = ListOfChildren.Count * 10;
                 //ToDO: For now the building is at full capacity
                 this.WorkingPeople = WorkingPeopleCapacity;
                 this.ProduktionSpeed = WorkingPeople;
+                CancelInvoke();
+                InvokeRepeating("UpdateResoucesMethode", 0.2f, 1f / ProduktionSpeed);
                 }
             else if (transform.childCount == ListOfChildren.Count && WorkingPeopleCapacity == ListOfChildren.Count * 10)
                 {
@@ -52,9 +63,12 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             }
         private void UpdateResoucesMethode()
             {
-            UpdateResouces?.Invoke(this.gameObject);
+            foreach (var child in ListOfChildren)
+                {
+                UpdateResouces?.Invoke(child);
+                }
             }
+        }
     }
-}
 
-    
+

@@ -71,11 +71,11 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                     foreach (var savedPoint in spawnedPoints)
                         {
                         Vector2 savedPointKey = new Vector2(savedPoint.Key.x, savedPoint.Key.y);
-                        Vector3 savedPointValue = new Vector3(savedPoint.Value.x, 0 , savedPoint.Value.y);
+                        Vector3 savedPointValue = new Vector3(savedPoint.Value.x, 0, savedPoint.Value.y);
                         Rectangle savedArea = GetRectangle(savedPointValue, savedPointKey);
 
 
-                        Rectangle newArea = GetRectangle(new Vector3(spawnPointArea.x,0,spawnPointArea.y), new Vector2(PositonOnTheMap.x, PositonOnTheMap.z));
+                        Rectangle newArea = GetRectangle(new Vector3(spawnPointArea.x, 0, spawnPointArea.y), new Vector2(PositonOnTheMap.x, PositonOnTheMap.z));
 
                         if (!newArea.IntersectsWith(savedArea) && PositonOnTheMap.x < 256 - spawnPointArea.x / 2 && PositonOnTheMap.z < 256 - spawnPointArea.y / 2)
                             {

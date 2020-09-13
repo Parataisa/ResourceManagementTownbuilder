@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Buildings.ResourceBuildings;
 using Assets.Scripts.Buildings.SocialBuildings;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -88,7 +89,6 @@ public class BuildingSystem : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitInfo))
             {
-
             currentPlaceableObject.transform.position = hitInfo.point;
             if (currentPlaceableObject.transform.position.y != gameObjectSizeOffsetY)
                 {
@@ -136,30 +136,139 @@ public class BuildingSystem : MonoBehaviour
         {
         if (Input.GetMouseButtonDown(0) && objectPlacable)
             {
-            if (currentPlaceableObject.name.Contains("Social"))
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hitInfo))
                 {
-                currentPlaceableObject.layer = 8;
-                currentPlaceableObject.AddComponent<SocialBuildingBase>();
-                GameObject socilaBuildingMain = new GameObject
+                GameObject[] gameObjectArray = new GameObject[20];
+                gameObjectArray = ScannForBuildingsInArea(hitInfo);
+                if (currentPlaceableObject.name.Contains("Social"))
                     {
-                    name = "SocilaBuildingMain"
-                    };
-                socilaBuildingMain.AddComponent<SocialBuildingManagment>();
-                currentPlaceableObject.transform.parent = socilaBuildingMain.transform;
-                currentPlaceableObject = null;
-                }
-            else if (currentPlaceableObject.name.Contains("Resouce"))
-                {
-                currentPlaceableObject.layer = 9;
-                currentPlaceableObject.AddComponent<ResourceBuildingBase>();
-                GameObject resouceBuildingMain = new GameObject
+                    if (gameObjectArray[0] == null)
+                        {
+                        CreateSocialBuilding(false, null);
+                        return;
+                        }
+                    int x = 0;
+                    foreach (GameObject child in gameObjectArray)
+                        {
+                        if (child.name != currentPlaceableObject.name && x < gameObjectArray.Length)
+                            {
+                            break;
+                            }
+                        else if (child.name == currentPlaceableObject.name)
+                            {
+                            CreateSocialBuilding(true, gameObjectArray[x].transform.parent.gameObject);
+                            break;
+                            }
+                        else
+                            {
+                            x++;
+                            continue;
+                            }
+                        }
+                    }
+                else if (currentPlaceableObject.name.Contains("Resouce"))
                     {
-                    name = "ResouceBuildingMain"
-                    };
-                resouceBuildingMain.AddComponent<ResouceBuildingsManagment>();
-                currentPlaceableObject.transform.parent = resouceBuildingMain.transform;
-                currentPlaceableObject = null;
+                    if (gameObjectArray[0] == null)
+                        {
+                        CreateResouceBuilding(false, null);
+                        return;
+                        }
+                    int x = 0;
+                    foreach (GameObject child in gameObjectArray)
+                        {
+                        if (child.name != currentPlaceableObject.name && x < gameObjectArray.Length)
+                            {
+                            break;
+                            }
+                        else if (child.name == currentPlaceableObject.name)
+                            {
+                            CreateResouceBuilding(true, gameObjectArray[x].transform.parent.gameObject);
+                            break;
+                            }
+                        else
+                            {
+                            x++;
+                            continue;
+                            }
+                        }
+                    }
                 }
             }
         }
+
+    private void CreateResouceBuilding(bool sameBuildingTypeNearby, GameObject parent)
+        {
+        currentPlaceableObject.layer = 9;
+        currentPlaceableObject.AddComponent<ResourceBuildingBase>();
+        if (sameBuildingTypeNearby == false)
+            {
+            GameObject resouceBuildingMain = new GameObject
+                {
+                name = "ResouceBuildingMain"
+                };
+            resouceBuildingMain.AddComponent<ResouceBuildingsManagment>();
+            currentPlaceableObject.transform.parent = resouceBuildingMain.transform;
+            }
+        else
+            {
+            currentPlaceableObject.transform.parent = parent.transform;
+            }
+        currentPlaceableObject = null;
+        }
+
+    private void CreateSocialBuilding(bool sameBuildingTypeNearby, GameObject parent)
+        {
+        currentPlaceableObject.layer = 8;
+        currentPlaceableObject.AddComponent<SocialBuildingBase>();
+        if (sameBuildingTypeNearby == false)
+            {
+            GameObject socilaBuildingMain = new GameObject
+                {
+                name = "SocilaBuildingMain"
+                };
+            socilaBuildingMain.AddComponent<SocialBuildingManagment>();
+            currentPlaceableObject.transform.parent = socilaBuildingMain.transform;
+            }
+        else
+            {
+            currentPlaceableObject.transform.parent = parent.transform;
+            }
+        currentPlaceableObject = null;
+        }
+    private GameObject[] ScannForBuildingsInArea(RaycastHit hitInfo)
+        {
+        Collider[] collidersInArea = new Collider[100];
+        int collisions = Physics.OverlapSphereNonAlloc(hitInfo.point, 20, collidersInArea);
+        GameObject[] gameObjectArray = new GameObject[100];
+        if (collisions <= 2)
+            {
+            return gameObjectArray;
+            }
+        int i = 0;
+        foreach (Collider collider in collidersInArea)
+            {
+            if (collider == null)
+                {
+                return gameObjectArray;
+                }
+            if (collider.gameObject.layer == 8 || collider.gameObject.layer == 9)
+                {
+                GameObject parent = collider.transform.parent.gameObject;
+                if (gameObjectArray.Contains(parent))
+                    continue;
+                else
+                    {
+                    if (i > 20)
+                        {
+                        return gameObjectArray;
+                        }
+                    gameObjectArray[i] = collider.gameObject;
+                    i++;
+                    }
+                }
+            }
+        return gameObjectArray;
+        }
+
     }

@@ -14,7 +14,7 @@ namespace ResourceGeneration.ResourceVariationen
         public Vector3 sizeOfTheModel;
         public event Action<ResourceBase, int> ResourceGenerated;
         public event Action<GameObject> ChooseLocationEvent;
-        
+
 
         protected virtual void Start()
             {
@@ -56,8 +56,8 @@ namespace ResourceGeneration.ResourceVariationen
         public static Vector3 GetPositionOfResource(Vector2 area)
             {
             Vector3 position;
-            position.x = GetPositionMinusArea(area.x); 
-            position.z = GetPositionMinusArea(area.y); 
+            position.x = GetPositionMinusArea(area.x);
+            position.z = GetPositionMinusArea(area.y);
             position.y = 0;
             return position;
             }

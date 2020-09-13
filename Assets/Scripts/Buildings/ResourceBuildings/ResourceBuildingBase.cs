@@ -1,6 +1,4 @@
-﻿using Assets.Scripts.Buildings.ResourceBuildings;
-using ResourceGeneration.ResourceVariationen;
-using System;
+﻿using ResourceGeneration.ResourceVariationen;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,7 +12,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         private float ResourceCollectingRadius = 20;
         public Vector3 BuildingPosition;
         public List<GameObject> GatherableResouceInArea;
-        
+
 
         public class ResouceQuantityTyps
             {
@@ -31,13 +29,12 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             FindObjectOfType<ResouceBuildingsManagment>().UpdateResouces += UpdateResouces;
             }
 
-        private void UpdateResouces(GameObject building)
+        private void UpdateResouces(GameObject childBuilding)
             {
-            var child = building.transform.GetChild(0);
-            var test = child.GetComponent<ResourceBuildingBase>().GatherableResouceInArea[0].GetComponent<ResourceBase>();
+            var test = GetComponent<ResourceBuildingBase>().GatherableResouceInArea[0].GetComponent<ResourceBase>();
             test.quantityOfTheResource -= 1;
-            building.GetComponent<ResouceBuildingsManagment>().GatheredResourcesOverall += 1;
-            building.GetComponent<ResouceBuildingsManagment>().StortedResources += 1;
+            childBuilding.transform.parent.GetComponent<ResouceBuildingsManagment>().GatheredResourcesOverall += 1;
+            childBuilding.transform.parent.GetComponent<ResouceBuildingsManagment>().StortedResources += 1;
             }
 
         private List<ResouceQuantityTyps> GetResouceQuantityInArea(List<GameObject> gatherableResouceInArea)
