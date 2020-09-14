@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Buildings.ResourceBuildings;
 using Assets.Scripts.Buildings.SocialBuildings;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -82,10 +83,8 @@ public class BuildingSystem : MonoBehaviour
 
     private void MoveCurrentObjectToMouse()
         {
-        float gameObjectSizeOffsetX = currentPlaceableObject.transform.localScale.x / 2;
         float gameObjectSizeOffsetY = currentPlaceableObject.transform.localScale.y / 2;
-        float gameObjectSizeOffsetZ = currentPlaceableObject.transform.localScale.z / 2;
-        GameObject hitObject;
+        GameObject[] hitObject;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitInfo))
             {
@@ -94,42 +93,45 @@ public class BuildingSystem : MonoBehaviour
                 {
                 currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x, gameObjectSizeOffsetY, hitInfo.point.z);
                 }
-            if (hitInfo.transform.gameObject.layer == 8 || hitInfo.transform.gameObject.layer == 9 || hitInfo.transform.gameObject.layer == 10)
+            hitObject = ScannForObjectsInArea(hitInfo, false);
+            if (hitObject[0] == null)
                 {
-                if (hitInfo.transform.gameObject)
-                    {
-                    hitObject = hitInfo.transform.gameObject;
-                    objectPlacable = false;
-                    currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x - gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z - gameObjectSizeOffsetZ);
-                    if (hitObject.transform.position.x > hitInfo.point.x)
-                        {
-                        if (hitObject.transform.position.z > hitInfo.point.z)
-                            {
-                            currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x - gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z - gameObjectSizeOffsetZ);
-                            }
-                        else if (hitObject.transform.position.z < hitInfo.point.z)
-                            {
-                            currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x - gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z + gameObjectSizeOffsetZ);
-                            }
-                        }
-                    else if (hitObject.transform.position.x < hitInfo.point.x)
-                        {
-                        if (hitObject.transform.position.z > hitInfo.point.z)
-                            {
-                            currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x + gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z - gameObjectSizeOffsetZ);
-                            }
-                        else if (hitObject.transform.position.z < hitInfo.point.z)
-                            {
-                            currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x + gameObjectSizeOffsetX, gameObjectSizeOffsetY, hitInfo.point.z + gameObjectSizeOffsetZ);
-                            }
-                        }
-                    }
+                objectPlacable = true;
+                currentPlaceableObject.GetComponent<Renderer>().material.color = currentPlaceableObject.GetComponent<IResourcBuilding>().BuildingColor;
                 }
             else
                 {
-                objectPlacable = true;
+                Rectangle placableRectangle = GetRectangle(currentPlaceableObject);
+                foreach (var objectInList in hitObject)
+                    {
+                    if (objectInList == null)
+                        {
+                        break;
+                        }
+                    Rectangle hitRectangle = GetRectangle(objectInList);
+                    if (placableRectangle.IntersectsWith(hitRectangle))
+                        {
+                        objectPlacable = false;
+                        currentPlaceableObject.GetComponent<Renderer>().material.color = UnityEngine.Color.magenta;
+                        break;
+                        }
+                    else
+                        {
+                        objectPlacable = true;
+                        currentPlaceableObject.GetComponent<Renderer>().material.color = currentPlaceableObject.GetComponent<IResourcBuilding>().BuildingColor;
+                        }
+                    }
                 }
             }
+        }
+    private static Rectangle GetRectangle(GameObject hitGameObject)
+        {
+        Rectangle RecArea;
+        RecArea.X = Mathf.CeilToInt((hitGameObject.transform.position.x - hitGameObject.transform.localScale.x / 2));
+        RecArea.Y = Mathf.CeilToInt((hitGameObject.transform.position.z - hitGameObject.transform.localScale.z / 2));
+        RecArea.Width = Mathf.CeilToInt(hitGameObject.transform.localScale.x);
+        RecArea.Height = Mathf.CeilToInt(hitGameObject.transform.localScale.z);
+        return RecArea;
         }
 
     private void ReleaseIfClicked()
@@ -140,7 +142,7 @@ public class BuildingSystem : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hitInfo))
                 {
                 GameObject[] gameObjectArray = new GameObject[20];
-                gameObjectArray = ScannForBuildingsInArea(hitInfo);
+                gameObjectArray = ScannForObjectsInArea(hitInfo, true);
                 if (currentPlaceableObject.name.Contains("Social"))
                     {
                     if (gameObjectArray[0] == null)
@@ -236,10 +238,10 @@ public class BuildingSystem : MonoBehaviour
             }
         currentPlaceableObject = null;
         }
-    private GameObject[] ScannForBuildingsInArea(RaycastHit hitInfo)
+    private GameObject[] ScannForObjectsInArea(RaycastHit hitInfo, bool buildingScann)
         {
         Collider[] collidersInArea = new Collider[100];
-        int collisions = Physics.OverlapSphereNonAlloc(hitInfo.point, 20, collidersInArea);
+        int collisions = Physics.OverlapSphereNonAlloc(hitInfo.point, 15, collidersInArea);
         GameObject[] gameObjectArray = new GameObject[100];
         if (collisions <= 2)
             {
@@ -252,14 +254,14 @@ public class BuildingSystem : MonoBehaviour
                 {
                 return gameObjectArray;
                 }
-            if (collider.gameObject.layer == 8 || collider.gameObject.layer == 9)
+            if (buildingScann && (collider.gameObject.layer == 8 || collider.gameObject.layer == 9))
                 {
                 GameObject parent = collider.transform.parent.gameObject;
                 if (gameObjectArray.Contains(parent))
                     continue;
                 else
                     {
-                    if (i > 20)
+                    if (i > 40)
                         {
                         return gameObjectArray;
                         }
@@ -267,8 +269,16 @@ public class BuildingSystem : MonoBehaviour
                     i++;
                     }
                 }
+            else if (!buildingScann && (collider.gameObject.layer == 8 || collider.gameObject.layer == 9 || collider.gameObject.layer == 10))
+                {
+                if (i > 40)
+                    {
+                    return gameObjectArray;
+                    }
+                gameObjectArray[i] = collider.gameObject;
+                i++;
+                }
             }
         return gameObjectArray;
         }
-
     }
