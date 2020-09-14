@@ -26,7 +26,10 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             ListOfGatherableResources = GetComponent<IResourcBuilding>().ResouceToGather;
             GatherableResouceInArea = GetUsableResources(ListOfGatherableResources);
             GatherableResouces = GetResouceQuantityInArea(GatherableResouceInArea);
-            FindObjectOfType<ResouceBuildingsManagment>().UpdateResouces += UpdateResouces;
+            if (!GatherableResouces.Count.Equals(0))
+                {
+                FindObjectOfType<ResouceBuildingsManagment>().UpdateResouces += UpdateResouces;
+                }
             }
 
         private void UpdateResouces(GameObject childBuilding)
