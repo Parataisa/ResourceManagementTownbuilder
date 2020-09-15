@@ -3,9 +3,8 @@ using UnityEngine;
 
 namespace Assets.Scripts.Buildings.ResourceBuildings
     {
-    interface IResourcBuilding
+    interface IResourcBuilding : IBuildings
         {
         List<string> ResouceToGather { get; set; }
-        Color BuildingColor { get; }
         }
     }

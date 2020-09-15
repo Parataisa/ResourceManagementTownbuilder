@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 635602376603293098}
   - component: {fileID: 8278397710340855153}
   m_Layer: 2
-  m_Name: (Resouce)Mine
+  m_Name: (Resouce)-Mine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
