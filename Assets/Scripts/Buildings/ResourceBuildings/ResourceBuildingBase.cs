@@ -34,10 +34,17 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
 
         private void UpdateResouces(GameObject childBuilding)
             {
-            var test = GetComponent<ResourceBuildingBase>().GatherableResouceInArea[0].GetComponent<ResourceBase>();
-            test.quantityOfTheResource -= 1;
-            childBuilding.transform.parent.GetComponent<ResouceBuildingsManagment>().GatheredResourcesOverall += 1;
-            childBuilding.transform.parent.GetComponent<ResouceBuildingsManagment>().StortedResources += 1;
+            var selectedResouceInArea = GetComponent<ResourceBuildingBase>().GatherableResouceInArea[0].GetComponent<ResourceBase>();
+            if (selectedResouceInArea.quantityOfTheResource <= 0)
+                {
+                FindObjectOfType<ResouceBuildingsManagment>().UpdateResouces -= UpdateResouces;
+                }
+            else
+                {
+                selectedResouceInArea.quantityOfTheResource -= 1;
+                childBuilding.transform.parent.GetComponent<ResouceBuildingsManagment>().GatheredResourcesOverall += 1;
+                childBuilding.transform.parent.GetComponent<ResouceBuildingsManagment>().StortedResources += 1;
+                }
             }
 
         private List<ResouceQuantityTyps> GetResouceQuantityInArea(List<GameObject> gatherableResouceInArea)
