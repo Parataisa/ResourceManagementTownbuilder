@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
@@ -8,12 +9,13 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         public GameObject ResoucePatchUserInterface;
         public GameObject ResouceBuildingUserInterface;
         public GameObject SocialBuildingUserInterface;
+        public event Action<GameObject> PanelToggeled;
         public void Start()
             {
             camera = Camera.main;
 
             }
-        public void Update()
+        public void LateUpdate()
             {
             Ray mouseRay = camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(mouseRay, out RaycastHit hitInfo))
@@ -26,18 +28,21 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         ResoucePatchUserInterface.SetActive(true);
                         ResouceBuildingUserInterface.SetActive(false);
                         SocialBuildingUserInterface.SetActive(false);
+                        PanelToggeled?.Invoke(parent);
                         }
                     else if (parent.name.Contains("(ResouceBuildingMain)-"))
                         {
                         ResouceBuildingUserInterface.SetActive(true);
                         ResoucePatchUserInterface.SetActive(false);
                         SocialBuildingUserInterface.SetActive(false);
+                        PanelToggeled?.Invoke(parent);
                         }
                     else if (parent.name.Contains("(SocialBuildingMain)-"))
                         {
                         SocialBuildingUserInterface.SetActive(true);
                         ResoucePatchUserInterface.SetActive(false);
                         ResouceBuildingUserInterface.SetActive(false);
+                        PanelToggeled?.Invoke(parent);
                         }
                     }
                 }
