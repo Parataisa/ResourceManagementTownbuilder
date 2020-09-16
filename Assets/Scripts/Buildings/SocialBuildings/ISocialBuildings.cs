@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEngine;
-namespace Assets.Scripts.Ui.Menus.InfoUI
+
+namespace Assets.Scripts.Buildings.SocialBuildings
     {
-    class GeneralUserInterface : MonoBehaviour
+    interface ISocialBuildings : IBuildings
         {
-        
         }
     }

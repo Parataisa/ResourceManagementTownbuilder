@@ -5,9 +5,13 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
     class GeneralUserInterfaceManagment : MonoBehaviour
         {
         public new Camera camera;
+        public GameObject ResoucePatchUserInterface;
+        public GameObject ResouceBuildingUserInterface;
+        public GameObject SocialBuildingUserInterface;
         public void Start()
             {
             camera = Camera.main;
+
             }
         public void Update()
             {
@@ -19,15 +23,21 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     GameObject parent = hitInfo.transform.parent.gameObject;
                     if (parent.name.Contains("(ResoucePatch)-"))
                         {
-                        ResoucePatchesUserInterface _ = new ResoucePatchesUserInterface();
+                        ResoucePatchUserInterface.SetActive(true);
+                        ResouceBuildingUserInterface.SetActive(false);
+                        SocialBuildingUserInterface.SetActive(false);
                         }
                     else if (parent.name.Contains("(ResouceBuildingMain)-"))
                         {
-                        ResouceBuildingUserInterface _ = new ResouceBuildingUserInterface();
+                        ResouceBuildingUserInterface.SetActive(true);
+                        ResoucePatchUserInterface.SetActive(false);
+                        SocialBuildingUserInterface.SetActive(false);
                         }
                     else if (parent.name.Contains("(SocialBuildingMain)-"))
                         {
-                        SocialBuildingUserInterface _ = new SocialBuildingUserInterface();
+                        SocialBuildingUserInterface.SetActive(true);
+                        ResoucePatchUserInterface.SetActive(false);
+                        ResouceBuildingUserInterface.SetActive(false);
                         }
                     }
                 }

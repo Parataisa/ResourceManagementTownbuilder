@@ -99,7 +99,7 @@ namespace Assets.Scripts.Buildings
                 if (hitObject[0] == null)
                     {
                     objectPlacable = true;
-                    currentPlaceableObject.GetComponent<Renderer>().material.color = currentPlaceableObject.GetComponent<IResourcBuilding>().BuildingColor;
+                    currentPlaceableObject.GetComponent<Renderer>().material.color = currentPlaceableObject.GetComponent<IBuildings>().BuildingColor;
                     }
                 else
                     {
@@ -120,7 +120,7 @@ namespace Assets.Scripts.Buildings
                         else
                             {
                             objectPlacable = true;
-                            currentPlaceableObject.GetComponent<Renderer>().material.color = currentPlaceableObject.GetComponent<IResourcBuilding>().BuildingColor;
+                            currentPlaceableObject.GetComponent<Renderer>().material.color = currentPlaceableObject.GetComponent<IBuildings>().BuildingColor;
                             }
                         }
                     }
