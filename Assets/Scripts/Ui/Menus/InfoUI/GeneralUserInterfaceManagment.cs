@@ -13,7 +13,6 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         public void Start()
             {
             camera = Camera.main;
-
             }
         public void LateUpdate()
             {
@@ -36,12 +35,20 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         ResoucePatchUserInterface.SetActive(false);
                         SocialBuildingUserInterface.SetActive(false);
                         PanelToggeled?.Invoke(parent);
+                        if (Input.GetMouseButtonDown(0))
+                            {
+                            //ToDo: Opens a extra Menu when clicked.
+                            }
                         }
                     else if (parent.name.Contains("(SocialBuildingMain)-"))
                         {
                         SocialBuildingUserInterface.SetActive(true);
                         ResoucePatchUserInterface.SetActive(false);
                         ResouceBuildingUserInterface.SetActive(false);
+                        if (Input.GetMouseButtonDown(0))
+                            {
+
+                            }
                         PanelToggeled?.Invoke(parent);
                         }
                     }

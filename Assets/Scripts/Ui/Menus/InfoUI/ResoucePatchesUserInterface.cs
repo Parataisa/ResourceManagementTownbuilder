@@ -27,18 +27,18 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     {
                     if (!ObjectName.Equals(selectedGameobject.name))
                         {
-                        ObjectName = selectedGameobject.name;
-                        this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(selectedGameobject.name);
+                        ObjectName = currentGameObjectScript.ResourceName;
+                        this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                         }
                     if (!PatchSize.Equals(currentGameObjectScript.sizeOfTheResource))
                         {
-                        PatchSize = selectedGameobject.GetComponent<ResourceBase>().sizeOfTheResource;
-                        this.transform.Find("PatchSize").GetComponent<TextMeshProUGUI>().SetText(currentGameObjectScript.sizeOfTheResource.ToString());
+                        PatchSize = currentGameObjectScript.sizeOfTheResource;
+                        this.transform.Find("PatchSize").GetComponent<TextMeshProUGUI>().SetText(PatchSize.ToString());
                         }
                     if (!PatchQuantity.Equals(currentGameObjectScript.quantityOfTheResource))
                         {
                         PatchQuantity = currentGameObjectScript.quantityOfTheResource;
-                        this.transform.Find("PatchQuantity").GetComponent<TextMeshProUGUI>().SetText(currentGameObjectScript.quantityOfTheResource.ToString());
+                        this.transform.Find("PatchQuantity").GetComponent<TextMeshProUGUI>().SetText(PatchQuantity.ToString());
                         }
 
                     }
