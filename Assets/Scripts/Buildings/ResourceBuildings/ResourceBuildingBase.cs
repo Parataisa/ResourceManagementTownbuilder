@@ -28,7 +28,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             GatherableResouces = GetResouceQuantityInArea(GatherableResouceInArea);
             if (!GatherableResouces.Count.Equals(0))
                 {
-                FindObjectOfType<ResouceBuildingsManagment>().UpdateResouces += UpdateResouces;
+                FindObjectOfType<ResourceBuildingsManagment>().UpdateResouces += UpdateResouces;
                 }
             }
 
@@ -37,13 +37,13 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             var selectedResouceInArea = GetComponent<ResourceBuildingBase>().GatherableResouceInArea[0].GetComponent<ResourceBase>();
             if (selectedResouceInArea.quantityOfTheResource <= 0)
                 {
-                FindObjectOfType<ResouceBuildingsManagment>().UpdateResouces -= UpdateResouces;
+                FindObjectOfType<ResourceBuildingsManagment>().UpdateResouces -= UpdateResouces;
                 }
             else
                 {
                 selectedResouceInArea.quantityOfTheResource -= 1;
-                childBuilding.transform.parent.GetComponent<ResouceBuildingsManagment>().GatheredResourcesOverall += 1;
-                childBuilding.transform.parent.GetComponent<ResouceBuildingsManagment>().StortedResources += 1;
+                childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().GatheredResourcesOverall += 1;
+                childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().StortedResources += 1;
                 }
             }
 

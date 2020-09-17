@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
-    class ResoucePatchesUserInterface : GeneralUserInterface
+    class ResourcePatchesUserInterface : GeneralUserInterface
         {
         private int PatchQuantity = 0;
         private int PatchSize = 0;

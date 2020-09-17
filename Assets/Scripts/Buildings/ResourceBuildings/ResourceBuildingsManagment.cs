@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Buildings.ResourceBuildings
     {
-    class ResouceBuildingsManagment : MonoBehaviour
+    class ResourceBuildingsManagment : MonoBehaviour
         {
         private List<GameObject> ListOfChildren = new List<GameObject>();
         public int GatheredResourcesOverall = 0;

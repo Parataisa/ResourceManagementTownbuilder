@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
-    class ResouceBuildingUserInterface : GeneralUserInterface
+    class ResourceBuildingUserInterface : GeneralUserInterface
         {
 
         }

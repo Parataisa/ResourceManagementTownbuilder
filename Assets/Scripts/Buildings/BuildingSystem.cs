@@ -212,7 +212,7 @@ namespace Assets.Scripts.Buildings
                     {
                     name = "(ResouceBuildingMain)-" + buildingName[1]
                     };
-                resouceBuildingMain.AddComponent<ResouceBuildingsManagment>();
+                resouceBuildingMain.AddComponent<ResourceBuildingsManagment>();
                 currentPlaceableObject.transform.parent = resouceBuildingMain.transform;
                 }
             else
