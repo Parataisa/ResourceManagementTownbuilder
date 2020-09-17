@@ -8,12 +8,11 @@ namespace ResourceGeneration.ResourceVariationen
         public string ResourceName;
         public int sizeOfTheResource;
         public int quantityOfTheResource;
-        public int numberOfIterationen = 20;
         public Vector3 positionOnTheMap;
         public Vector2 areaOfTheResource;
         public Vector3 sizeOfTheModel;
-        public event Action<ResourceBase, int> ResourceGenerated;
         public event Action<GameObject> ChooseLocationEvent;
+        public event Action<ResourceBase> ResourceGenerated;
 
 
         protected virtual void Start()
@@ -25,7 +24,7 @@ namespace ResourceGeneration.ResourceVariationen
             this.areaOfTheResource = GetAreaOfTheResource(sizeOfTheModel, sizeOfTheResource);
             this.positionOnTheMap = GetPositionOfResource(areaOfTheResource);
             ChooseLocationEvent?.Invoke(this.gameObject);
-            ResourceGenerated?.Invoke(this, numberOfIterationen);
+            ResourceGenerated?.Invoke(this);
             }
 
         private string GetResourceName()

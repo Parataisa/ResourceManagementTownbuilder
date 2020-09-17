@@ -13,6 +13,8 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
         public int numberOfIterationen = 20;
         public int NumberOfResources = 10;
         public Mesh terrainMesh;
+        public event System.Action<ResourceBase> ResourceSuccessfullyGenerated;
+
         public void Start()
             {
             Object[] subListObjects = Resources.LoadAll("GameObjects/GatherableResources/ResourceVariationen", typeof(GameObject));
@@ -45,6 +47,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
             if (pointValid)
                 {
                 Debug.Log(resourceToSpawn.name + " created");
+                ResourceSuccessfullyGenerated?.Invoke(resourceToSpawn.GetComponent<ResourceBase>());
                 }
             else
                 {
@@ -106,7 +109,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
             return false;
             }
 
-        private void GeneratResources(ResourceBase scriptOfTheResource, int numberOfIterationen)
+        private void GeneratResources(ResourceBase scriptOfTheResource)
             {
             int size = scriptOfTheResource.sizeOfTheResource;
             Vector3 sizeOfTheModel = scriptOfTheResource.sizeOfTheModel;
