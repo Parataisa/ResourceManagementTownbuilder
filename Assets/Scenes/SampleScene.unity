@@ -1360,6 +1360,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ResourceOnTheMap: []
+  ResourceOnTheMapSpawningStats: 
+  FractionValuesForThePatches: 
 --- !u!1 &1155724638
 GameObject:
   m_ObjectHideFlags: 0
@@ -1590,7 +1592,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1767737674
 Transform:
   m_ObjectHideFlags: 0
@@ -1854,7 +1856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 657f252f52161c74b8d9bf26dc74473e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedGameobject: {fileID: 0}
+  selectedGameobject: {fileID: 1767737673}
 --- !u!114 &1890822909
 MonoBehaviour:
   m_ObjectHideFlags: 0

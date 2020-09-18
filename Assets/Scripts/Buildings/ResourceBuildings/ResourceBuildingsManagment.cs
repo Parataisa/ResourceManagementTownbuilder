@@ -6,13 +6,14 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
     {
     class ResourceBuildingsManagment : MonoBehaviour
         {
-        private List<GameObject> ListOfChildren = new List<GameObject>();
+        public List<GameObject> ListOfChildren = new List<GameObject>();
         public int GatheredResourcesOverall = 0;
         public int StortedResources = 0;
         public float ProduktionSpeed;
         public int WorkingPeopleCapacity;
         public int WorkingPeople;
         public event Action<GameObject> UpdateResouces;
+        public event System.Action<ResourceBuildingsManagment> ResourceQuantityDecrease;
 
         private void Start()
             {
@@ -66,6 +67,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             foreach (var child in ListOfChildren)
                 {
                 UpdateResouces?.Invoke(child);
+                ResourceQuantityDecrease?.Invoke(this);
                 }
             }
         }

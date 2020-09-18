@@ -9,7 +9,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         {
         public List<ResouceQuantityTyps> GatherableResouces;
         private List<string> ListOfGatherableResources;
-        private float ResourceCollectingRadius = 20;
+        private readonly float ResourceCollectingRadius = 20;
         public Vector3 BuildingPosition;
         public List<GameObject> GatherableResouceInArea;
 

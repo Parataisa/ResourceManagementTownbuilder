@@ -5,7 +5,7 @@ namespace Assets.Scripts.Buildings.SocialBuildings
     {
     class SocialBuildingManagment : MonoBehaviour
         {
-        List<GameObject> ListOfChildren;
+        readonly List<GameObject> ListOfChildren;
         public float BirthRate;
         public int People;
         }

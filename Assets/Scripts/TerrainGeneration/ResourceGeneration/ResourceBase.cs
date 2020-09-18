@@ -72,5 +72,6 @@ namespace ResourceGeneration.ResourceVariationen
             area.y = UnityEngine.Random.Range(0.8f, 1.1f) * sizeModel.z * size / 2f;
             return area;
             }
+
         }
     }

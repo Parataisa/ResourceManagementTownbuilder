@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Buildings.ResourceBuildings;
 using Assets.Scripts.Buildings.SocialBuildings;
+using Assets.Scripts.TerrainGeneration;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -143,8 +144,8 @@ namespace Assets.Scripts.Buildings
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hitInfo))
                     {
-                    GameObject[] gameObjectArray = new GameObject[20];
-                    gameObjectArray = ScannForObjectsInArea(hitInfo, true);
+                    _ = new GameObject[20];
+                    GameObject[] gameObjectArray = ScannForObjectsInArea(hitInfo, true);
                     if (currentPlaceableObject.name.Contains("Social"))
                         {
                         if (gameObjectArray[0] == null)
@@ -213,6 +214,7 @@ namespace Assets.Scripts.Buildings
                     name = "(ResouceBuildingMain)-" + buildingName[1]
                     };
                 resouceBuildingMain.AddComponent<ResourceBuildingsManagment>();
+                ResourcePatchManagment.NewBuildingOnTheMap.Add(resouceBuildingMain.GetComponent<ResourceBuildingsManagment>());
                 currentPlaceableObject.transform.parent = resouceBuildingMain.transform;
                 }
             else
