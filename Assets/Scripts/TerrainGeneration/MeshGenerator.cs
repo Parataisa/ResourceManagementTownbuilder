@@ -43,31 +43,28 @@ public class MeshGenerator : MonoBehaviour
         int tris = 0;
         for (int z = 0; z < zSize; z++)
             {
-             for (int x = 0; x < xSize; x++)
-                 {
-                 triangles[tris + 0] = vert + 0;
-                 triangles[tris + 1] = vert + xSize + 1;
-                 triangles[tris + 2] = vert + 1;
-                 triangles[tris + 3] = vert + 1;
-                 triangles[tris + 4] = vert + xSize + 1;
-                 triangles[tris + 5] = vert + xSize + 2;
+            for (int x = 0; x < xSize; x++)
+                {
+                triangles[tris + 0] = vert + 0;
+                triangles[tris + 1] = vert + xSize + 1;
+                triangles[tris + 2] = vert + 1;
+                triangles[tris + 3] = vert + 1;
+                triangles[tris + 4] = vert + xSize + 1;
+                triangles[tris + 5] = vert + xSize + 2;
                 vert++;
-                 tris += 6;
-                 }
-               
+                tris += 6;
+                }
+
             vert++;
+            }
+
         }
 
-    }
-    
     private void UpdadeMesh()
         {
         mesh.Clear();
         mesh.vertices = vertices;
         mesh.triangles = triangles;
-        if (MapGeneratedEvent != null)
-            {
-            MapGeneratedEvent();
-            }
+        MapGeneratedEvent?.Invoke();
         }
-}
+    }

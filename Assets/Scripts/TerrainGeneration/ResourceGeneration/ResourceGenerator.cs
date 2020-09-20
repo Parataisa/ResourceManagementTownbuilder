@@ -13,6 +13,8 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
         public int numberOfIterationen = 20;
         public int NumberOfResources = 10;
         public Mesh terrainMesh;
+        public event System.Action<ResourceBase> ResourceSuccessfullyGenerated;
+
         public void Start()
             {
             Object[] subListObjects = Resources.LoadAll("GameObjects/GatherableResources/ResourceVariationen", typeof(GameObject));
@@ -32,19 +34,20 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
             {
             var resourceToSpawn = Instantiate<GameObject>(resourceType);
             var scriptOfTheResource = resourceToSpawn.GetComponent<ResourceBase>();
-            scriptOfTheResource.GetComponent<ResourceBase>().sizeOfTheModel = resourceType.gameObject.transform.localScale;
+            scriptOfTheResource.GetComponent<ResourceBase>().SizeOfTheModel = resourceType.gameObject.transform.localScale;
             FindObjectOfType<ResourceBase>(resourceToSpawn).ChooseLocationEvent += SetLocationOfTheResource;
             FindObjectOfType<ResourceBase>(scriptOfTheResource).ResourceGenerated += GeneratResources;
             }
 
         private void SetLocationOfTheResource(GameObject resourceToSpawn)
             {
-            var spawnPopintArea = resourceToSpawn.GetComponent<ResourceBase>().areaOfTheResource;
-            var PositonOnTheMap = resourceToSpawn.GetComponent<ResourceBase>().positionOnTheMap;
+            var spawnPopintArea = resourceToSpawn.GetComponent<ResourceBase>().AreaOfTheResource;
+            var PositonOnTheMap = resourceToSpawn.GetComponent<ResourceBase>().PositionOnTheMap;
             bool pointValid = PointIteration(resourceToSpawn, spawnPopintArea, PositonOnTheMap);
             if (pointValid)
                 {
                 Debug.Log(resourceToSpawn.name + " created");
+                ResourceSuccessfullyGenerated?.Invoke(resourceToSpawn.GetComponent<ResourceBase>());
                 }
             else
                 {
@@ -71,11 +74,11 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                     foreach (var savedPoint in spawnedPoints)
                         {
                         Vector2 savedPointKey = new Vector2(savedPoint.Key.x, savedPoint.Key.y);
-                        Vector3 savedPointValue = new Vector3(savedPoint.Value.x, 0 , savedPoint.Value.y);
+                        Vector3 savedPointValue = new Vector3(savedPoint.Value.x, 0, savedPoint.Value.y);
                         Rectangle savedArea = GetRectangle(savedPointValue, savedPointKey);
 
 
-                        Rectangle newArea = GetRectangle(new Vector3(spawnPointArea.x,0,spawnPointArea.y), new Vector2(PositonOnTheMap.x, PositonOnTheMap.z));
+                        Rectangle newArea = GetRectangle(new Vector3(spawnPointArea.x, 0, spawnPointArea.y), new Vector2(PositonOnTheMap.x, PositonOnTheMap.z));
 
                         if (!newArea.IntersectsWith(savedArea) && PositonOnTheMap.x < 256 - spawnPointArea.x / 2 && PositonOnTheMap.z < 256 - spawnPointArea.y / 2)
                             {
@@ -83,7 +86,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                             if (loopcount == spawnedPoints.Count)
                                 {
                                 resourceToSpawn.GetComponent<Transform>().transform.position = PositonOnTheMap;
-                                resourceToSpawn.GetComponent<ResourceBase>().positionOnTheMap = PositonOnTheMap;
+                                resourceToSpawn.GetComponent<ResourceBase>().PositionOnTheMap = PositonOnTheMap;
                                 spawnedPoints.Add(new Vector2(PositonOnTheMap.x, PositonOnTheMap.z), spawnPointArea);
                                 points.Remove(PositonOnTheMap);
                                 return true;
@@ -106,11 +109,11 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
             return false;
             }
 
-        private void GeneratResources(ResourceBase scriptOfTheResource, int numberOfIterationen)
+        private void GeneratResources(ResourceBase scriptOfTheResource)
             {
-            int size = scriptOfTheResource.sizeOfTheResource;
-            Vector3 sizeOfTheModel = scriptOfTheResource.sizeOfTheModel;
-            Vector2 area = scriptOfTheResource.areaOfTheResource;
+            int size = scriptOfTheResource.SizeOfTheResource;
+            Vector3 sizeOfTheModel = scriptOfTheResource.SizeOfTheModel;
+            Vector2 area = scriptOfTheResource.AreaOfTheResource;
             GameObject child = scriptOfTheResource.transform.GetChild(0).gameObject;
 
             List<Rectangle> AreasOfChildObjects = new List<Rectangle>();
@@ -121,7 +124,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                 for (int x = 0; x <= numberOfIterationen; x++)
                     {
                     int innerLoop = 0;
-                    var localYTransform = _.GetComponent<Transform>().localScale = scriptOfTheResource.sizeOfTheModel;
+                    var localYTransform = _.GetComponent<Transform>().localScale = scriptOfTheResource.SizeOfTheModel;
                     Vector2 localPositon = GetlocalPositon(area);
                     Rectangle RecArea = GetRectangle(sizeOfTheModel, localPositon);
 
@@ -157,7 +160,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                     }
                 }
             Destroy(child);
-            scriptOfTheResource.sizeOfTheResource = AreasOfChildObjects.Count;
+            scriptOfTheResource.SizeOfTheResource = AreasOfChildObjects.Count;
             }
 
         private static Rectangle GetRectangle(Vector3 areaOfTheModel, Vector2 localPositon)

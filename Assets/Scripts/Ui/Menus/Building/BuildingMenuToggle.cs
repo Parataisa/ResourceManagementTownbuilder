@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BuildingMenuToggle : MonoBehaviour
-{
+    {
     public GameObject panel;
     public GameObject buildingSystem;
     public void PanelToggel()
@@ -15,5 +13,5 @@ public class BuildingMenuToggle : MonoBehaviour
             panel.SetActive(!isActive);
             }
         }
-    
-}
+
+    }

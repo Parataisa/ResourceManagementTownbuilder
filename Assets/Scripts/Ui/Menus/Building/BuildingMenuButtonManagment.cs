@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
+using Assets.Scripts.Buildings;
 
 public class BuildingMenuButtonManagment : MonoBehaviour
     {
@@ -69,13 +71,20 @@ public class BuildingMenuButtonManagment : MonoBehaviour
     private void AddingButtonParameter(string nameOfTheObject, GameObject newButton, Vector3 localVector3)
         {
         newButton.GetComponent<RectTransform>().localPosition = localVector3;
-        newButton.GetComponentInChildren<Text>().text = nameOfTheObject;
+        SetButtonBuildingNameAndTyp(newButton, nameOfTheObject);
         newButton.GetComponent<BuildingMenuToggle>().panel = panel;
         newButton.GetComponent<BuildingMenuToggle>().buildingSystem = buildingSystem;
         newButton.GetComponent<BuildingButton>().buttonId = buttonId;
         newButton.GetComponent<BuildingButton>().objectToBuild = nameOfTheObject;
         newButton.GetComponent<BuildingButton>().buildingPrefab = buildingSystem.GetComponent<BuildingSystem>().placeableObjectPrefabs[buttonId];
         newButton.GetComponent<Button>().onClick.AddListener(delegate { buildingSystem.GetComponent<BuildingSystem>().OnButtonClick(newButton.GetComponent<BuildingButton>().buttonId); });
+        }
+
+    private void SetButtonBuildingNameAndTyp(GameObject newButton, string nameOfTheObject)
+        {
+        string[] splitName = nameOfTheObject.Split('-');
+        newButton.transform.Find("BuildingType").GetComponent<TextMeshProUGUI>().SetText(splitName[0]);
+        newButton.transform.Find("BuildingName").GetComponent<TextMeshProUGUI>().SetText(splitName[1]);
         }
 
     private Vector2 GetButtonDimension(GameObject buttonPrefab)

@@ -44,9 +44,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingPanel: {fileID: 0}
-  placeableObjectPrefabs:
-  - {fileID: 6854440573167214315, guid: 0af3dc3bf6da92647bf3da119467a71e, type: 3}
-  - {fileID: 1754619858230820803, guid: dd47e8cecb70c5c45ab7d43fa9dbb686, type: 3}
-  - {fileID: 1153659773751496233, guid: 8c2e8e10513599d45bb82e00635e71fc, type: 3}
-  - {fileID: 6404118490084307283, guid: 9360048086c8b2c4eb07367f18a8cece, type: 3}
-  - {fileID: 628682382620441871, guid: f3291593da303a4438762224bc8398c2, type: 3}
+  ResouceBuildingsListObjects: []
+  SocialBuildingsListObjects: []
+  placeableObjectPrefabs: []
