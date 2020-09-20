@@ -8,10 +8,10 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
     class ResourceBuildingBase : MonoBehaviour
         {
         public List<ResouceQuantityTyps> GatherableResouces;
+        public List<GameObject> GatherableResouceInArea;
         private List<string> ListOfGatherableResources;
         private readonly float ResourceCollectingRadius = 20;
         public Vector3 BuildingPosition;
-        public List<GameObject> GatherableResouceInArea;
 
 
         public class ResouceQuantityTyps
@@ -35,13 +35,14 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         private void UpdateResouces(GameObject childBuilding)
             {
             var selectedResouceInArea = GetComponent<ResourceBuildingBase>().GatherableResouceInArea[0].GetComponent<ResourceBase>();
-            if (selectedResouceInArea.quantityOfTheResource <= 0)
+            if (selectedResouceInArea.QuantityOfTheResource <= 0)
                 {
                 FindObjectOfType<ResourceBuildingsManagment>().UpdateResouces -= UpdateResouces;
                 }
             else
                 {
-                selectedResouceInArea.quantityOfTheResource -= 1;
+                selectedResouceInArea.QuantityOfTheResource -= 1;
+                selectedResouceInArea.ResourceQuantityCheck();
                 childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().GatheredResourcesOverall += 1;
                 childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().StortedResources += 1;
                 }
@@ -59,7 +60,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                     };
                 if (resouceQuantityInArea.Count == 0)
                     {
-                    resouceQuantityTyps.resouceQuantity = resouceScript.quantityOfTheResource;
+                    resouceQuantityTyps.resouceQuantity = resouceScript.QuantityOfTheResource;
                     resouceQuantityTyps.resoucePatch = resouceScript.gameObject;
                     resouceQuantityInArea.Add(resouceQuantityTyps);
                     }
@@ -70,7 +71,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                         {
                         if (resouceInList.resouceName.Contains(resouceQuantityTyps.resouceName))
                             {
-                            resouceInList.resouceQuantity += resouceScript.quantityOfTheResource;
+                            resouceInList.resouceQuantity += resouceScript.QuantityOfTheResource;
                             break;
                             }
                         else if (!resouceInList.resouceName.Contains(resouceQuantityTyps.resouceName) && !(x < resouceQuantityInArea.Count))
@@ -80,7 +81,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                             }
                         else
                             {
-                            resouceQuantityTyps.resouceQuantity = resouceScript.quantityOfTheResource;
+                            resouceQuantityTyps.resouceQuantity = resouceScript.QuantityOfTheResource;
                             resouceQuantityTyps.resoucePatch = resouceScript.gameObject;
                             resouceQuantityInArea.Add(resouceQuantityTyps);
                             break;

@@ -1310,7 +1310,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1062592140}
   - component: {fileID: 1062592141}
-  - component: {fileID: 1062592142}
   m_Layer: 0
   m_Name: ResourceGenerator
   m_TagString: Untagged
@@ -1347,21 +1346,6 @@ MonoBehaviour:
   numberOfIterationen: 20
   NumberOfResources: 10
   terrainMesh: {fileID: 0}
---- !u!114 &1062592142
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1062592139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 468b7a4ff6968b441bd4fad223483040, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ResourceOnTheMap: []
-  ResourceOnTheMapSpawningStats: 
-  FractionValuesForThePatches: 
 --- !u!1 &1155724638
 GameObject:
   m_ObjectHideFlags: 0
@@ -1620,11 +1604,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ResourceName: ResourceBase
-  sizeOfTheResource: 0
-  quantityOfTheResource: 0
-  positionOnTheMap: {x: 0, y: 0, z: 0}
-  areaOfTheResource: {x: 0, y: 0}
-  sizeOfTheModel: {x: 0, y: 0, z: 0}
+  SizeOfTheResource: 0
+  QuantityOfTheResource: 0
+  PositionOnTheMap: {x: 0, y: 0, z: 0}
+  AreaOfTheResource: {x: 0, y: 0}
+  SizeOfTheModel: {x: 0, y: 0, z: 0}
+  FractionValiesForThePatch: 0
 --- !u!1 &1832137758
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,25 +6,53 @@ namespace ResourceGeneration.ResourceVariationen
     public class ResourceBase : MonoBehaviour
         {
         public string ResourceName;
-        public int sizeOfTheResource;
-        public int quantityOfTheResource;
-        public Vector3 positionOnTheMap;
-        public Vector2 areaOfTheResource;
-        public Vector3 sizeOfTheModel;
+        public int SizeOfTheResource;
+        public int QuantityOfTheResource;
+        private int startingQuantity;
+        public Vector3 PositionOnTheMap;
+        public Vector2 AreaOfTheResource;
+        public Vector3 SizeOfTheModel;
         public event Action<GameObject> ChooseLocationEvent;
         public event Action<ResourceBase> ResourceGenerated;
+        public int FractionValiesForThePatch;
+
 
 
         protected virtual void Start()
             {
             this.ResourceName = GetResourceName();
-            this.quantityOfTheResource = GetQuantityOfTheResource();
-            this.sizeOfTheResource = GetSizeOfTheResource(quantityOfTheResource);
-            this.sizeOfTheModel = GetRandomSizeForTheModel(quantityOfTheResource, sizeOfTheResource);
-            this.areaOfTheResource = GetAreaOfTheResource(sizeOfTheModel, sizeOfTheResource);
-            this.positionOnTheMap = GetPositionOfResource(areaOfTheResource);
+            this.QuantityOfTheResource = GetQuantityOfTheResource();
+            this.startingQuantity = this.QuantityOfTheResource;
+            this.SizeOfTheResource = GetSizeOfTheResource(QuantityOfTheResource);
+            this.SizeOfTheModel = GetRandomSizeForTheModel(QuantityOfTheResource, SizeOfTheResource);
+            this.AreaOfTheResource = GetAreaOfTheResource(SizeOfTheModel, SizeOfTheResource);
+            this.PositionOnTheMap = GetPositionOfResource(AreaOfTheResource);
+            this.FractionValiesForThePatch = this.QuantityOfTheResource / this.SizeOfTheResource;
             ChooseLocationEvent?.Invoke(this.gameObject);
             ResourceGenerated?.Invoke(this);
+            }
+        public void ResourceQuantityCheck()
+            {
+            if (this.startingQuantity == this.QuantityOfTheResource)
+                {
+                return;
+                }
+            else
+                {
+                if ((this.startingQuantity - this.QuantityOfTheResource) % this.FractionValiesForThePatch == 0)
+                    {
+                    Destroy(this.transform.GetChild(0).gameObject);
+                    this.SizeOfTheResource -= 1;
+                    }
+                else if (this.QuantityOfTheResource <= 0)
+                    {
+                    Destroy(this.gameObject);
+                    }
+                else
+                    {
+                    return;
+                    }
+                }
             }
 
         private string GetResourceName()
@@ -45,11 +73,10 @@ namespace ResourceGeneration.ResourceVariationen
             }
         private Vector3 GetRandomSizeForTheModel(int quantity, int patchSize)
             {
-            //ToDo: Inplement a better size system 
             Vector3 size;
             size.x = UnityEngine.Random.Range(0.95f, 1.05f) * quantity / patchSize / 1000;
-            size.y = size.x; // UnityEngine.Random.Range(0.5f, 2f);
-            size.z = size.x;  //UnityEngine.Random.Range(0.5f, 2.5f);
+            size.y = size.x; 
+            size.z = size.x;  
             return size;
             }
         public static Vector3 GetPositionOfResource(Vector2 area)

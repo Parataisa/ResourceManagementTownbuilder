@@ -214,7 +214,6 @@ namespace Assets.Scripts.Buildings
                     name = "(ResouceBuildingMain)-" + buildingName[1]
                     };
                 resouceBuildingMain.AddComponent<ResourceBuildingsManagment>();
-                ResourcePatchManagment.NewBuildingOnTheMap.Add(resouceBuildingMain.GetComponent<ResourceBuildingsManagment>());
                 currentPlaceableObject.transform.parent = resouceBuildingMain.transform;
                 }
             else
