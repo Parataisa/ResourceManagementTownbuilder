@@ -104,15 +104,15 @@ namespace Assets.Scripts.Buildings
                     }
                 else
                     {
-                    Rectangle placableRectangle = GetRectangle(currentPlaceableObject);
+                    var currentPlacableObjectCollider = currentPlaceableObject.GetComponent<BoxCollider>();
                     foreach (var objectInList in hitObject)
                         {
                         if (objectInList == null)
                             {
                             break;
                             }
-                        Rectangle hitRectangle = GetRectangle(objectInList);
-                        if (placableRectangle.IntersectsWith(hitRectangle))
+                        var hitobjectCollider = objectInList.GetComponent<BoxCollider>();
+                        if (currentPlacableObjectCollider.bounds.Intersects(hitobjectCollider.bounds))
                             {
                             objectPlacable = false;
                             currentPlaceableObject.GetComponent<Renderer>().material.color = UnityEngine.Color.magenta;
@@ -127,16 +127,6 @@ namespace Assets.Scripts.Buildings
                     }
                 }
             }
-        private static Rectangle GetRectangle(GameObject hitGameObject)
-            {
-            Rectangle RecArea;
-            RecArea.X = Mathf.CeilToInt((hitGameObject.transform.position.x - hitGameObject.transform.localScale.x / 2));
-            RecArea.Y = Mathf.CeilToInt((hitGameObject.transform.position.z - hitGameObject.transform.localScale.z / 2));
-            RecArea.Width = Mathf.CeilToInt(hitGameObject.transform.localScale.x);
-            RecArea.Height = Mathf.CeilToInt(hitGameObject.transform.localScale.z);
-            return RecArea;
-            }
-
         private void ReleaseIfClicked()
             {
             if (Input.GetMouseButtonDown(0) && objectPlacable)
