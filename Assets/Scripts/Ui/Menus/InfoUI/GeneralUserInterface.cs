@@ -8,7 +8,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             {
             FindObjectOfType<GeneralUserInterfaceManagment>().PanelToggeled += GetGameObject;
             }
-        private void Update()
+        private void LateUpdate()
             {
             if (selectedGameobject != null)
                 {

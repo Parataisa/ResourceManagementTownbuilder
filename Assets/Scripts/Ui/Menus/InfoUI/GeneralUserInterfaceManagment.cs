@@ -52,6 +52,12 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         PanelToggeled?.Invoke(parent);
                         }
                     }
+                else if (hitInfo.transform.gameObject.layer == 11)
+                    {
+                    ResouceBuildingUserInterface.SetActive(false);
+                    ResoucePatchUserInterface.SetActive(false);
+                    SocialBuildingUserInterface.SetActive(false);
+                    }
                 }
             }
         }

@@ -7,6 +7,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
     class ResourceBuildingsManagment : MonoBehaviour
         {
         public List<GameObject> ListOfChildren = new List<GameObject>();
+        public string ResourceBuildingType = "";
         public int GatheredResourcesOverall = 0;
         public int StortedResources = 0;
         public float ProduktionSpeed;
@@ -18,8 +19,14 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         private void Start()
             {
             AddingChildsToList();
+            this.ResourceBuildingType = GetResourceBuildingName();
             InvokeRepeating("UpdateResoucesMethode", 0.2f, 1f / ProduktionSpeed);
+            }
 
+        private string GetResourceBuildingName()
+            {
+            string[] BuildingNameArray = this.ListOfChildren[0].gameObject.name.Split('-');
+            return BuildingNameArray[1].Split('(')[0];
             }
 
         private void AddingChildsToList()
