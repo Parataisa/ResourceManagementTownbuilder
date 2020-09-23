@@ -15,7 +15,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             {
             if (this.enabled)
                 {
-                if (!selectedGameobject.Equals(null))
+                if (selectedGameobject == null)
                     {
                     currentGameObjectScript = selectedGameobject.GetComponent<ResourceBase>();
                     }

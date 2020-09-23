@@ -10,7 +10,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             }
         private void Update()
             {
-            if (!selectedGameobject.Equals(null))
+            if (selectedGameobject != null)
                 {
                 if (this.gameObject.activeSelf)
                     {

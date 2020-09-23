@@ -1344,7 +1344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfIterationen: 20
-  NumberOfResources: 10
+  NumberOfResources: 20
   terrainMesh: {fileID: 0}
 --- !u!1 &1155724638
 GameObject:
@@ -1551,7 +1551,6 @@ RectTransform:
   - {fileID: 623166587}
   - {fileID: 986643567}
   - {fileID: 552225513}
-  - {fileID: 1767737674}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1560,56 +1559,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &1767737673
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1767737674}
-  - component: {fileID: 1767737675}
-  m_Layer: 0
-  m_Name: DummyUiGameObejct
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1767737674
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767737673}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 600, y: -300, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1514809330}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1767737675
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767737673}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b366d05590d476841b58110cd00ee4c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ResourceName: ResourceBase
-  SizeOfTheResource: 0
-  QuantityOfTheResource: 0
-  PositionOnTheMap: {x: 0, y: 0, z: 0}
-  AreaOfTheResource: {x: 0, y: 0}
-  SizeOfTheModel: {x: 0, y: 0, z: 0}
-  FractionValiesForThePatch: 0
 --- !u!1 &1832137758
 GameObject:
   m_ObjectHideFlags: 0
@@ -1841,7 +1790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 657f252f52161c74b8d9bf26dc74473e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedGameobject: {fileID: 1767737673}
+  selectedGameobject: {fileID: 0}
 --- !u!114 &1890822909
 MonoBehaviour:
   m_ObjectHideFlags: 0

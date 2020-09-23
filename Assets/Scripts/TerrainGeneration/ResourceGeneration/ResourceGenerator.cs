@@ -18,19 +18,17 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
         public void Start()
             {
             Object[] subListObjects = Resources.LoadAll("GameObjects/GatherableResources/ResourceVariationen", typeof(GameObject));
-            foreach (GameObject gameObject in subListObjects)
+            foreach (GameObject ResourcePrefab in subListObjects)
                 {
-                GameObject lo = (GameObject)gameObject;
-                ResourcePrefabs.Add(lo);
+                ResourcePrefabs.Add(ResourcePrefab);
                 }
             for (int i = 1; i <= NumberOfResources; i++)
                 {
-                int randomResouce = UnityEngine.Random.Range(0, ResourcePrefabs.Count);
-                ChooseResouceToGenerate(ResourcePrefabs[randomResouce]);
+                GenerateResource(ResourcePrefabs[Random.Range(0, ResourcePrefabs.Count)]);
                 }
             }
 
-        private void ChooseResouceToGenerate(GameObject resourceType)
+        private void GenerateResource(GameObject resourceType)
             {
             var resourceToSpawn = Instantiate<GameObject>(resourceType);
             var scriptOfTheResource = resourceToSpawn.GetComponent<ResourceBase>();
@@ -43,7 +41,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
             {
             var spawnPopintArea = resourceToSpawn.GetComponent<ResourceBase>().AreaOfTheResource;
             var PositonOnTheMap = resourceToSpawn.GetComponent<ResourceBase>().PositionOnTheMap;
-            bool pointValid = PointIteration(resourceToSpawn, spawnPopintArea, PositonOnTheMap);
+            bool pointValid = SpawnLocationPointIteration(resourceToSpawn, spawnPopintArea, PositonOnTheMap);
             if (pointValid)
                 {
                 Debug.Log(resourceToSpawn.name + " created");
@@ -56,7 +54,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                 }
             }
 
-        private bool PointIteration(GameObject resourceToSpawn, Vector2 spawnPointArea, Vector3 PositonOnTheMap)
+        private bool SpawnLocationPointIteration(GameObject resourceToSpawn, Vector2 spawnPointArea, Vector3 PositonOnTheMap)
             {
             if (spawnedPoints.Count == 0)
                 {

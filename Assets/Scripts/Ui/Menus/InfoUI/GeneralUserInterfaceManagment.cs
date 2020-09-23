@@ -14,7 +14,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             {
             camera = Camera.main;
             }
-        public void LateUpdate()
+        public void Update()
             {
             Ray mouseRay = camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(mouseRay, out RaycastHit hitInfo))

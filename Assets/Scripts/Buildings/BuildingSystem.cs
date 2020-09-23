@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Buildings.ResourceBuildings;
 using Assets.Scripts.Buildings.SocialBuildings;
 using Assets.Scripts.TerrainGeneration;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -13,8 +14,8 @@ namespace Assets.Scripts.Buildings
         {
         public GameObject buildingPanel;
         public static Dictionary<int, string> buildingDirectory = new Dictionary<int, string>();
-        public Object[] ResouceBuildingsListObjects;
-        public Object[] SocialBuildingsListObjects;
+        public UnityEngine.Object[] ResouceBuildingsListObjects;
+        public UnityEngine.Object[] SocialBuildingsListObjects;
         public GameObject[] placeableObjectPrefabs;
         private GameObject currentPlaceableObject;
         private bool objectPlacable;
@@ -27,7 +28,7 @@ namespace Assets.Scripts.Buildings
             GetBuildingsInPlacableObjects(ResouceBuildingsListObjects, SocialBuildingsListObjects, placeableObjectPrefabs);
             }
 
-        private void GetBuildingsInPlacableObjects(Object[] resouceBuildingsListObjects, Object[] socialBuildingsListObjects, GameObject[] placeableObject)
+        private void GetBuildingsInPlacableObjects(UnityEngine.Object[] resouceBuildingsListObjects, UnityEngine.Object[] socialBuildingsListObjects, GameObject[] placeableObject)
             {
             if (buildingDirectory.Count == 0)
                 {
@@ -40,7 +41,7 @@ namespace Assets.Scripts.Buildings
                 }
             }
 
-        private static void UpdatePlaceableObjects(Object[] resouceBuildingsListObjects, Object[] socialBuildingsListObjects, GameObject[] placeableObject)
+        private static void UpdatePlaceableObjects(UnityEngine.Object[] resouceBuildingsListObjects, UnityEngine.Object[] socialBuildingsListObjects, GameObject[] placeableObject)
             {
             int i = 0;
             foreach (var resouceBuilding in resouceBuildingsListObjects)
@@ -67,6 +68,7 @@ namespace Assets.Scripts.Buildings
                 ReleaseIfClicked();
                 }
             }
+
         public void OnButtonClick(int buildingId)
             {
             if (currentPlaceableObject != null)
