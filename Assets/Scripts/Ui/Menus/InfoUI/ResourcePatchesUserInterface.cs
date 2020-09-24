@@ -8,7 +8,6 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         {
         private int PatchQuantity = 0;
         private int PatchSize = 0;
-        private string ObjectName = "";
         private ResourceBase currentGameObjectScript;
 
         private void Update()

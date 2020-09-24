@@ -5,7 +5,6 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
     {
     class ResourceBuildingUserInterface : GeneralUserInterface
         {
-        private string BuildingName = "";
         public int StortedResources = 0;
         public float ProduktionSpeed = 0f;
         public int WorkingPeopleCapacity = 0;
@@ -27,10 +26,10 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     }
                 else
                     {
-                    if (!BuildingName.Equals(currentGameObjectScript.ResourceBuildingType))
+                    if (!ObjectName.Equals(currentGameObjectScript.ResourceBuildingType))
                         {
-                        BuildingName = currentGameObjectScript.ResourceBuildingType;
-                        this.transform.Find("BuildingName").GetComponent<TextMeshProUGUI>().SetText(BuildingName);
+                        ObjectName = currentGameObjectScript.ResourceBuildingType;
+                        this.transform.Find("BuildingName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                         }
                     if (!StortedResources.Equals(currentGameObjectScript.StortedResources))
                         {
@@ -51,7 +50,6 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         WorkingPeople = currentGameObjectScript.WorkingPeople;
                         this.transform.Find("WorkingPeople").GetComponent<TextMeshProUGUI>().SetText(WorkingPeople.ToString() + "/" + WorkingPeopleCapacity.ToString());
                         }          
-                    
                     if (!GatheredResourcesOverall.Equals(currentGameObjectScript.GatheredResourcesOverall))
                         {
                         GatheredResourcesOverall = currentGameObjectScript.GatheredResourcesOverall;

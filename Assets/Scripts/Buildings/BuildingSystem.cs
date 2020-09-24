@@ -139,23 +139,34 @@ namespace Assets.Scripts.Buildings
                     {
                     _ = new GameObject[20];
                     GameObject[] gameObjectArray = ScannForObjectsInArea(hitInfo, true);
+                    int hitObjectCount = 0;
+                    foreach (var hitObject in gameObjectArray)
+                        {
+                        if (hitObject != null)
+                            {
+                            hitObjectCount++;
+                            }
+                        }
+                    GameObject[] hitBuildingArray = new GameObject[hitObjectCount];
+                    Array.Copy(gameObjectArray, hitBuildingArray, hitObjectCount);                  
                     if (currentPlaceableObject.name.Contains("Social"))
                         {
-                        if (gameObjectArray[0] == null)
+                        if (hitBuildingArray.Length == 0)
                             {
                             CreateSocialBuilding(false, null);
                             return;
                             }
-                        int x = 0;
-                        foreach (GameObject child in gameObjectArray)
+                        int x = 1;
+                        foreach (GameObject child in hitBuildingArray)
                             {
-                            if (child.name != currentPlaceableObject.name && x < gameObjectArray.Length)
+                            if (child.name != currentPlaceableObject.name && x >= hitBuildingArray.Length)
                                 {
+                                CreateSocialBuilding(false, null);
                                 break;
                                 }
                             else if (child.name == currentPlaceableObject.name)
                                 {
-                                CreateSocialBuilding(true, gameObjectArray[x].transform.parent.gameObject);
+                                CreateSocialBuilding(true, hitBuildingArray[x - 1].transform.parent.gameObject);
                                 break;
                                 }
                             else
@@ -167,21 +178,22 @@ namespace Assets.Scripts.Buildings
                         }
                     else if (currentPlaceableObject.name.Contains("Resouce"))
                         {
-                        if (gameObjectArray[0] == null)
+                        if (hitBuildingArray.Length == 0)
                             {
                             CreateResouceBuilding(false, null);
                             return;
                             }
-                        int x = 0;
-                        foreach (GameObject child in gameObjectArray)
+                        int x = 1;
+                        foreach (GameObject child in hitBuildingArray)
                             {
-                            if (child.name != currentPlaceableObject.name && x < gameObjectArray.Length)
+                            if (child.name != currentPlaceableObject.name && x >= hitBuildingArray.Length)
                                 {
+                                CreateResouceBuilding(false, null);
                                 break;
                                 }
                             else if (child.name == currentPlaceableObject.name)
                                 {
-                                CreateResouceBuilding(true, gameObjectArray[x].transform.parent.gameObject);
+                                CreateResouceBuilding(true, hitBuildingArray[x - 1].transform.parent.gameObject);
                                 break;
                                 }
                             else
@@ -242,7 +254,7 @@ namespace Assets.Scripts.Buildings
             {
             Collider[] collidersInArea = new Collider[100];
             int collisions = Physics.OverlapSphereNonAlloc(hitInfo.point, 15, collidersInArea);
-            GameObject[] gameObjectArray = new GameObject[100];
+            GameObject[] gameObjectArray = new GameObject[collisions];
             if (collisions <= 2)
                 {
                 return gameObjectArray;

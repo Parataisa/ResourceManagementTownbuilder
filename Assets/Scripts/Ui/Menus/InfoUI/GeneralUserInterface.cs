@@ -4,6 +4,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
     class GeneralUserInterface : MonoBehaviour
         {
         public GameObject selectedGameobject;
+        internal string ObjectName = "";
         private void Start()
             {
             FindObjectOfType<GeneralUserInterfaceManagment>().PanelToggeled += GetGameObject;
