@@ -17,7 +17,7 @@ namespace Assets.Scripts.Buildings
         public UnityEngine.Object[] ResouceBuildingsListObjects;
         public UnityEngine.Object[] SocialBuildingsListObjects;
         public GameObject[] placeableObjectPrefabs;
-        private GameObject currentPlaceableObject;
+        public GameObject currentPlaceableObject;
         private bool objectPlacable;
 
         private void Start()

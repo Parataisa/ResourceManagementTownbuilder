@@ -7,7 +7,7 @@ public class BuildingMenuButtonManagment : MonoBehaviour
     {
     public GameObject buttonPrefab;
     public GameObject panel;
-    public GameObject buildingSystem;
+    public BuildingSystem buildingSystem;
     public GameObject[] aktiveButtons;
 
     private int buttonId;
@@ -76,8 +76,8 @@ public class BuildingMenuButtonManagment : MonoBehaviour
         newButton.GetComponent<BuildingMenuToggle>().buildingSystem = buildingSystem;
         newButton.GetComponent<BuildingButton>().buttonId = buttonId;
         newButton.GetComponent<BuildingButton>().objectToBuild = nameOfTheObject;
-        newButton.GetComponent<BuildingButton>().buildingPrefab = buildingSystem.GetComponent<BuildingSystem>().placeableObjectPrefabs[buttonId];
-        newButton.GetComponent<Button>().onClick.AddListener(delegate { buildingSystem.GetComponent<BuildingSystem>().OnButtonClick(newButton.GetComponent<BuildingButton>().buttonId); });
+        newButton.GetComponent<BuildingButton>().buildingPrefab = buildingSystem.placeableObjectPrefabs[buttonId];
+        newButton.GetComponent<Button>().onClick.AddListener(delegate { buildingSystem.OnButtonClick(newButton.GetComponent<BuildingButton>().buttonId); });
         }
 
     private void SetButtonBuildingNameAndTyp(GameObject newButton, string nameOfTheObject)

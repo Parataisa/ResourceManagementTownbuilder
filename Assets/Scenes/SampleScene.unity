@@ -404,7 +404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 917635955}
-  buildingSystem: {fileID: 2044340306}
+  buildingSystem: {fileID: 6547335901086974228}
 --- !u!1 &415762935
 GameObject:
   m_ObjectHideFlags: 0
@@ -1677,7 +1677,7 @@ MonoBehaviour:
   buttonPrefab: {fileID: 1136103755384267511, guid: 4242303e18941e24080d1f21b35662eb,
     type: 3}
   panel: {fileID: 917635955}
-  buildingSystem: {fileID: 2044340306}
+  buildingSystem: {fileID: 6547335901086974228}
   aktiveButtons: []
 --- !u!1 &963194225
 GameObject:
@@ -3888,12 +3888,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2019582066}
   m_CullTransparentMesh: 0
---- !u!1 &2044340306 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6547335902550141249, guid: e4184f6fd25dffd42aadc1b392e186f3,
-    type: 3}
-  m_PrefabInstance: {fileID: 6547335901086974227}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2068711345
 GameObject:
   m_ObjectHideFlags: 0
@@ -4425,3 +4419,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4184f6fd25dffd42aadc1b392e186f3, type: 3}
+--- !u!114 &6547335901086974228 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6547335902550141248, guid: e4184f6fd25dffd42aadc1b392e186f3,
+    type: 3}
+  m_PrefabInstance: {fileID: 6547335901086974227}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed19287be41b87a4eb2359cf61f41516, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

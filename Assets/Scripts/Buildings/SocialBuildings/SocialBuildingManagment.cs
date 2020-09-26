@@ -16,6 +16,25 @@ namespace Assets.Scripts.Buildings.SocialBuildings
             AddingChildsToList();
             this.SocialBuildingType = GetSocialBuildingName();
             }
+        private void Update()
+            {
+            if (ListOfChildren.Count.Equals(null))
+                {
+                return;
+                }
+            if (!(transform.childCount == ListOfChildren.Count))
+                {
+                AddingChildsToList();
+                this.PeopleCapacity = ListOfChildren.Count * 10;
+                //ToDO: For now the building is at full capacity
+                this.People = PeopleCapacity;
+                this.BirthRate = People / 10;
+                }
+            else if (transform.childCount == ListOfChildren.Count && PeopleCapacity == ListOfChildren.Count * 10)
+                {
+                return;
+                }
+            }
 
         private void AddingChildsToList()
             {
@@ -33,7 +52,7 @@ namespace Assets.Scripts.Buildings.SocialBuildings
                 this.PeopleCapacity += 10;
                 this.People = PeopleCapacity;
                 this.BirthRate = People / 10;
-            }
+                }
             }
 
         private string GetSocialBuildingName()
