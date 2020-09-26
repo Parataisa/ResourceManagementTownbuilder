@@ -1668,7 +1668,7 @@ MonoBehaviour:
   ResoucePatchUserInterface: {fileID: 1890822907}
   ResouceBuildingUserInterface: {fileID: 623166583}
   SocialBuildingUserInterface: {fileID: 986643563}
-  BuildingInterfaceOnClick: {fileID: 847780743}
+  ResourceBuildingInterfaceOnClick: {fileID: 847780743}
   EventSystem: {fileID: 1832137760}
 --- !u!4 &552225513
 Transform:
@@ -2451,7 +2451,7 @@ GameObject:
   - component: {fileID: 847780745}
   - component: {fileID: 847780747}
   m_Layer: 5
-  m_Name: BuildingInterfaceOnClick
+  m_Name: ResourceBuildingInterfaceOnClick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2525,7 +2525,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 847780743}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1c851b4999803e40b0759982d40ff91, type: 3}
+  m_Script: {fileID: 11500000, guid: a16e0a20f17716d419235e1aa10f71c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   selectedGameobject: {fileID: 0}

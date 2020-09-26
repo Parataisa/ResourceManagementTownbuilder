@@ -1,20 +1,17 @@
 ﻿using Assets.Scripts.Buildings.ResourceBuildings;
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
-    class BuildingInterfaceOnClick : MonoBehaviour
+    class ResourceBuildingInterfaceOnClick : MonoBehaviour
         {
         public GameObject selectedGameobject;
         internal GameObject savedeGameObject;
         internal string ObjectName = "";
         private List<string> DropdownOptions = new List<string>();
-
         private TMP_Dropdown Dropdown;
-        private int DropdownValue = 0;
         private void Awake()
             {
             FindObjectOfType<GeneralUserInterfaceManagment>().OnClickInfoPanelToggled += GetGameObject;
@@ -23,6 +20,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         private void Start()
             {
             savedeGameObject = selectedGameobject;
+            Dropdown.onValueChanged.AddListener(delegate { DropdownValueChanged(); });
             }
         private void Update()
             {
@@ -37,15 +35,23 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     ObjectName = GetObjectName(selectedGameobject.transform.name);
                     this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                     }
-                if (selectedGameobject != savedeGameObject ||DropdownOptions.Count.Equals(0))
+                if (selectedGameobject != savedeGameObject || DropdownOptions.Count.Equals(0))
                     {
-                    selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().SetSelecedResource(Dropdown.value);
                     ObjectName = GetObjectName(selectedGameobject.transform.name);
                     this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                     DropdownOptions.Clear();
                     int i = 0;
+                    int x = 0;
                     foreach (var child in selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().GatherableResouceInArea)
                         {
+                        if (selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().GatherableResouceInArea[x] == null)
+                            {
+                            Dropdown.ClearOptions();
+                            DropdownOptions.Clear();
+                            x++;
+                            continue;
+                            }
+                        x++;
                         i++;
                         DropdownOptions.Add(i + " " + GetObjectName(child.name));
                         }
@@ -53,12 +59,15 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     Dropdown.AddOptions(DropdownOptions);
                     savedeGameObject = selectedGameobject;
                     }
-                if (Dropdown.value != DropdownValue)
+                if (selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().selecedResource != Dropdown.value)
                     {
-                    selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().SetSelecedResource(Dropdown.value);
-                    DropdownValue = Dropdown.value;
+                    Dropdown.value = selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().selecedResource;
                     }
                 }
+            }
+        void DropdownValueChanged()
+            {
+            selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().SetSelecedResource(Dropdown.value); 
             }
 
         private string GetObjectName(string name)

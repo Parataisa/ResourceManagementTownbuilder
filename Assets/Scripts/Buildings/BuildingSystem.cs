@@ -224,6 +224,7 @@ namespace Assets.Scripts.Buildings
             else
                 {
                 currentPlaceableObject.transform.parent = parent.transform;
+                currentPlaceableObject.GetComponent<ResourceBuildingBase>().GatherableResouceInArea = parent.transform.GetChild(0).GetComponent<ResourceBuildingBase>().GatherableResouceInArea;
                 }
             Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
             currentPlaceableObject = null;
