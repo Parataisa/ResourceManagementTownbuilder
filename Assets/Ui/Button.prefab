@@ -298,8 +298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 0}
-  buildingSystem: {fileID: 6547335902550141249, guid: e4184f6fd25dffd42aadc1b392e186f3,
-    type: 3}
+  buildingSystem: {fileID: 0}
 --- !u!1 &2738728862471658263
 GameObject:
   m_ObjectHideFlags: 0

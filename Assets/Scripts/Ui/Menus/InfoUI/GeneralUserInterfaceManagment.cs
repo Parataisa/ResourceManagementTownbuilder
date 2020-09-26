@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
@@ -9,7 +10,10 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         public GameObject ResoucePatchUserInterface;
         public GameObject ResouceBuildingUserInterface;
         public GameObject SocialBuildingUserInterface;
+        public GameObject BuildingInterfaceOnClick;
+        public EventSystem EventSystem;
         public event Action<GameObject> PanelToggeled;
+
         public void Start()
             {
             camera = Camera.main;
@@ -19,6 +23,10 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             Ray mouseRay = camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(mouseRay, out RaycastHit hitInfo))
                 {
+                if (BuildingInterfaceOnClick.activeSelf == true && Input.GetMouseButtonDown(0) && !EventSystem.IsPointerOverGameObject()) 
+                    {
+                    BuildingInterfaceOnClick.SetActive(false);
+                    }
                 if (hitInfo.transform.gameObject.layer == 8 || hitInfo.transform.gameObject.layer == 9 || hitInfo.transform.gameObject.layer == 10)
                     {
                     GameObject parent = hitInfo.transform.parent.gameObject;
@@ -31,24 +39,24 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         }
                     else if (parent.name.Contains("(ResouceBuildingMain)-"))
                         {
+                        if (Input.GetMouseButtonDown(0) && ResouceBuildingUserInterface.activeSelf)
+                            {
+                            BuildingInterfaceOnClick.SetActive(true);
+                            }
                         ResouceBuildingUserInterface.SetActive(true);
                         ResoucePatchUserInterface.SetActive(false);
                         SocialBuildingUserInterface.SetActive(false);
                         PanelToggeled?.Invoke(parent);
-                        if (Input.GetMouseButtonDown(0))
-                            {
-                            //ToDo: Opens a extra Menu when clicked.
-                            }
                         }
                     else if (parent.name.Contains("(SocialBuildingMain)-"))
                         {
+                        if (Input.GetMouseButtonDown(0) && SocialBuildingUserInterface.activeSelf)
+                            {
+                            BuildingInterfaceOnClick.SetActive(true);
+                            }
                         SocialBuildingUserInterface.SetActive(true);
                         ResoucePatchUserInterface.SetActive(false);
                         ResouceBuildingUserInterface.SetActive(false);
-                        if (Input.GetMouseButtonDown(0))
-                            {
-
-                            }
                         PanelToggeled?.Invoke(parent);
                         }
                     }
