@@ -8,14 +8,13 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         {
         private int PatchQuantity = 0;
         private int PatchSize = 0;
-        private string ObjectName = "";
         private ResourceBase currentGameObjectScript;
 
         private void Update()
             {
             if (this.enabled)
                 {
-                if (!selectedGameobject.Equals(null))
+                if (selectedGameobject != null)
                     {
                     currentGameObjectScript = selectedGameobject.GetComponent<ResourceBase>();
                     }
@@ -25,7 +24,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     }
                 else
                     {
-                    if (!ObjectName.Equals(selectedGameobject.name))
+                    if (!ObjectName.Equals(GetObjectName(selectedGameobject.name)))
                         {
                         ObjectName = currentGameObjectScript.ResourceName;
                         this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);

@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Buildings.ResourceBuildings;
 using Assets.Scripts.Buildings.SocialBuildings;
 using Assets.Scripts.TerrainGeneration;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -13,10 +14,10 @@ namespace Assets.Scripts.Buildings
         {
         public GameObject buildingPanel;
         public static Dictionary<int, string> buildingDirectory = new Dictionary<int, string>();
-        public Object[] ResouceBuildingsListObjects;
-        public Object[] SocialBuildingsListObjects;
+        public UnityEngine.Object[] ResouceBuildingsListObjects;
+        public UnityEngine.Object[] SocialBuildingsListObjects;
         public GameObject[] placeableObjectPrefabs;
-        private GameObject currentPlaceableObject;
+        public GameObject currentPlaceableObject;
         private bool objectPlacable;
 
         private void Start()
@@ -27,7 +28,7 @@ namespace Assets.Scripts.Buildings
             GetBuildingsInPlacableObjects(ResouceBuildingsListObjects, SocialBuildingsListObjects, placeableObjectPrefabs);
             }
 
-        private void GetBuildingsInPlacableObjects(Object[] resouceBuildingsListObjects, Object[] socialBuildingsListObjects, GameObject[] placeableObject)
+        private void GetBuildingsInPlacableObjects(UnityEngine.Object[] resouceBuildingsListObjects, UnityEngine.Object[] socialBuildingsListObjects, GameObject[] placeableObject)
             {
             if (buildingDirectory.Count == 0)
                 {
@@ -40,7 +41,7 @@ namespace Assets.Scripts.Buildings
                 }
             }
 
-        private static void UpdatePlaceableObjects(Object[] resouceBuildingsListObjects, Object[] socialBuildingsListObjects, GameObject[] placeableObject)
+        private static void UpdatePlaceableObjects(UnityEngine.Object[] resouceBuildingsListObjects, UnityEngine.Object[] socialBuildingsListObjects, GameObject[] placeableObject)
             {
             int i = 0;
             foreach (var resouceBuilding in resouceBuildingsListObjects)
@@ -64,9 +65,11 @@ namespace Assets.Scripts.Buildings
             if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
                 {
                 MoveCurrentObjectToMouse();
+                DrawCircle(currentPlaceableObject, ResourceBuildingBase.ResourceCollectingRadius);
                 ReleaseIfClicked();
                 }
             }
+
         public void OnButtonClick(int buildingId)
             {
             if (currentPlaceableObject != null)
@@ -104,15 +107,15 @@ namespace Assets.Scripts.Buildings
                     }
                 else
                     {
-                    Rectangle placableRectangle = GetRectangle(currentPlaceableObject);
+                    var currentPlacableObjectCollider = currentPlaceableObject.GetComponent<BoxCollider>();
                     foreach (var objectInList in hitObject)
                         {
                         if (objectInList == null)
                             {
                             break;
                             }
-                        Rectangle hitRectangle = GetRectangle(objectInList);
-                        if (placableRectangle.IntersectsWith(hitRectangle))
+                        var hitobjectCollider = objectInList.GetComponent<BoxCollider>();
+                        if (currentPlacableObjectCollider.bounds.Intersects(hitobjectCollider.bounds))
                             {
                             objectPlacable = false;
                             currentPlaceableObject.GetComponent<Renderer>().material.color = UnityEngine.Color.magenta;
@@ -127,16 +130,6 @@ namespace Assets.Scripts.Buildings
                     }
                 }
             }
-        private static Rectangle GetRectangle(GameObject hitGameObject)
-            {
-            Rectangle RecArea;
-            RecArea.X = Mathf.CeilToInt((hitGameObject.transform.position.x - hitGameObject.transform.localScale.x / 2));
-            RecArea.Y = Mathf.CeilToInt((hitGameObject.transform.position.z - hitGameObject.transform.localScale.z / 2));
-            RecArea.Width = Mathf.CeilToInt(hitGameObject.transform.localScale.x);
-            RecArea.Height = Mathf.CeilToInt(hitGameObject.transform.localScale.z);
-            return RecArea;
-            }
-
         private void ReleaseIfClicked()
             {
             if (Input.GetMouseButtonDown(0) && objectPlacable)
@@ -146,23 +139,34 @@ namespace Assets.Scripts.Buildings
                     {
                     _ = new GameObject[20];
                     GameObject[] gameObjectArray = ScannForObjectsInArea(hitInfo, true);
+                    int hitObjectCount = 0;
+                    foreach (var hitObject in gameObjectArray)
+                        {
+                        if (hitObject != null)
+                            {
+                            hitObjectCount++;
+                            }
+                        }
+                    GameObject[] hitBuildingArray = new GameObject[hitObjectCount];
+                    Array.Copy(gameObjectArray, hitBuildingArray, hitObjectCount);                  
                     if (currentPlaceableObject.name.Contains("Social"))
                         {
-                        if (gameObjectArray[0] == null)
+                        if (hitBuildingArray.Length == 0)
                             {
                             CreateSocialBuilding(false, null);
                             return;
                             }
-                        int x = 0;
-                        foreach (GameObject child in gameObjectArray)
+                        int x = 1;
+                        foreach (GameObject child in hitBuildingArray)
                             {
-                            if (child.name != currentPlaceableObject.name && x < gameObjectArray.Length)
+                            if (child.name != currentPlaceableObject.name && x >= hitBuildingArray.Length)
                                 {
+                                CreateSocialBuilding(false, null);
                                 break;
                                 }
                             else if (child.name == currentPlaceableObject.name)
                                 {
-                                CreateSocialBuilding(true, gameObjectArray[x].transform.parent.gameObject);
+                                CreateSocialBuilding(true, hitBuildingArray[x - 1].transform.parent.gameObject);
                                 break;
                                 }
                             else
@@ -174,21 +178,22 @@ namespace Assets.Scripts.Buildings
                         }
                     else if (currentPlaceableObject.name.Contains("Resouce"))
                         {
-                        if (gameObjectArray[0] == null)
+                        if (hitBuildingArray.Length == 0)
                             {
                             CreateResouceBuilding(false, null);
                             return;
                             }
-                        int x = 0;
-                        foreach (GameObject child in gameObjectArray)
+                        int x = 1;
+                        foreach (GameObject child in hitBuildingArray)
                             {
-                            if (child.name != currentPlaceableObject.name && x < gameObjectArray.Length)
+                            if (child.name != currentPlaceableObject.name && x >= hitBuildingArray.Length)
                                 {
+                                CreateResouceBuilding(false, null);
                                 break;
                                 }
                             else if (child.name == currentPlaceableObject.name)
                                 {
-                                CreateResouceBuilding(true, gameObjectArray[x].transform.parent.gameObject);
+                                CreateResouceBuilding(true, hitBuildingArray[x - 1].transform.parent.gameObject);
                                 break;
                                 }
                             else
@@ -219,7 +224,9 @@ namespace Assets.Scripts.Buildings
             else
                 {
                 currentPlaceableObject.transform.parent = parent.transform;
+                currentPlaceableObject.GetComponent<ResourceBuildingBase>().GatherableResouceInArea = parent.transform.GetChild(0).GetComponent<ResourceBuildingBase>().GatherableResouceInArea;
                 }
+            Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
             currentPlaceableObject = null;
             }
 
@@ -241,13 +248,14 @@ namespace Assets.Scripts.Buildings
                 {
                 currentPlaceableObject.transform.parent = parent.transform;
                 }
+            Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
             currentPlaceableObject = null;
             }
         private GameObject[] ScannForObjectsInArea(RaycastHit hitInfo, bool buildingScann)
             {
             Collider[] collidersInArea = new Collider[100];
             int collisions = Physics.OverlapSphereNonAlloc(hitInfo.point, 15, collidersInArea);
-            GameObject[] gameObjectArray = new GameObject[100];
+            GameObject[] gameObjectArray = new GameObject[collisions];
             if (collisions <= 2)
                 {
                 return gameObjectArray;
@@ -286,5 +294,33 @@ namespace Assets.Scripts.Buildings
                 }
             return gameObjectArray;
             }
+        private static void DrawCircle(GameObject container, float radius, float lineWidth = 0.2f)
+            {
+            var segments = 360;
+            if (container.GetComponent<LineRenderer>() == null)
+                {
+                container.AddComponent<LineRenderer>();
+                }
+            else
+                {
+                var line = container.GetComponent<LineRenderer>();
+                line.useWorldSpace = false;
+                line.startWidth = lineWidth;
+                line.endWidth = lineWidth;
+                line.positionCount = segments + 1;
+
+                var pointCount = segments + 1;
+                var points = new Vector3[pointCount];
+
+                for (int i = 0; i < pointCount; i++)
+                    {
+                    var rad = Mathf.Deg2Rad * (i * 360f / segments);
+                    points[i] = new Vector3(Mathf.Sin(rad) * radius, 0, Mathf.Cos(rad) * radius);
+                    }
+
+                line.SetPositions(points);
+                }
+            }
         }
+
     }

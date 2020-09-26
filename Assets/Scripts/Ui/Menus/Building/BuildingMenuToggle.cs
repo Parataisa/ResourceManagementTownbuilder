@@ -1,14 +1,19 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Buildings;
+using UnityEngine;
 
 public class BuildingMenuToggle : MonoBehaviour
     {
     public GameObject panel;
-    public GameObject buildingSystem;
+    public BuildingSystem buildingSystem;
     public void PanelToggel()
         {
         if (panel != null)
             {
             bool isActive = panel.activeSelf;
+            if (buildingSystem.currentPlaceableObject != null)
+                {
+                buildingSystem.ClearCurser();
+                }
             panel.GetComponent<BuildingMenuButtonManagment>().UpdateButtons();
             panel.SetActive(!isActive);
             }

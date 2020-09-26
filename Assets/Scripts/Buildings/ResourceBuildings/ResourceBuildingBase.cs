@@ -1,4 +1,6 @@
-﻿using ResourceGeneration.ResourceVariationen;
+﻿using Assets.Scripts.Ui.Menus.InfoUI;
+using ResourceGeneration.ResourceVariationen;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,10 +10,11 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
     class ResourceBuildingBase : MonoBehaviour
         {
         public List<ResouceQuantityTyps> GatherableResouces;
-        public List<GameObject> GatherableResouceInArea;
+        public List<GameObject> GatherableResouceInArea = new List<GameObject>();
         private List<string> ListOfGatherableResources;
-        private readonly float ResourceCollectingRadius = 20;
+        public const float ResourceCollectingRadius = 10;
         public Vector3 BuildingPosition;
+        public int selecedResource = 0;
 
 
         public class ResouceQuantityTyps
@@ -24,19 +27,24 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             {
             BuildingPosition = GetComponent<Transform>().position;
             ListOfGatherableResources = GetComponent<IResourcBuilding>().ResouceToGather;
-            GatherableResouceInArea = GetUsableResources(ListOfGatherableResources);
+            GatherableResouceInArea = GatherableResouceInArea.Count == 0 ? GetUsableResources(ListOfGatherableResources) : GatherableResouceInArea;
             GatherableResouces = GetResouceQuantityInArea(GatherableResouceInArea);
             if (!GatherableResouces.Count.Equals(0))
                 {
                 FindObjectOfType<ResourceBuildingsManagment>().UpdateResouces += UpdateResouces;
-                }
+                }        
             }
 
         private void UpdateResouces(GameObject childBuilding)
             {
-            var selectedResouceInArea = GetComponent<ResourceBuildingBase>().GatherableResouceInArea[0].GetComponent<ResourceBase>();
+            if (GatherableResouceInArea.Count == 0 || GatherableResouceInArea[selecedResource] == null)
+                {
+                return;
+                }
+            var selectedResouceInArea = GetComponent<ResourceBuildingBase>().GatherableResouceInArea[selecedResource].GetComponent<ResourceBase>();
             if (selectedResouceInArea.QuantityOfTheResource <= 0)
                 {
+                GatherableResouceInArea.RemoveAt(selecedResource);
                 FindObjectOfType<ResourceBuildingsManagment>().UpdateResouces -= UpdateResouces;
                 }
             else
@@ -46,6 +54,11 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                 childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().GatheredResourcesOverall += 1;
                 childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().StortedResources += 1;
                 }
+            }
+
+        public void SetSelecedResource(int x)
+            {
+            this.selecedResource = x;
             }
 
         private List<ResouceQuantityTyps> GetResouceQuantityInArea(List<GameObject> gatherableResouceInArea)
@@ -89,7 +102,6 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                         }
                     }
                 }
-
             return resouceQuantityInArea;
             }
 

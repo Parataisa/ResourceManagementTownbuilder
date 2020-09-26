@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 375053731767464608}
   - component: {fileID: 7360957679209969870}
   - component: {fileID: 9027344153553507991}
-  - component: {fileID: 2070487997793172108}
+  - component: {fileID: 5776869124026650233}
   m_Layer: 10
   m_Name: Tree
   m_TagString: Untagged
@@ -188,8 +188,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &2070487997793172108
-CapsuleCollider:
+--- !u!65 &5776869124026650233
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -198,9 +198,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000001, y: 2, z: 1.0000002}
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &3050301985561212542
 GameObject:
@@ -403,7 +402,7 @@ GameObject:
   - component: {fileID: 2968735219526951684}
   - component: {fileID: 2871235239629508560}
   m_Layer: 0
-  m_Name: TreeMain
+  m_Name: (ResoucePatch)-TreeMain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -437,12 +436,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ResourceName: 
-  sizeOfTheResource: 0
-  quantityOfTheResource: 0
-  numberOfIterationen: 20
-  positionOnTheMap: {x: 0, y: 0, z: 0}
-  areaOfTheResource: {x: 0, y: 0}
-  sizeOfTheModel: {x: 0, y: 0, z: 0}
+  SizeOfTheResource: 0
+  QuantityOfTheResource: 0
+  PositionOnTheMap: {x: 0, y: 0, z: 0}
+  AreaOfTheResource: {x: 0, y: 0}
+  SizeOfTheModel: {x: 0, y: 0, z: 0}
+  FractionValiesForThePatch: 0
   WildSizeOfTheResource: 0
   WildQuantityOfTheResource: 0
 --- !u!1 &4450551465871069179
