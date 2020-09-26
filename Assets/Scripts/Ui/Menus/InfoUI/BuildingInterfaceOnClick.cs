@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
-    class BuildingInterfaceOnClick
+    class BuildingInterfaceOnClick : MonoBehaviour
         {
+        public GameObject selectedGameobject;
+        internal string ObjectName = "";
+        private void Start()
+            {
+            FindObjectOfType<GeneralUserInterfaceManagment>().OnClickInfoPanelToggled += GetGameObject;
+            }
+
+        private void GetGameObject(GameObject gameObject)
+            {
+            selectedGameobject = gameObject;
+            }
         }
     }

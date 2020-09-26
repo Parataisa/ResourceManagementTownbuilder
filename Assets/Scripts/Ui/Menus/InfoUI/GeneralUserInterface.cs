@@ -7,7 +7,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         internal string ObjectName = "";
         private void Start()
             {
-            FindObjectOfType<GeneralUserInterfaceManagment>().PanelToggeled += GetGameObject;
+            FindObjectOfType<GeneralUserInterfaceManagment>().ShortInfoPanelToggeled += GetGameObject;
             }
         private void LateUpdate()
             {
@@ -15,7 +15,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 {
                 if (this.gameObject.activeSelf)
                     {
-                    FindObjectOfType<GeneralUserInterfaceManagment>().PanelToggeled += GetGameObject;
+                    FindObjectOfType<GeneralUserInterfaceManagment>().ShortInfoPanelToggeled += GetGameObject;
                     }
                 }
             }

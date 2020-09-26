@@ -12,8 +12,8 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         public GameObject SocialBuildingUserInterface;
         public GameObject BuildingInterfaceOnClick;
         public EventSystem EventSystem;
-        public event Action<GameObject> PanelToggeled;
-
+        public event Action<GameObject> ShortInfoPanelToggeled;
+        public event Action<GameObject> OnClickInfoPanelToggled;
         public void Start()
             {
             camera = Camera.main;
@@ -35,29 +35,31 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         ResoucePatchUserInterface.SetActive(true);
                         ResouceBuildingUserInterface.SetActive(false);
                         SocialBuildingUserInterface.SetActive(false);
-                        PanelToggeled?.Invoke(parent);
+                        ShortInfoPanelToggeled?.Invoke(parent);
                         }
                     else if (parent.name.Contains("(ResouceBuildingMain)-"))
                         {
-                        if (Input.GetMouseButtonDown(0) && ResouceBuildingUserInterface.activeSelf)
+                        if (Input.GetMouseButtonDown(0) && ResouceBuildingUserInterface.activeSelf &&  hitInfo.transform.gameObject.layer == 9)
                             {
+                            OnClickInfoPanelToggled?.Invoke(parent);
                             BuildingInterfaceOnClick.SetActive(true);
                             }
                         ResouceBuildingUserInterface.SetActive(true);
                         ResoucePatchUserInterface.SetActive(false);
                         SocialBuildingUserInterface.SetActive(false);
-                        PanelToggeled?.Invoke(parent);
+                        ShortInfoPanelToggeled?.Invoke(parent);
                         }
                     else if (parent.name.Contains("(SocialBuildingMain)-"))
                         {
-                        if (Input.GetMouseButtonDown(0) && SocialBuildingUserInterface.activeSelf)
+                        if (Input.GetMouseButtonDown(0) && SocialBuildingUserInterface.activeSelf && hitInfo.transform.gameObject.layer == 8)
                             {
+                            OnClickInfoPanelToggled?.Invoke(parent);
                             BuildingInterfaceOnClick.SetActive(true);
                             }
                         SocialBuildingUserInterface.SetActive(true);
                         ResoucePatchUserInterface.SetActive(false);
                         ResouceBuildingUserInterface.SetActive(false);
-                        PanelToggeled?.Invoke(parent);
+                        ShortInfoPanelToggeled?.Invoke(parent);
                         }
                     }
                 else if (hitInfo.transform.gameObject.layer == 11)
