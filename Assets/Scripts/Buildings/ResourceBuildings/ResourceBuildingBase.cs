@@ -1,4 +1,6 @@
-﻿using ResourceGeneration.ResourceVariationen;
+﻿using Assets.Scripts.Ui.Menus.InfoUI;
+using ResourceGeneration.ResourceVariationen;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,6 +14,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         private List<string> ListOfGatherableResources;
         public const float ResourceCollectingRadius = 10;
         public Vector3 BuildingPosition;
+        private int selecedResource = 0;
 
 
         public class ResouceQuantityTyps
@@ -29,12 +32,12 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             if (!GatherableResouces.Count.Equals(0))
                 {
                 FindObjectOfType<ResourceBuildingsManagment>().UpdateResouces += UpdateResouces;
-                }
+                }        
             }
 
         private void UpdateResouces(GameObject childBuilding)
             {
-            var selectedResouceInArea = GetComponent<ResourceBuildingBase>().GatherableResouceInArea[0].GetComponent<ResourceBase>();
+            var selectedResouceInArea = GetComponent<ResourceBuildingBase>().GatherableResouceInArea[selecedResource].GetComponent<ResourceBase>();
             if (selectedResouceInArea.QuantityOfTheResource <= 0)
                 {
                 FindObjectOfType<ResourceBuildingsManagment>().UpdateResouces -= UpdateResouces;
@@ -46,6 +49,11 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                 childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().GatheredResourcesOverall += 1;
                 childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().StortedResources += 1;
                 }
+            }
+
+        public void SetSelecedResource(int x)
+            {
+            this.selecedResource = x;
             }
 
         private List<ResouceQuantityTyps> GetResouceQuantityInArea(List<GameObject> gatherableResouceInArea)
@@ -89,7 +97,6 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                         }
                     }
                 }
-
             return resouceQuantityInArea;
             }
 

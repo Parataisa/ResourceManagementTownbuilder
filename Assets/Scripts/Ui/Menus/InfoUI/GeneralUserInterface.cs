@@ -24,5 +24,12 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             {
             selectedGameobject = gameObject;
             }
+        internal string GetObjectName(string name)
+            {
+            string[] BuildingNameArray = name.Split('-');
+            return BuildingNameArray[1].Split('(')[0];
+            }
+
+
         }
     }

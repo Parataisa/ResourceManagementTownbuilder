@@ -14,7 +14,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         public int WorkingPeopleCapacity;
         public int WorkingPeople;
         public event Action<GameObject> UpdateResouces;
-        public event System.Action<ResourceBuildingsManagment> ResourceQuantityDecrease;
+        public event Action<ResourceBuildingsManagment> ResourceQuantityDecrease;
 
         private void Start()
             {

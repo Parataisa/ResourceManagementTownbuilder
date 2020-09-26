@@ -24,7 +24,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     }
                 else
                     {
-                    if (!ObjectName.Equals(selectedGameobject.name))
+                    if (!ObjectName.Equals(GetObjectName(selectedGameobject.name)))
                         {
                         ObjectName = currentGameObjectScript.ResourceName;
                         this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);

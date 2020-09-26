@@ -41,8 +41,8 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         {
                         if (Input.GetMouseButtonDown(0) && ResouceBuildingUserInterface.activeSelf &&  hitInfo.transform.gameObject.layer == 9)
                             {
-                            OnClickInfoPanelToggled?.Invoke(parent);
                             BuildingInterfaceOnClick.SetActive(true);
+                            OnClickInfoPanelToggled?.Invoke(parent);
                             }
                         ResouceBuildingUserInterface.SetActive(true);
                         ResoucePatchUserInterface.SetActive(false);
@@ -53,8 +53,8 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         {
                         if (Input.GetMouseButtonDown(0) && SocialBuildingUserInterface.activeSelf && hitInfo.transform.gameObject.layer == 8)
                             {
-                            OnClickInfoPanelToggled?.Invoke(parent);
                             BuildingInterfaceOnClick.SetActive(true);
+                            OnClickInfoPanelToggled?.Invoke(parent);
                             }
                         SocialBuildingUserInterface.SetActive(true);
                         ResoucePatchUserInterface.SetActive(false);
