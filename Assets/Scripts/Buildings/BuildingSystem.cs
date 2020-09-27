@@ -1,9 +1,7 @@
 ﻿using Assets.Scripts.Buildings.ResourceBuildings;
 using Assets.Scripts.Buildings.SocialBuildings;
-using Assets.Scripts.TerrainGeneration;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -90,11 +88,15 @@ namespace Assets.Scripts.Buildings
         private void MoveCurrentObjectToMouse()
             {
             float gameObjectSizeOffsetY = currentPlaceableObject.transform.localScale.y / 2;
+            bool IsbuildingHit = false;
             GameObject[] hitObject;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hitInfo))
                 {
-                currentPlaceableObject.transform.position = hitInfo.point;
+                if (!IsbuildingHit)
+                    {
+                    currentPlaceableObject.transform.position = hitInfo.point;
+                    }
                 if (currentPlaceableObject.transform.position.y != gameObjectSizeOffsetY)
                     {
                     currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x, gameObjectSizeOffsetY, hitInfo.point.z);
@@ -117,6 +119,17 @@ namespace Assets.Scripts.Buildings
                         var hitobjectCollider = objectInList.GetComponent<BoxCollider>();
                         if (currentPlacableObjectCollider.bounds.Intersects(hitobjectCollider.bounds))
                             {
+                            if (hitobjectCollider.transform.gameObject.layer == 8 || hitobjectCollider.transform.gameObject.layer == 9)
+                                {
+                                if (currentPlaceableObject.GetComponent<IBuildings>().BuildingTyp == hitobjectCollider.gameObject.GetComponent<IBuildings>().BuildingTyp)
+                                    {
+                                    CouppleBuildingsWithEatchOther(currentPlaceableObject, hitobjectCollider);
+                                    objectPlacable = true;
+                                    IsbuildingHit = true;
+                                    currentPlaceableObject.GetComponent<Renderer>().material.color = currentPlaceableObject.GetComponent<IBuildings>().BuildingColor;
+                                    break;
+                                    }
+                                }
                             objectPlacable = false;
                             currentPlaceableObject.GetComponent<Renderer>().material.color = UnityEngine.Color.magenta;
                             break;
@@ -130,6 +143,33 @@ namespace Assets.Scripts.Buildings
                     }
                 }
             }
+        private void CouppleBuildingsWithEatchOther(GameObject c, BoxCollider h)
+            {
+            Vector3 worldPosition = new Vector3();
+            Plane plane = new Plane(Vector3.up, 0);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (plane.Raycast(ray, out float distance))
+                {
+                worldPosition = ray.GetPoint(distance);
+                }
+            if (h.transform.position.x < worldPosition.x && Enumerable.Range((int)(h.transform.position.z - (h.transform.lossyScale.z / 2)), (int)(h.transform.position.z + h.transform.lossyScale.z / 2)).Contains(Convert.ToInt32(worldPosition.z)))
+                {
+                c.transform.position = new Vector3(h.transform.position.x + h.transform.lossyScale.x / 2 + c.transform.lossyScale.x / 2, c.transform.position.y, h.transform.position.z);
+                }
+            else if (h.transform.position.z > worldPosition.z && Enumerable.Range((int)(h.transform.position.x - (h.transform.lossyScale.x / 2)), (int)(h.transform.position.x + h.transform.lossyScale.x / 2)).Contains(Convert.ToInt32(worldPosition.x)))
+                {
+                c.transform.position = new Vector3(h.transform.position.x, c.transform.position.y, h.transform.position.z - h.transform.lossyScale.x / 2 - c.transform.lossyScale.x / 2);
+                }
+            else if (h.transform.position.z < worldPosition.z && Enumerable.Range((int)(h.transform.position.x + (h.transform.lossyScale.x / 2)), (int)(h.transform.position.x - h.transform.lossyScale.x / 2)).Contains(Convert.ToInt32(worldPosition.x)))
+                {
+                c.transform.position = new Vector3(h.transform.position.x, c.transform.position.y, h.transform.position.z + h.transform.lossyScale.x / 2 + c.transform.lossyScale.x / 2);
+                }
+            else if (h.transform.position.x > worldPosition.x && Enumerable.Range((int)(h.transform.position.z + (h.transform.lossyScale.z / 2)), (int)(h.transform.position.z - h.transform.lossyScale.z / 2)).Contains(Convert.ToInt32(worldPosition.z)))
+                {
+                c.transform.position = new Vector3(h.transform.position.x - h.transform.lossyScale.x / 2 - c.transform.lossyScale.x / 2, c.transform.position.y, h.transform.position.z);
+                }
+            }
+
         private void ReleaseIfClicked()
             {
             if (Input.GetMouseButtonDown(0) && objectPlacable)
@@ -148,7 +188,7 @@ namespace Assets.Scripts.Buildings
                             }
                         }
                     GameObject[] hitBuildingArray = new GameObject[hitObjectCount];
-                    Array.Copy(gameObjectArray, hitBuildingArray, hitObjectCount);                  
+                    Array.Copy(gameObjectArray, hitBuildingArray, hitObjectCount);
                     if (currentPlaceableObject.name.Contains("Social"))
                         {
                         if (hitBuildingArray.Length == 0)

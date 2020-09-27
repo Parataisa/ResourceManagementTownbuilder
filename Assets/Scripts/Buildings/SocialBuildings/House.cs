@@ -11,6 +11,9 @@ namespace Assets.Scripts.Buildings.SocialBuildings
         {
         private Color color = new Color();
         public Color BuildingColor { get => color; }
+        public string BuildingTyp => this.GetType().Name;
+        public Vector3 BuildingPosition => this.gameObject.transform.position;
+        public Vector3 BuildingSize => this.gameObject.transform.lossyScale;
 
         private Color GetBuildingsColor()
             {
