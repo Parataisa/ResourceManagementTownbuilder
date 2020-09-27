@@ -64,6 +64,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                 {
                 resourceToSpawn.GetComponent<Transform>().transform.position = PositonOnTheMap;
                 spawnedPoints.Add(new Vector2(PositonOnTheMap.x, PositonOnTheMap.z), spawnPointArea);
+                resourceToSpawn.transform.parent = this.transform;
                 return true;
                 }
             else
@@ -78,10 +79,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                         Vector2 savedPointKey = new Vector2(savedPoint.Key.x, savedPoint.Key.y);
                         Vector3 savedPointValue = new Vector3(savedPoint.Value.x, 0, savedPoint.Value.y);
                         Rectangle savedArea = GetRectangle(savedPointValue, savedPointKey);
-
-
                         Rectangle newArea = GetRectangle(new Vector3(spawnPointArea.x, 0, spawnPointArea.y), new Vector2(PositonOnTheMap.x, PositonOnTheMap.z));
-
                         if (!newArea.IntersectsWith(savedArea) && PositonOnTheMap.x < 256 - spawnPointArea.x / 2 && PositonOnTheMap.z < 256 - spawnPointArea.y / 2)
                             {
                             loopcount++;
@@ -90,6 +88,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                                 resourceToSpawn.GetComponent<Transform>().transform.position = PositonOnTheMap;
                                 resourceToSpawn.GetComponent<ResourceBase>().PositionOnTheMap = PositonOnTheMap;
                                 spawnedPoints.Add(new Vector2(PositonOnTheMap.x, PositonOnTheMap.z), spawnPointArea);
+                                resourceToSpawn.transform.parent = this.transform;
                                 points.Remove(PositonOnTheMap);
                                 return true;
                                 }
@@ -117,7 +116,6 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
             Vector3 sizeOfTheModel = scriptOfTheResource.SizeOfTheModel;
             Vector2 area = scriptOfTheResource.AreaOfTheResource;
             GameObject child = scriptOfTheResource.transform.GetChild(0).gameObject;
-
             List<Rectangle> AreasOfChildObjects = new List<Rectangle>();
 
             for (int i = 0; i < size; i++)
@@ -161,6 +159,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                         }
                     }
                 }
+            
             Destroy(child);
             scriptOfTheResource.SizeOfTheResource = AreasOfChildObjects.Count;
             }
