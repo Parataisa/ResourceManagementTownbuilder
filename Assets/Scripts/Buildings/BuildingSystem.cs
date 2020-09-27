@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Buildings.ResourceBuildings;
+﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using Assets.Scripts.Buildings.ResourceBuildings;
 using Assets.Scripts.Buildings.SocialBuildings;
 using System;
 using System.Collections.Generic;
@@ -62,12 +63,10 @@ namespace Assets.Scripts.Buildings
 
             if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
                 {
-                MoveCurrentObjectToMouse();
-                DrawCircle(currentPlaceableObject, ResourceBuildingBase.ResourceCollectingRadius);
-                ReleaseIfClicked();
+                DrawGatheringCircle.DrawCircle(currentPlaceableObject, ResourceBuildingBase.ResourceCollectingRadius);
+                ReleaseIfClicked(MoveCurrentObjectToMouse().Item1, MoveCurrentObjectToMouse().Item2);
                 }
             }
-
         public void OnButtonClick(int buildingId)
             {
             if (currentPlaceableObject != null)
@@ -77,7 +76,6 @@ namespace Assets.Scripts.Buildings
                 return;
                 }
             currentPlaceableObject = Instantiate(placeableObjectPrefabs[buildingId]);
-
             }
         public void ClearCurser()
             {
@@ -85,7 +83,7 @@ namespace Assets.Scripts.Buildings
             currentPlaceableObject = null;
             }
 
-        private void MoveCurrentObjectToMouse()
+        private Tuple<bool, GameObject> MoveCurrentObjectToMouse()
             {
             float gameObjectSizeOffsetY = currentPlaceableObject.transform.localScale.y / 2;
             bool IsbuildingHit = false;
@@ -105,7 +103,8 @@ namespace Assets.Scripts.Buildings
                 if (hitObject[0] == null)
                     {
                     objectPlacable = true;
-                    currentPlaceableObject.GetComponent<Renderer>().material.color = currentPlaceableObject.GetComponent<IBuildings>().BuildingColor;
+                    IsbuildingHit = false;
+                    BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
                     }
                 else
                     {
@@ -123,54 +122,67 @@ namespace Assets.Scripts.Buildings
                                 {
                                 if (currentPlaceableObject.GetComponent<IBuildings>().BuildingTyp == hitobjectCollider.gameObject.GetComponent<IBuildings>().BuildingTyp)
                                     {
-                                    CouppleBuildingsWithEatchOther(currentPlaceableObject, hitobjectCollider);
+                                    IsbuildingHit = CouplingBuildingsWithEatchOther(currentPlaceableObject, hitobjectCollider.gameObject).Item1;
                                     objectPlacable = true;
-                                    IsbuildingHit = true;
-                                    currentPlaceableObject.GetComponent<Renderer>().material.color = currentPlaceableObject.GetComponent<IBuildings>().BuildingColor;
-                                    break;
+                                    BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
+                                    return Tuple.Create(IsbuildingHit, hitobjectCollider.gameObject);
+                                    }
+                                else
+                                    {
+                                    objectPlacable = false;
+                                    BuildingColoringSystem.SetColorForCollisions(currentPlaceableObject, Color.magenta);
+                                    return Tuple.Create(IsbuildingHit, hitobjectCollider.gameObject);
                                     }
                                 }
-                            objectPlacable = false;
-                            currentPlaceableObject.GetComponent<Renderer>().material.color = UnityEngine.Color.magenta;
-                            break;
+                            else
+                                {
+                                objectPlacable = false;
+                                BuildingColoringSystem.SetColorForCollisions(currentPlaceableObject, Color.magenta);
+                                return Tuple.Create(IsbuildingHit, hitobjectCollider.gameObject);
+                                }
                             }
                         else
                             {
                             objectPlacable = true;
-                            currentPlaceableObject.GetComponent<Renderer>().material.color = currentPlaceableObject.GetComponent<IBuildings>().BuildingColor;
+                            BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
                             }
                         }
                     }
                 }
+            return Tuple.Create(IsbuildingHit, currentPlaceableObject);
             }
-        private void CouppleBuildingsWithEatchOther(GameObject c, BoxCollider h)
+        private Tuple<bool, GameObject> CouplingBuildingsWithEatchOther(GameObject c, GameObject h)
             {
-            Vector3 worldPosition = new Vector3();
+            Vector3 MouseCurserWorldPosition = new Vector3();
             Plane plane = new Plane(Vector3.up, 0);
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (plane.Raycast(ray, out float distance))
                 {
-                worldPosition = ray.GetPoint(distance);
+                MouseCurserWorldPosition = ray.GetPoint(distance);
                 }
-            if (h.transform.position.x < worldPosition.x && Enumerable.Range((int)(h.transform.position.z - (h.transform.lossyScale.z / 2)), (int)(h.transform.position.z + h.transform.lossyScale.z / 2)).Contains(Convert.ToInt32(worldPosition.z)))
+            if (BuildingSystemHitChecker.NorthHitCheck(h, MouseCurserWorldPosition))
                 {
-                c.transform.position = new Vector3(h.transform.position.x + h.transform.lossyScale.x / 2 + c.transform.lossyScale.x / 2, c.transform.position.y, h.transform.position.z);
+                SetBuildingCouplingPosition.MoveBuildingToTheNorth(c, h);
+                return Tuple.Create(true, h);
                 }
-            else if (h.transform.position.z > worldPosition.z && Enumerable.Range((int)(h.transform.position.x - (h.transform.lossyScale.x / 2)), (int)(h.transform.position.x + h.transform.lossyScale.x / 2)).Contains(Convert.ToInt32(worldPosition.x)))
+            else if (BuildingSystemHitChecker.EastHitCheck(h, MouseCurserWorldPosition))
                 {
-                c.transform.position = new Vector3(h.transform.position.x, c.transform.position.y, h.transform.position.z - h.transform.lossyScale.x / 2 - c.transform.lossyScale.x / 2);
+                SetBuildingCouplingPosition.MoveBuildingToTheEast(c, h);
+                return Tuple.Create(true, h);
                 }
-            else if (h.transform.position.z < worldPosition.z && Enumerable.Range((int)(h.transform.position.x + (h.transform.lossyScale.x / 2)), (int)(h.transform.position.x - h.transform.lossyScale.x / 2)).Contains(Convert.ToInt32(worldPosition.x)))
+            else if (BuildingSystemHitChecker.SouthHitCheck(h, MouseCurserWorldPosition))
                 {
-                c.transform.position = new Vector3(h.transform.position.x, c.transform.position.y, h.transform.position.z + h.transform.lossyScale.x / 2 + c.transform.lossyScale.x / 2);
+                SetBuildingCouplingPosition.MoveBuildingToTheSouth(c, h);
+                return Tuple.Create(true, h);
                 }
-            else if (h.transform.position.x > worldPosition.x && Enumerable.Range((int)(h.transform.position.z + (h.transform.lossyScale.z / 2)), (int)(h.transform.position.z - h.transform.lossyScale.z / 2)).Contains(Convert.ToInt32(worldPosition.z)))
+            else if (BuildingSystemHitChecker.WestHitCheck(h, MouseCurserWorldPosition))
                 {
-                c.transform.position = new Vector3(h.transform.position.x - h.transform.lossyScale.x / 2 - c.transform.lossyScale.x / 2, c.transform.position.y, h.transform.position.z);
+                SetBuildingCouplingPosition.MoveBuildingToTheWest(c, h);
+                return Tuple.Create(true, h);
                 }
+            return Tuple.Create(false, h);
             }
-
-        private void ReleaseIfClicked()
+        private void ReleaseIfClicked(bool IsbuildingHit, GameObject hitBuilding)
             {
             if (Input.GetMouseButtonDown(0) && objectPlacable)
                 {
@@ -193,7 +205,7 @@ namespace Assets.Scripts.Buildings
                         {
                         if (hitBuildingArray.Length == 0)
                             {
-                            CreateSocialBuilding(false, null);
+                            CreateSocialBuilding(IsbuildingHit, null);
                             return;
                             }
                         int x = 1;
@@ -201,12 +213,12 @@ namespace Assets.Scripts.Buildings
                             {
                             if (child.name != currentPlaceableObject.name && x >= hitBuildingArray.Length)
                                 {
-                                CreateSocialBuilding(false, null);
+                                CreateSocialBuilding(IsbuildingHit, null);
                                 break;
                                 }
                             else if (child.name == currentPlaceableObject.name)
                                 {
-                                CreateSocialBuilding(true, hitBuildingArray[x - 1].transform.parent.gameObject);
+                                CreateSocialBuilding(IsbuildingHit, hitBuilding.transform.parent.gameObject);
                                 break;
                                 }
                             else
@@ -220,7 +232,7 @@ namespace Assets.Scripts.Buildings
                         {
                         if (hitBuildingArray.Length == 0)
                             {
-                            CreateResouceBuilding(false, null);
+                            CreateResouceBuilding(IsbuildingHit, null);
                             return;
                             }
                         int x = 1;
@@ -228,12 +240,12 @@ namespace Assets.Scripts.Buildings
                             {
                             if (child.name != currentPlaceableObject.name && x >= hitBuildingArray.Length)
                                 {
-                                CreateResouceBuilding(false, null);
+                                CreateResouceBuilding(IsbuildingHit, null);
                                 break;
                                 }
                             else if (child.name == currentPlaceableObject.name)
                                 {
-                                CreateResouceBuilding(true, hitBuildingArray[x - 1].transform.parent.gameObject);
+                                CreateResouceBuilding(IsbuildingHit, hitBuilding.transform.parent.gameObject);
                                 break;
                                 }
                             else
@@ -293,8 +305,8 @@ namespace Assets.Scripts.Buildings
             }
         private GameObject[] ScannForObjectsInArea(RaycastHit hitInfo, bool buildingScann)
             {
-            Collider[] collidersInArea = new Collider[100];
-            int collisions = Physics.OverlapSphereNonAlloc(hitInfo.point, 15, collidersInArea);
+            Collider[] collidersInArea = new Collider[20];
+            int collisions = Physics.OverlapSphereNonAlloc(hitInfo.point, 1, collidersInArea);
             GameObject[] gameObjectArray = new GameObject[collisions];
             if (collisions <= 2)
                 {
@@ -334,33 +346,5 @@ namespace Assets.Scripts.Buildings
                 }
             return gameObjectArray;
             }
-        private static void DrawCircle(GameObject container, float radius, float lineWidth = 0.2f)
-            {
-            var segments = 360;
-            if (container.GetComponent<LineRenderer>() == null)
-                {
-                container.AddComponent<LineRenderer>();
-                }
-            else
-                {
-                var line = container.GetComponent<LineRenderer>();
-                line.useWorldSpace = false;
-                line.startWidth = lineWidth;
-                line.endWidth = lineWidth;
-                line.positionCount = segments + 1;
-
-                var pointCount = segments + 1;
-                var points = new Vector3[pointCount];
-
-                for (int i = 0; i < pointCount; i++)
-                    {
-                    var rad = Mathf.Deg2Rad * (i * 360f / segments);
-                    points[i] = new Vector3(Mathf.Sin(rad) * radius, 0, Mathf.Cos(rad) * radius);
-                    }
-
-                line.SetPositions(points);
-                }
-            }
         }
-
     }

@@ -16,7 +16,6 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         public Vector3 BuildingPosition;
         public int selecedResource = 0;
 
-
         public class ResouceQuantityTyps
             {
             public GameObject resoucePatch;
