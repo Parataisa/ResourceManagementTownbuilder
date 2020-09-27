@@ -10,14 +10,15 @@ public class MeshGenerator : MonoBehaviour
     int[] triangles;
     private readonly int xSize = 256;
     private readonly int zSize = 256;
-
     public event Action MapGeneratedEvent;
 
     void Start()
         {
+        int i = transform.parent.transform.childCount - 1;
+        this.gameObject.name = this.gameObject.name + "-" + i;
         mesh = new Mesh
             {
-            name = "mainMapMesh"
+            name = "MapMesh-" + i
             };
         GetComponent<MeshFilter>().mesh = mesh;
         GetComponentInChildren<ResourceGenerator>().terrainMesh = mesh;

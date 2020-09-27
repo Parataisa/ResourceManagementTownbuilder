@@ -14,10 +14,14 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
         public int NumberOfResources = 10;
         public Mesh terrainMesh;
         public event System.Action<ResourceBase> ResourceSuccessfullyGenerated;
+        public static Object[] subListObjects;
 
         public void Start()
             {
-            Object[] subListObjects = Resources.LoadAll("GameObjects/GatherableResources/ResourceVariationen", typeof(GameObject));
+            if (subListObjects == null)
+                {
+                subListObjects = Resources.LoadAll("GameObjects/GatherableResources/ResourceVariationen", typeof(GameObject));
+                }
             foreach (GameObject ResourcePrefab in subListObjects)
                 {
                 ResourcePrefabs.Add(ResourcePrefab);
