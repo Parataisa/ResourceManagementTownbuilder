@@ -99,7 +99,7 @@ namespace Assets.Scripts.Buildings
                     {
                     currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x, gameObjectSizeOffsetY, hitInfo.point.z);
                     }
-                hitObject = ScannForObjectsInArea(hitInfo);
+                hitObject = ScannForObjectsInArea(hitInfo, 4);
                 if (hitObject[0] == null)
                     {
                     objectPlacable = true;
@@ -108,21 +108,21 @@ namespace Assets.Scripts.Buildings
                     }
                 else
                     {
-                    var currentPlacableObjectCollider = currentPlaceableObject.GetComponent<BoxCollider>();
-                    foreach (var objectInList in hitObject)
+                    BoxCollider currentPlacableObjectCollider = currentPlaceableObject.GetComponent<BoxCollider>();
+                    foreach (var hitObjectInList in hitObject)
                         {
-                        if (objectInList == null)
+                        if (hitObjectInList == null)
                             {
                             break;
                             }
-                        var hitobjectCollider = objectInList.GetComponent<BoxCollider>();
+                        BoxCollider hitobjectCollider = hitObjectInList.GetComponent<BoxCollider>();
                         if (currentPlacableObjectCollider.bounds.Intersects(hitobjectCollider.bounds))
                             {
                             if (hitobjectCollider.transform.gameObject.layer == 8 || hitobjectCollider.transform.gameObject.layer == 9)
                                 {
                                 if (currentPlaceableObject.GetComponent<IBuildings>().BuildingTyp == hitobjectCollider.gameObject.GetComponent<IBuildings>().BuildingTyp)
                                     {
-                                    IsbuildingHit = CouplingBuildingsWithEatchOther(currentPlaceableObject, hitobjectCollider.gameObject).Item1;
+                                    IsbuildingHit = CouplingBuildingsWithEatchOther(currentPlaceableObject, hitobjectCollider.gameObject);
                                     objectPlacable = true;
                                     BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
                                     return Tuple.Create(IsbuildingHit, hitobjectCollider.gameObject);
@@ -151,7 +151,7 @@ namespace Assets.Scripts.Buildings
                 }
             return Tuple.Create(IsbuildingHit, currentPlaceableObject);
             }
-        private Tuple<bool, GameObject> CouplingBuildingsWithEatchOther(GameObject c, GameObject h)
+        private bool CouplingBuildingsWithEatchOther(GameObject c, GameObject h)
             {
             Vector3 MouseCurserWorldPosition = new Vector3();
             Plane plane = new Plane(Vector3.up, 0);
@@ -163,24 +163,24 @@ namespace Assets.Scripts.Buildings
             if (BuildingSystemHitChecker.NorthHitCheck(h, MouseCurserWorldPosition))
                 {
                 SetBuildingCouplingPosition.MoveBuildingToTheNorth(c, h);
-                return Tuple.Create(true, h);
+                return true;
                 }
             else if (BuildingSystemHitChecker.EastHitCheck(h, MouseCurserWorldPosition))
                 {
                 SetBuildingCouplingPosition.MoveBuildingToTheEast(c, h);
-                return Tuple.Create(true, h);
+                return true;
                 }
             else if (BuildingSystemHitChecker.SouthHitCheck(h, MouseCurserWorldPosition))
                 {
                 SetBuildingCouplingPosition.MoveBuildingToTheSouth(c, h);
-                return Tuple.Create(true, h);
+                return true;
                 }
             else if (BuildingSystemHitChecker.WestHitCheck(h, MouseCurserWorldPosition))
                 {
                 SetBuildingCouplingPosition.MoveBuildingToTheWest(c, h);
-                return Tuple.Create(true, h);
+                return true;
                 }
-            return Tuple.Create(false, h);
+            return false;
             }
         private void CreateBuildingIfClicked(bool IsbuildingHit, GameObject hitBuilding)
             {
@@ -255,10 +255,10 @@ namespace Assets.Scripts.Buildings
             currentPlaceableObject = null;
             }
 
-        private GameObject[] ScannForObjectsInArea(RaycastHit hitInfo)
+        private GameObject[] ScannForObjectsInArea(RaycastHit hitInfo, int scannRadius)
             {
             Collider[] collidersInArea = new Collider[20];
-            int collisions = Physics.OverlapSphereNonAlloc(hitInfo.point, 4, collidersInArea);
+            int collisions = Physics.OverlapSphereNonAlloc(hitInfo.point, scannRadius, collidersInArea);
             GameObject[] gameObjectArray = new GameObject[collisions];
             if (collisions <= 2)
                 {

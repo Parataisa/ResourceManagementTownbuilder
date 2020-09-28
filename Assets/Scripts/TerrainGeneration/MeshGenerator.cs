@@ -11,16 +11,19 @@ public class MeshGenerator : MonoBehaviour
     private readonly int xSize = 256;
     private readonly int zSize = 256;
     public event Action MapGeneratedEvent;
+    public Vector3 MeshPosition;
+    static int NumberOfMashes = 0;
 
     void Start()
         {
-        int i = transform.parent.transform.childCount - 1;
-        this.gameObject.name = this.gameObject.name + "-" + i;
+        this.gameObject.name = this.gameObject.name + "-" + NumberOfMashes;
         mesh = new Mesh
             {
-            name = "MapMesh-" + i
+            name = "MapMesh-" + NumberOfMashes
             };
+        NumberOfMashes++;
         GetComponent<MeshFilter>().mesh = mesh;
+        GetComponent<Transform>().position = MeshPosition;
         GetComponentInChildren<ResourceGenerator>().terrainMesh = mesh;
         CreateShape();
         UpdadeMesh();

@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 650232112711976173}
   - component: {fileID: 650232112711976169}
   m_Layer: 11
-  m_Name: TerrainMeshGenerator
+  m_Name: MeshGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93,6 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50518ed871e0d36409884659ce02fa4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MeshPosition: {x: 0, y: 0, z: 0}
 --- !u!33 &650232112711976172
 MeshFilter:
   m_ObjectHideFlags: 0

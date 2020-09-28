@@ -9,7 +9,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
         {
         public static List<GameObject> ResourcePrefabs = new List<GameObject>();
         private static readonly Dictionary<Vector2, Vector2> spawnedPoints = new Dictionary<Vector2, Vector2>();
-        private static readonly Dictionary<Vector2, Vector2> points = new Dictionary<Vector2, Vector2>();
+        private readonly Dictionary<Vector2, Vector2> points = new Dictionary<Vector2, Vector2>();
         public int numberOfIterationen = 20;
         public int NumberOfResources = 10;
         public Mesh terrainMesh;
@@ -34,7 +34,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
 
         private void GenerateResource(GameObject resourceType)
             {
-            var resourceToSpawn = Instantiate<GameObject>(resourceType);
+            var resourceToSpawn = Instantiate<GameObject>(resourceType, transform.parent.transform);
             var scriptOfTheResource = resourceToSpawn.GetComponent<ResourceBase>();
             scriptOfTheResource.GetComponent<ResourceBase>().SizeOfTheModel = resourceType.gameObject.transform.localScale;
             FindObjectOfType<ResourceBase>(resourceToSpawn).ChooseLocationEvent += SetLocationOfTheResource;
@@ -62,9 +62,9 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
             {
             if (spawnedPoints.Count == 0)
                 {
-                resourceToSpawn.GetComponent<Transform>().transform.position = PositonOnTheMap;
+                resourceToSpawn.GetComponent<Transform>().transform.localPosition = PositonOnTheMap;
                 spawnedPoints.Add(new Vector2(PositonOnTheMap.x, PositonOnTheMap.z), spawnPointArea);
-                resourceToSpawn.transform.parent = this.transform;
+                resourceToSpawn.transform.parent = transform.parent;
                 return true;
                 }
             else
@@ -85,10 +85,10 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                             loopcount++;
                             if (loopcount == spawnedPoints.Count)
                                 {
-                                resourceToSpawn.GetComponent<Transform>().transform.position = PositonOnTheMap;
+                                resourceToSpawn.transform.parent = transform.parent;
+                                resourceToSpawn.GetComponent<Transform>().transform.localPosition = PositonOnTheMap;
                                 resourceToSpawn.GetComponent<ResourceBase>().PositionOnTheMap = PositonOnTheMap;
                                 spawnedPoints.Add(new Vector2(PositonOnTheMap.x, PositonOnTheMap.z), spawnPointArea);
-                                resourceToSpawn.transform.parent = this.transform;
                                 points.Remove(PositonOnTheMap);
                                 return true;
                                 }
