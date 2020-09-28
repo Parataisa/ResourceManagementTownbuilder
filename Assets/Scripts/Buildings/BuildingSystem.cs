@@ -64,7 +64,7 @@ namespace Assets.Scripts.Buildings
             if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
                 {
                 DrawGatheringCircle.DrawCircle(currentPlaceableObject, ResourceBuildingBase.ResourceCollectingRadius);
-                ReleaseIfClicked(MoveCurrentObjectToMouse().Item1, MoveCurrentObjectToMouse().Item2);
+                CreateBuildingIfClicked(MoveCurrentObjectToMouse().Item1, MoveCurrentObjectToMouse().Item2);
                 }
             }
         public void OnButtonClick(int buildingId)
@@ -182,83 +182,35 @@ namespace Assets.Scripts.Buildings
                 }
             return Tuple.Create(false, h);
             }
-        private void ReleaseIfClicked(bool IsbuildingHit, GameObject hitBuilding)
+        private void CreateBuildingIfClicked(bool IsbuildingHit, GameObject hitBuilding)
             {
             if (Input.GetMouseButtonDown(0) && objectPlacable)
                 {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hitInfo))
+                if (currentPlaceableObject.name.Contains("Social"))
                     {
-                    _ = new GameObject[20];
-                    GameObject[] gameObjectArray = ScannForObjectsInArea(hitInfo, true);
-                    int hitObjectCount = 0;
-                    foreach (var hitObject in gameObjectArray)
+                    if (!IsbuildingHit)
                         {
-                        if (hitObject != null)
-                            {
-                            hitObjectCount++;
-                            }
+                        CreateSocialBuilding(IsbuildingHit, null);
                         }
-                    GameObject[] hitBuildingArray = new GameObject[hitObjectCount];
-                    Array.Copy(gameObjectArray, hitBuildingArray, hitObjectCount);
-                    if (currentPlaceableObject.name.Contains("Social"))
+                    else if (IsbuildingHit)
                         {
-                        if (hitBuildingArray.Length == 0)
-                            {
-                            CreateSocialBuilding(IsbuildingHit, null);
-                            return;
-                            }
-                        int x = 1;
-                        foreach (GameObject child in hitBuildingArray)
-                            {
-                            if (child.name != currentPlaceableObject.name && x >= hitBuildingArray.Length)
-                                {
-                                CreateSocialBuilding(IsbuildingHit, null);
-                                break;
-                                }
-                            else if (child.name == currentPlaceableObject.name)
-                                {
-                                CreateSocialBuilding(IsbuildingHit, hitBuilding.transform.parent.gameObject);
-                                break;
-                                }
-                            else
-                                {
-                                x++;
-                                continue;
-                                }
-                            }
+                        CreateSocialBuilding(IsbuildingHit, hitBuilding.transform.parent.gameObject);
                         }
-                    else if (currentPlaceableObject.name.Contains("Resouce"))
+                    }
+                else if (currentPlaceableObject.name.Contains("Resouce"))
+                    {
+                    if (!IsbuildingHit)
                         {
-                        if (hitBuildingArray.Length == 0)
-                            {
-                            CreateResouceBuilding(IsbuildingHit, null);
-                            return;
-                            }
-                        int x = 1;
-                        foreach (GameObject child in hitBuildingArray)
-                            {
-                            if (child.name != currentPlaceableObject.name && x >= hitBuildingArray.Length)
-                                {
-                                CreateResouceBuilding(IsbuildingHit, null);
-                                break;
-                                }
-                            else if (child.name == currentPlaceableObject.name)
-                                {
-                                CreateResouceBuilding(IsbuildingHit, hitBuilding.transform.parent.gameObject);
-                                break;
-                                }
-                            else
-                                {
-                                x++;
-                                continue;
-                                }
-                            }
+                        CreateResouceBuilding(IsbuildingHit, null);
+                        return;
+                        }
+                    else if (IsbuildingHit)
+                        {
+                        CreateResouceBuilding(IsbuildingHit, hitBuilding.transform.parent.gameObject);
                         }
                     }
                 }
             }
-
         private void CreateResouceBuilding(bool sameBuildingTypeNearby, GameObject parent)
             {
             currentPlaceableObject.layer = 9;
@@ -306,7 +258,7 @@ namespace Assets.Scripts.Buildings
         private GameObject[] ScannForObjectsInArea(RaycastHit hitInfo, bool buildingScann)
             {
             Collider[] collidersInArea = new Collider[20];
-            int collisions = Physics.OverlapSphereNonAlloc(hitInfo.point, 1, collidersInArea);
+            int collisions = Physics.OverlapSphereNonAlloc(hitInfo.point, 4, collidersInArea);
             GameObject[] gameObjectArray = new GameObject[collisions];
             if (collisions <= 2)
                 {
