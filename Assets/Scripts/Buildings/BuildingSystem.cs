@@ -99,7 +99,7 @@ namespace Assets.Scripts.Buildings
                     {
                     currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x, gameObjectSizeOffsetY, hitInfo.point.z);
                     }
-                hitObject = ScannForObjectsInArea(hitInfo, false);
+                hitObject = ScannForObjectsInArea(hitInfo);
                 if (hitObject[0] == null)
                     {
                     objectPlacable = true;
@@ -233,7 +233,6 @@ namespace Assets.Scripts.Buildings
             Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
             currentPlaceableObject = null;
             }
-
         private void CreateSocialBuilding(bool sameBuildingTypeNearby, GameObject parent)
             {
             currentPlaceableObject.layer = 8;
@@ -255,7 +254,8 @@ namespace Assets.Scripts.Buildings
             Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
             currentPlaceableObject = null;
             }
-        private GameObject[] ScannForObjectsInArea(RaycastHit hitInfo, bool buildingScann)
+
+        private GameObject[] ScannForObjectsInArea(RaycastHit hitInfo)
             {
             Collider[] collidersInArea = new Collider[20];
             int collisions = Physics.OverlapSphereNonAlloc(hitInfo.point, 4, collidersInArea);
@@ -270,25 +270,10 @@ namespace Assets.Scripts.Buildings
                 if (collider == null)
                     {
                     return gameObjectArray;
-                    }
-                if (buildingScann && (collider.gameObject.layer == 8 || collider.gameObject.layer == 9))
+                    }           
+                if (collider.gameObject.layer == 8 || collider.gameObject.layer == 9 || collider.gameObject.layer == 10)
                     {
-                    GameObject parent = collider.transform.parent.gameObject;
-                    if (gameObjectArray.Contains(parent))
-                        continue;
-                    else
-                        {
-                        if (i > 40)
-                            {
-                            return gameObjectArray;
-                            }
-                        gameObjectArray[i] = collider.gameObject;
-                        i++;
-                        }
-                    }
-                else if (!buildingScann && (collider.gameObject.layer == 8 || collider.gameObject.layer == 9 || collider.gameObject.layer == 10))
-                    {
-                    if (i > 40)
+                    if (i > 20)
                         {
                         return gameObjectArray;
                         }
