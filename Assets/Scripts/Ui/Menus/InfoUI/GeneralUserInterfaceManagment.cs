@@ -11,6 +11,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         public GameObject ResouceBuildingUserInterface;
         public GameObject SocialBuildingUserInterface;
         public GameObject ResourceBuildingInterfaceOnClick;
+        public GameObject SocialBuildingInterfaceOnClick;
         public EventSystem EventSystem;
         public event Action<GameObject> ShortInfoPanelToggeled;
         public event Action<GameObject> OnClickInfoPanelToggled;
@@ -26,6 +27,10 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 if (ResourceBuildingInterfaceOnClick.activeSelf == true && Input.GetMouseButtonDown(0) && !EventSystem.IsPointerOverGameObject()) 
                     {
                     ResourceBuildingInterfaceOnClick.SetActive(false);
+                    }    
+                if (SocialBuildingInterfaceOnClick.activeSelf == true && Input.GetMouseButtonDown(0) && !EventSystem.IsPointerOverGameObject()) 
+                    {
+                    SocialBuildingInterfaceOnClick.SetActive(false);
                     }
                 if (hitInfo.transform.gameObject.layer == 8 || hitInfo.transform.gameObject.layer == 9 || hitInfo.transform.gameObject.layer == 10)
                     {
@@ -42,6 +47,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         if (Input.GetMouseButtonDown(0) && ResouceBuildingUserInterface.activeSelf &&  hitInfo.transform.gameObject.layer == 9)
                             {
                             ResourceBuildingInterfaceOnClick.SetActive(true);
+                            SocialBuildingInterfaceOnClick.SetActive(false);
                             OnClickInfoPanelToggled?.Invoke(parent);
                             }
                         ResouceBuildingUserInterface.SetActive(true);
@@ -53,8 +59,9 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         {
                         if (Input.GetMouseButtonDown(0) && SocialBuildingUserInterface.activeSelf && hitInfo.transform.gameObject.layer == 8)
                             {
-                           // ResourceBuildingInterfaceOnClick.SetActive(true);
-                           // OnClickInfoPanelToggled?.Invoke(parent);
+                            SocialBuildingInterfaceOnClick.SetActive(true);
+                            ResourceBuildingInterfaceOnClick.SetActive(false);
+                            OnClickInfoPanelToggled?.Invoke(parent);
                             }
                         SocialBuildingUserInterface.SetActive(true);
                         ResoucePatchUserInterface.SetActive(false);
