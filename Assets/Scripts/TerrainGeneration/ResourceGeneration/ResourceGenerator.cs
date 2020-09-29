@@ -8,7 +8,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
     class ResourceGenerator : MonoBehaviour
         {
         public static List<GameObject> ResourcePrefabs = new List<GameObject>();
-        private static readonly Dictionary<Vector2, Vector2> spawnedPoints = new Dictionary<Vector2, Vector2>();
+        private readonly Dictionary<Vector2, Vector2> spawnedPoints = new Dictionary<Vector2, Vector2>();
         private readonly Dictionary<Vector2, Vector2> points = new Dictionary<Vector2, Vector2>();
         public int numberOfIterationen = 20;
         public int NumberOfResources = 10;

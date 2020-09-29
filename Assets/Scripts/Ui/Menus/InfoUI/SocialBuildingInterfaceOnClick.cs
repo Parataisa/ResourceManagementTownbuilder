@@ -9,6 +9,10 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         internal GameObject savedeGameObject;
         internal string ObjectName = "";
 
+        private void Awake()
+            {
+            FindObjectOfType<GeneralUserInterfaceManagment>().OnClickInfoPanelToggled += GetGameObject;
+            }
         private void Start()
             {
             savedeGameObject = selectedGameobject;

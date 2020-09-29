@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Ui.Menus.InfoUI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -19,37 +20,80 @@ namespace Assets.Scripts.TerrainGeneration
             }
         public void GenerateNewMesh(int side)
             {
-            //GameObject mesh = ;//Add Button to some ExploreBuilding which konw on which mesh it stands on
-            Vector3 vector3 = GetSpawnPoint(side, mesh);//new Vector3(0, 0, 254);
-            WorldMeshesPointList.Add(vector3);
+            GameObject mesh = FindObjectOfType<SocialBuildingInterfaceOnClick>().selectedGameobject.transform.parent.gameObject; 
+            Vector3 NewMeshSpawnPosition = GetSpawnPoint(side, mesh);
+            if (NewMeshSpawnPosition == mesh.transform.position)
+                {
+                Debug.Log("At this Location is already a Mesh");
+                return;
+                }
+            WorldMeshesPointList.Add(NewMeshSpawnPosition);
             GameObject newMesh = Instantiate(MeshGenerator);
             newMesh.transform.parent = transform;
             newMesh.name = GetName(newMesh.name);
-            newMesh.GetComponent<MeshGenerator>().MeshPosition = vector3;
+            newMesh.GetComponent<MeshGenerator>().MeshPosition = NewMeshSpawnPosition;
             }
 
 
         private Vector3 GetSpawnPoint(int side, GameObject mesh)
             {
             Vector3 worldPoint = new Vector3();
+            worldPoint = mesh.transform.position;
             if (side == 0)
                 {
                 worldPoint.z += ZMapSize;
+                if (!CheckIfPositionIsFree(worldPoint))
+                    {
+                    worldPoint.z -= ZMapSize;
+                    return worldPoint;
+                    }
                 }
             else if (side == 1)
                 {
                 worldPoint.x += XMapSize;
+                if (!CheckIfPositionIsFree(worldPoint))
+                    {
+                    worldPoint.x -= XMapSize;
+                    return worldPoint;
+                    }
                 }
             else if (side == 2)
                 {
                 worldPoint.z -= ZMapSize;
+                if (!CheckIfPositionIsFree(worldPoint))
+                    {
+                    worldPoint.z += ZMapSize;
+                    return worldPoint;
+                    }
                 }
             else if (side == 3)
                 {
                 worldPoint.x -= XMapSize;
+                if (!CheckIfPositionIsFree(worldPoint))
+                    {
+                    worldPoint.x += XMapSize;
+                    return worldPoint;
+                    }
                 }
             return worldPoint;
            }
+
+        private bool CheckIfPositionIsFree(Vector3 worldPoint)
+            {
+            foreach (var savedPoint in WorldMeshesPointList)
+                {
+                if (savedPoint != worldPoint)
+                    {                
+                    continue;
+                    }
+                else if (savedPoint == worldPoint)
+                    {
+                    return false;
+                    }
+                return true;
+                }
+            return true;
+            }
 
         private string GetName(string name)
             {
