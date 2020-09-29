@@ -16,7 +16,8 @@ namespace Assets.Scripts.TerrainGeneration
         private void Start()
             {
             XMapSize = MeshGenerator.GetComponent<MeshGenerator>().xSize;   
-            ZMapSize = MeshGenerator.GetComponent<MeshGenerator>().zSize - 2;   
+            ZMapSize = MeshGenerator.GetComponent<MeshGenerator>().zSize - 2;
+            WorldMeshesPointList.Add(Vector3.zero);
             }
         public void GenerateNewMesh(int side)
             {
