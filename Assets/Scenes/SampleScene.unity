@@ -6112,6 +6112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MeshGenerator: {fileID: 650232112711976174, guid: 9d31589c18cb4f345bd08bd159714289,
     type: 3}
+  mesh: {fileID: 0}
 --- !u!1 &2019582066
 GameObject:
   m_ObjectHideFlags: 0

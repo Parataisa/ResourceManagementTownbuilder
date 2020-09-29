@@ -3,7 +3,6 @@ using Assets.Scripts.Buildings.ResourceBuildings;
 using Assets.Scripts.Buildings.SocialBuildings;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -64,9 +63,23 @@ namespace Assets.Scripts.Buildings
             if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
                 {
                 DrawGatheringCircle.DrawCircle(currentPlaceableObject, ResourceBuildingBase.ResourceCollectingRadius);
-                CreateBuildingIfClicked(MoveCurrentObjectToMouse().Item1, MoveCurrentObjectToMouse().Item2);
+                CreateBuildingIfClicked(MoveCurrentObjectToMouse().Item1, MoveCurrentObjectToMouse().Item2, GetLocalMesh());
                 }
             }
+
+        private GameObject GetLocalMesh()
+            {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hitInfo))
+                {
+                if (hitInfo.transform.gameObject.layer == 11)
+                    {
+                    return hitInfo.transform.gameObject;
+                    }
+                }
+            return null;
+            }
+
         public void OnButtonClick(int buildingId)
             {
             if (currentPlaceableObject != null)
@@ -182,7 +195,7 @@ namespace Assets.Scripts.Buildings
                 }
             return false;
             }
-        private void CreateBuildingIfClicked(bool IsbuildingHit, GameObject hitBuilding)
+        private void CreateBuildingIfClicked(bool IsbuildingHit, GameObject hitBuilding, GameObject localMesh)
             {
             if (Input.GetMouseButtonDown(0) && objectPlacable)
                 {
@@ -190,28 +203,28 @@ namespace Assets.Scripts.Buildings
                     {
                     if (!IsbuildingHit)
                         {
-                        CreateSocialBuilding(IsbuildingHit, null);
+                        CreateSocialBuilding(IsbuildingHit, null, localMesh);
                         }
                     else if (IsbuildingHit)
                         {
-                        CreateSocialBuilding(IsbuildingHit, hitBuilding.transform.parent.gameObject);
+                        CreateSocialBuilding(IsbuildingHit, hitBuilding.transform.parent.gameObject, localMesh);
                         }
                     }
                 else if (currentPlaceableObject.name.Contains("Resouce"))
                     {
                     if (!IsbuildingHit)
                         {
-                        CreateResouceBuilding(IsbuildingHit, null);
+                        CreateResouceBuilding(IsbuildingHit, null, localMesh);
                         return;
                         }
                     else if (IsbuildingHit)
                         {
-                        CreateResouceBuilding(IsbuildingHit, hitBuilding.transform.parent.gameObject);
+                        CreateResouceBuilding(IsbuildingHit, hitBuilding.transform.parent.gameObject, localMesh);
                         }
                     }
                 }
             }
-        private void CreateResouceBuilding(bool sameBuildingTypeNearby, GameObject parent)
+        private void CreateResouceBuilding(bool sameBuildingTypeNearby, GameObject parent, GameObject localMesh)
             {
             currentPlaceableObject.layer = 9;
             currentPlaceableObject.AddComponent<ResourceBuildingBase>();
@@ -223,6 +236,7 @@ namespace Assets.Scripts.Buildings
                     name = "(ResouceBuildingMain)-" + buildingName[1]
                     };
                 resouceBuildingMain.AddComponent<ResourceBuildingsManagment>();
+                resouceBuildingMain.transform.parent = localMesh.transform;
                 currentPlaceableObject.transform.parent = resouceBuildingMain.transform;
                 }
             else
@@ -233,7 +247,7 @@ namespace Assets.Scripts.Buildings
             Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
             currentPlaceableObject = null;
             }
-        private void CreateSocialBuilding(bool sameBuildingTypeNearby, GameObject parent)
+        private void CreateSocialBuilding(bool sameBuildingTypeNearby, GameObject parent, GameObject localMesh)
             {
             currentPlaceableObject.layer = 8;
             currentPlaceableObject.AddComponent<SocialBuildingBase>();
@@ -245,6 +259,7 @@ namespace Assets.Scripts.Buildings
                     name = "(SocialBuildingMain)-" + buildingName[1]
                     };
                 socilaBuildingMain.AddComponent<SocialBuildingManagment>();
+                socilaBuildingMain.transform.parent = localMesh.transform;
                 currentPlaceableObject.transform.parent = socilaBuildingMain.transform;
                 }
             else
@@ -270,7 +285,7 @@ namespace Assets.Scripts.Buildings
                 if (collider == null)
                     {
                     return gameObjectArray;
-                    }           
+                    }
                 if (collider.gameObject.layer == 8 || collider.gameObject.layer == 9 || collider.gameObject.layer == 10)
                     {
                     if (i > 20)
