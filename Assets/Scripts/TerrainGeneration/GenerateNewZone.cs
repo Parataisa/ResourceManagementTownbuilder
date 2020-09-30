@@ -12,7 +12,7 @@ namespace Assets.Scripts.TerrainGeneration
         private static List<Vector3> WorldMeshesPointList = new List<Vector3>();
         private static int ZMapSize;
         private static int XMapSize;
-        public GameObject mesh; // test mesh
+
         private void Start()
             {
             XMapSize = MeshGenerator.GetComponent<MeshGenerator>().xSize;   

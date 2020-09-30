@@ -16,8 +16,6 @@ namespace ResourceGeneration.ResourceVariationen
         public event Action<ResourceBase> ResourceGenerated;
         public int FractionValiesForThePatch;
 
-
-
         protected virtual void Start()
             {
             this.ResourceName = GetResourceName();

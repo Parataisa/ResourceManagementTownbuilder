@@ -14,7 +14,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
         public int NumberOfResources = 10;
         public Mesh terrainMesh;
         public event System.Action<ResourceBase> ResourceSuccessfullyGenerated;
-        public static Object[] subListObjects;
+        private static Object[] subListObjects;
 
         public void Start()
             {
@@ -38,7 +38,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
             var scriptOfTheResource = resourceToSpawn.GetComponent<ResourceBase>();
             scriptOfTheResource.GetComponent<ResourceBase>().SizeOfTheModel = resourceType.gameObject.transform.localScale;
             FindObjectOfType<ResourceBase>(resourceToSpawn).ChooseLocationEvent += SetLocationOfTheResource;
-            FindObjectOfType<ResourceBase>(scriptOfTheResource).ResourceGenerated += GeneratResources;
+            FindObjectOfType<ResourceBase>(scriptOfTheResource).ResourceGenerated += GeneratResource;
             }
 
         private void SetLocationOfTheResource(GameObject resourceToSpawn)
@@ -110,14 +110,13 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
             return false;
             }
 
-        private void GeneratResources(ResourceBase scriptOfTheResource)
+        private void GeneratResource(ResourceBase scriptOfTheResource)
             {
             int size = scriptOfTheResource.SizeOfTheResource;
             Vector3 sizeOfTheModel = scriptOfTheResource.SizeOfTheModel;
             Vector2 area = scriptOfTheResource.AreaOfTheResource;
             GameObject child = scriptOfTheResource.transform.GetChild(0).gameObject;
             List<Rectangle> AreasOfChildObjects = new List<Rectangle>();
-
             for (int i = 0; i < size; i++)
                 {
                 GameObject _ = Instantiate<GameObject>(child, scriptOfTheResource.transform);
@@ -127,7 +126,6 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                     var localYTransform = _.GetComponent<Transform>().localScale = scriptOfTheResource.SizeOfTheModel;
                     Vector2 localPositon = GetlocalPositon(area);
                     Rectangle RecArea = GetRectangle(sizeOfTheModel, localPositon);
-
                     if (AreasOfChildObjects.Count == 0)
                         {
                         Vector3 newChildObjectPosition = new Vector3(localPositon.x, localYTransform.y / 2, localPositon.y);
@@ -135,7 +133,6 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                         AreasOfChildObjects.Add(RecArea);
                         break;
                         }
-
                     foreach (var savedChild in AreasOfChildObjects)
                         {
                         Rectangle NewRecArea = GetRectangle(sizeOfTheModel, localPositon);
@@ -158,8 +155,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                             }
                         }
                     }
-                }
-            
+                }            
             Destroy(child);
             scriptOfTheResource.SizeOfTheResource = AreasOfChildObjects.Count;
             }

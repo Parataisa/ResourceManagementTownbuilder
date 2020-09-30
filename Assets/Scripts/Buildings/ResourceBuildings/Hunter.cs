@@ -8,7 +8,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         {
         private readonly List<string> resouces = new List<string>();
         private Color color = new Color();
-        public List<string> ResouceToGather { get => resouces; set => SetResouces(resouces); }
+        public List<string> ResourceToGather { get => resouces; set => SetResouces(resouces); }
         public Color BuildingColor { get => color; }
         public string BuildingTyp => this.GetType().Name;
         public Vector3 BuildingPosition => this.gameObject.transform.position;

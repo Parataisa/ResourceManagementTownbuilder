@@ -33,7 +33,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         }
                     if (!StortedResources.Equals(currentGameObjectScript.StortedResources))
                         {
-                        StortedResources = currentGameObjectScript.StortedResources;
+                        StortedResources = currentGameObjectScript.StortedResources[currentGameObjectScript.GatherableResourcesForThisBuilding[0]];
                         this.transform.Find("StortedResources").GetComponent<TextMeshProUGUI>().SetText(StortedResources.ToString());
                         }
                     if (!ProduktionSpeed.Equals(currentGameObjectScript.ProduktionSpeed))

@@ -25,7 +25,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         public void Start()
             {
             BuildingPosition = GetComponent<Transform>().position;
-            ListOfGatherableResources = GetComponent<IResourcBuilding>().ResouceToGather;
+            ListOfGatherableResources = GetComponent<IResourcBuilding>().ResourceToGather;
             GatherableResouceInArea = GatherableResouceInArea.Count == 0 ? GetUsableResources(ListOfGatherableResources) : GatherableResouceInArea;
             GatherableResouces = GetResouceQuantityInArea(GatherableResouceInArea);
             if (!GatherableResouces.Count.Equals(0))
@@ -51,7 +51,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                 selectedResouceInArea.QuantityOfTheResource -= 1;
                 selectedResouceInArea.ResourceQuantityCheck();
                 childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().GatheredResourcesOverall += 1;
-                childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().StortedResources += 1;
+                childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().IncreaceGatherResource(1,selectedResouceInArea);
                 }
             }
 

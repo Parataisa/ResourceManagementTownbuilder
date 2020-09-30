@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ResourceGeneration.ResourceVariationen;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +10,8 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         public List<GameObject> ListOfChildren = new List<GameObject>();
         public string ResourceBuildingType = "";
         public int GatheredResourcesOverall = 0;
-        public int StortedResources = 0;
+        public Dictionary<string, int> StortedResources = new Dictionary<string, int>();
+        public List<string> GatherableResourcesForThisBuilding = new List<string>(); // ToDo:!!!!!
         public float ProduktionSpeed;
         public int WorkingPeopleCapacity;
         public int WorkingPeople;
@@ -21,6 +23,16 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             AddingChildsToList();
             this.ResourceBuildingType = GetResourceBuildingName();
             InvokeRepeating("UpdateResoucesMethode", 0.2f, 1f / ProduktionSpeed);
+            }
+
+        public void IncreaceGatherResource(int numberOfIncrices, ResourceBase resourceTyp)
+            {
+            if (StortedResources.Count == 0)
+                {
+                StortedResources.Add(resourceTyp.ResourceName, 0);
+                GatherableResourcesForThisBuilding.Add(resourceTyp.ResourceName);
+                }
+                StortedResources[resourceTyp.ResourceName] += numberOfIncrices;
             }
 
         private string GetResourceBuildingName()
