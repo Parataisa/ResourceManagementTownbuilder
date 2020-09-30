@@ -25,7 +25,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             InvokeRepeating("UpdateResoucesMethode", 0.2f, 1f / ProduktionSpeed);
             }
 
-        public void IncreaceGatherResource(int numberOfIncrices, ResourceBase resourceTyp)
+        public void IncreaseGatherResource(int numberOfIncrices, ResourceBase resourceTyp)
             {
             if (StortedResources.Count == 0)
                 {

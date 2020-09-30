@@ -42,9 +42,9 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     DropdownOptions.Clear();
                     int i = 0;
                     int x = 0;
-                    foreach (var child in selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().GatherableResouceInArea)
+                    foreach (var child in selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea)
                         {
-                        if (selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().GatherableResouceInArea[x] == null)
+                        if (selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea[x] == null)
                             {
                             Dropdown.ClearOptions();
                             DropdownOptions.Clear();
@@ -59,15 +59,15 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     Dropdown.AddOptions(DropdownOptions);
                     savedeGameObject = selectedGameobject;
                     }
-                if (selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().selecedResource != Dropdown.value)
+                if (selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().selecedResource != Dropdown.value)
                     {
-                    Dropdown.value = selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().selecedResource;
+                    Dropdown.value = selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().selecedResource;
                     }
                 }
             }
         void DropdownValueChanged()
             {
-            selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().SetSelecedResource(Dropdown.value); 
+            selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().SetSelecedResource(Dropdown.value); 
             }
 
         private string GetObjectName(string name)

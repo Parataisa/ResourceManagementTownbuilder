@@ -62,7 +62,7 @@ namespace Assets.Scripts.Buildings
 
             if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
                 {
-                DrawGatheringCircle.DrawCircle(currentPlaceableObject, ResourceBuildingBase.ResourceCollectingRadius);
+                DrawGatheringCircle.DrawCircle(currentPlaceableObject, ResourceBuildingAccountant.ResourceCollectingRadius);
                 CreateBuildingIfClicked(MoveCurrentObjectToMouse().Item1, MoveCurrentObjectToMouse().Item2, GetLocalMesh());
                 }
             }
@@ -227,7 +227,7 @@ namespace Assets.Scripts.Buildings
         private void CreateResouceBuilding(bool sameBuildingTypeNearby, GameObject parent, GameObject localMesh)
             {
             currentPlaceableObject.layer = 9;
-            currentPlaceableObject.AddComponent<ResourceBuildingBase>();
+            currentPlaceableObject.AddComponent<ResourceBuildingAccountant>();
             if (sameBuildingTypeNearby == false)
                 {
                 string[] buildingName = currentPlaceableObject.name.Split('-');
@@ -242,7 +242,7 @@ namespace Assets.Scripts.Buildings
             else
                 {
                 currentPlaceableObject.transform.parent = parent.transform;
-                currentPlaceableObject.GetComponent<ResourceBuildingBase>().GatherableResouceInArea = parent.transform.GetChild(0).GetComponent<ResourceBuildingBase>().GatherableResouceInArea;
+                currentPlaceableObject.GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea = parent.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea;
                 }
             Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
             currentPlaceableObject = null;
