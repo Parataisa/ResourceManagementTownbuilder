@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Buildings.ResourceBuildings
     {
-    class ResourceBuilding : MonoBehaviour, IResourcBuilding
+    class ResourceBuildingBase : MonoBehaviour, IResourcBuilding
         {
         internal readonly List<string> resouces = new List<string>();
         private Color color = new Color();

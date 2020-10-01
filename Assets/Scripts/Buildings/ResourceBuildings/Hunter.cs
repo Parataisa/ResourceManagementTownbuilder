@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Buildings.ResourceBuildings
     {
-    class Hunter : ResourceBuilding, IResourcBuilding
+    class Hunter : ResourceBuildingBase, IResourcBuilding
         {
         protected override void Start()
             {

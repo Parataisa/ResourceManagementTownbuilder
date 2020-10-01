@@ -7,11 +7,10 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
     {
     class ResourceBuildingsManagment : MonoBehaviour
         {
-        public List<GameObject> ListOfChildren = new List<GameObject>();
-        public string ResourceBuildingType = "";
+        private List<GameObject> ListOfChildren = new List<GameObject>();
+        public ResourceBuildingBase ChildBuildingTyp;
         public int GatheredResourcesOverall = 0;
         public Dictionary<string, int> StortedResources = new Dictionary<string, int>();
-        public List<string> GatherableResourcesForThisBuilding = new List<string>(); // ToDo:!!!!!
         public float ProduktionSpeed;
         public int WorkingPeopleCapacity;
         public int WorkingPeople;
@@ -21,26 +20,19 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         private void Start()
             {
             AddingChildsToList();
-            this.ResourceBuildingType = GetResourceBuildingName();
+            ChildBuildingTyp = transform.GetChild(0).GetComponent<ResourceBuildingBase>();
+            for (int i = 0; i < ChildBuildingTyp.ResourceToGather.Count; i++)
+                {
+                StortedResources.Add(ChildBuildingTyp.ResourceToGather[i], 0);
+                }
             InvokeRepeating("UpdateResoucesMethode", 0.2f, 1f / ProduktionSpeed);
             }
 
         public void IncreaseGatherResource(int numberOfIncrices, ResourceBase resourceTyp)
             {
-            if (StortedResources.Count == 0)
-                {
-                StortedResources.Add(resourceTyp.ResourceName, 0);
-                GatherableResourcesForThisBuilding.Add(resourceTyp.ResourceName);
-                }
-                StortedResources[resourceTyp.ResourceName] += numberOfIncrices;
+            StortedResources[resourceTyp.ResourceName] += numberOfIncrices;
+            Debug.Log(resourceTyp.ResourceName + " " + StortedResources[resourceTyp.ResourceName]);
             }
-
-        private string GetResourceBuildingName()
-            {
-            string[] BuildingNameArray = this.ListOfChildren[0].gameObject.name.Split('-');
-            return BuildingNameArray[1].Split('(')[0];
-            }
-
         private void AddingChildsToList()
             {
             int childCount = transform.childCount;

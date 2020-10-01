@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Buildings.ResourceBuildings
     {
-    class Lumberjack : ResourceBuilding, IResourcBuilding
+    class Lumberjack : ResourceBuildingBase, IResourcBuilding
         {
         protected override void Start()
             {

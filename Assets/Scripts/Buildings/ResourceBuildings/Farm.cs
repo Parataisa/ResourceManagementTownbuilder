@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Buildings.ResourceBuildings
     {
-    class Farm : ResourceBuilding, IResourcBuilding
+    class Farm : ResourceBuildingBase, IResourcBuilding
         {
         protected override void Start()
             {

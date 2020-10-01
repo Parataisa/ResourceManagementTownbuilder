@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Buildings.ResourceBuildings
     {
-    class Mine : ResourceBuilding, IResourcBuilding
+    class Mine : ResourceBuildingBase, IResourcBuilding
         {
         protected override void Start()
             {
