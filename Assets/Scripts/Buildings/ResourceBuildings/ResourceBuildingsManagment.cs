@@ -31,7 +31,6 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         public void IncreaseGatherResource(int numberOfIncrices, ResourceBase resourceTyp)
             {
             StortedResources[resourceTyp.ResourceName] += numberOfIncrices;
-            Debug.Log(resourceTyp.ResourceName + " " + StortedResources[resourceTyp.ResourceName]);
             }
         private void AddingChildsToList()
             {
