@@ -136,8 +136,6 @@ namespace Assets.Scripts.Buildings
                                 if (currentPlaceableObject.GetComponent<IBuildings>().BuildingTyp == hitobjectCollider.gameObject.GetComponent<IBuildings>().BuildingTyp)
                                     {
                                     IsbuildingHit = CouplingBuildingsWithEatchOther(currentPlaceableObject, hitobjectCollider.gameObject);
-                                    objectPlacable = true;
-                                    BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
                                     return Tuple.Create(IsbuildingHit, hitobjectCollider.gameObject);
                                     }
                                 else
@@ -175,23 +173,59 @@ namespace Assets.Scripts.Buildings
                 }
             if (BuildingSystemHitChecker.NorthHitCheck(h, MouseCurserWorldPosition))
                 {
-                SetBuildingCouplingPosition.MoveBuildingToTheNorth(c, h);
-                return true;
+                if (SetBuildingCouplingPosition.MoveBuildingToTheNorth(c, h))
+                    {
+                    BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
+                    objectPlacable = true;
+                    return true;
+                    }
+                else
+                    {
+                    objectPlacable = false;
+                    BuildingColoringSystem.SetColorForCollisions(currentPlaceableObject, Color.magenta);
+                    }
                 }
             else if (BuildingSystemHitChecker.EastHitCheck(h, MouseCurserWorldPosition))
                 {
-                SetBuildingCouplingPosition.MoveBuildingToTheEast(c, h);
-                return true;
+                if(SetBuildingCouplingPosition.MoveBuildingToTheEast(c, h))
+                    {
+                    BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
+                    objectPlacable = true;
+                    return true;
+                    }
+                else
+                    {
+                    objectPlacable = false;
+                    BuildingColoringSystem.SetColorForCollisions(currentPlaceableObject, Color.magenta);
+                    }
                 }
             else if (BuildingSystemHitChecker.SouthHitCheck(h, MouseCurserWorldPosition))
                 {
-                SetBuildingCouplingPosition.MoveBuildingToTheSouth(c, h);
-                return true;
+                if(SetBuildingCouplingPosition.MoveBuildingToTheSouth(c, h))
+                    {
+                    BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
+                    objectPlacable = true;
+                    return true;
+                    }
+                else
+                    {
+                    objectPlacable = false;
+                    BuildingColoringSystem.SetColorForCollisions(currentPlaceableObject, Color.magenta);
+                    }
                 }
             else if (BuildingSystemHitChecker.WestHitCheck(h, MouseCurserWorldPosition))
                 {
-                SetBuildingCouplingPosition.MoveBuildingToTheWest(c, h);
-                return true;
+                if(SetBuildingCouplingPosition.MoveBuildingToTheWest(c, h))
+                    {
+                    BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
+                    objectPlacable = true;
+                    return true;
+                    }
+                else
+                    {
+                    objectPlacable = false;
+                    BuildingColoringSystem.SetColorForCollisions(currentPlaceableObject, Color.magenta);
+                    }
                 }
             return false;
             }
