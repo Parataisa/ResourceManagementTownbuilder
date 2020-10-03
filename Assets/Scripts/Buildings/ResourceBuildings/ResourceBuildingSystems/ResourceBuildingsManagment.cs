@@ -1,34 +1,40 @@
-﻿using System;
+﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using ResourceGeneration.ResourceVariationen;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Buildings.ResourceBuildings
     {
-    class ResourceBuildingsManagment : MonoBehaviour
+    class ResourceBuildingsManagment : MonoBehaviour, IBuildingManagment
         {
-        public List<GameObject> ListOfChildren = new List<GameObject>();
-        public string ResourceBuildingType = "";
+        private List<GameObject> ListOfChildren = new List<GameObject>();
+        public ResourceBuildingBase ChildBuildingTyp;
         public int GatheredResourcesOverall = 0;
-        public int StortedResources = 0;
+        public Dictionary<string, int> StortedResources = new Dictionary<string, int>();
         public float ProduktionSpeed;
         public int WorkingPeopleCapacity;
         public int WorkingPeople;
         public event Action<GameObject> UpdateResouces;
         public event Action<ResourceBuildingsManagment> ResourceQuantityDecrease;
+        public GameObject GameobjectPrefab;
+        List<GameObject> IBuildingManagment.ListOfChildren { get => ListOfChildren; }
 
         private void Start()
             {
             AddingChildsToList();
-            this.ResourceBuildingType = GetResourceBuildingName();
+            ChildBuildingTyp = transform.GetChild(0).GetComponent<ResourceBuildingBase>();
+            for (int i = 0; i < ChildBuildingTyp.ResourceToGather.Count; i++)
+                {
+                StortedResources.Add(ChildBuildingTyp.ResourceToGather[i], 0);
+                }
             InvokeRepeating("UpdateResoucesMethode", 0.2f, 1f / ProduktionSpeed);
             }
 
-        private string GetResourceBuildingName()
+        public void IncreaseGatherResource(int numberOfIncrices, ResourceBase resourceTyp)
             {
-            string[] BuildingNameArray = this.ListOfChildren[0].gameObject.name.Split('-');
-            return BuildingNameArray[1].Split('(')[0];
+            StortedResources[resourceTyp.ResourceName] += numberOfIncrices;
             }
-
         private void AddingChildsToList()
             {
             int childCount = transform.childCount;

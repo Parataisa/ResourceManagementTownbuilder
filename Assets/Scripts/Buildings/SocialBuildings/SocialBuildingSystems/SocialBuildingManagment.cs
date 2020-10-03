@@ -1,15 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Buildings.SocialBuildings
     {
-    class SocialBuildingManagment : MonoBehaviour
+    class SocialBuildingManagment : MonoBehaviour, IBuildingManagment
         {
         readonly List<GameObject> ListOfChildren = new List<GameObject>();
         public string SocialBuildingType = "";
         public float BirthRate;
         public int People;
         public int PeopleCapacity;
+        public GameObject GameobjectPrefab;
+
+        List<GameObject> IBuildingManagment.ListOfChildren { get => ListOfChildren; }
 
         private void Start()
             {

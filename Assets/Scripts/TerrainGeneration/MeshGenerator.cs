@@ -8,18 +8,22 @@ public class MeshGenerator : MonoBehaviour
     Mesh mesh;
     Vector3[] vertices;
     int[] triangles;
-    private readonly int xSize = 256;
-    private readonly int zSize = 256;
-
+    public readonly int xSize = 256;
+    public readonly int zSize = 256;
     public event Action MapGeneratedEvent;
+    public Vector3 MeshPosition;
+    static int NumberOfMashes = 0;
 
     void Start()
         {
+        this.gameObject.name = this.gameObject.name + "-" + NumberOfMashes;
         mesh = new Mesh
             {
-            name = "mainMapMesh"
+            name = "MapMesh-" + NumberOfMashes
             };
+        NumberOfMashes++;
         GetComponent<MeshFilter>().mesh = mesh;
+        GetComponent<Transform>().position = MeshPosition;
         GetComponentInChildren<ResourceGenerator>().terrainMesh = mesh;
         CreateShape();
         UpdadeMesh();

@@ -1,10 +1,12 @@
 ﻿using Assets.Scripts.Buildings.ResourceBuildings;
+using System.Collections.Generic;
 using TMPro;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
     class ResourceBuildingUserInterface : GeneralUserInterface
         {
+        private string ResourceWithTheHighestAmount = "";
         public int StortedResources = 0;
         public float ProduktionSpeed = 0f;
         public int WorkingPeopleCapacity = 0;
@@ -26,15 +28,15 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     }
                 else
                     {
-                    if (!ObjectName.Equals(currentGameObjectScript.ResourceBuildingType))
+                    if (!ObjectName.Equals(currentGameObjectScript.ChildBuildingTyp.BuildingTyp))
                         {
-                        ObjectName = currentGameObjectScript.ResourceBuildingType;
+                        ObjectName = currentGameObjectScript.ChildBuildingTyp.BuildingTyp;
                         this.transform.Find("BuildingName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                         }
                     if (!StortedResources.Equals(currentGameObjectScript.StortedResources))
                         {
-                        StortedResources = currentGameObjectScript.StortedResources;
-                        this.transform.Find("StortedResources").GetComponent<TextMeshProUGUI>().SetText(StortedResources.ToString());
+                        StortedResources = currentGameObjectScript.StortedResources[currentGameObjectScript.ChildBuildingTyp.ResourceToGather[GrabTheResourceWithTheLargesValue()]];
+                        this.transform.Find("StortedResources").GetComponent<TextMeshProUGUI>().SetText(ResourceWithTheHighestAmount + ": " + StortedResources.ToString());
                         }
                     if (!ProduktionSpeed.Equals(currentGameObjectScript.ProduktionSpeed))
                         {
@@ -49,7 +51,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         {
                         WorkingPeople = currentGameObjectScript.WorkingPeople;
                         this.transform.Find("WorkingPeople").GetComponent<TextMeshProUGUI>().SetText(WorkingPeople.ToString() + "/" + WorkingPeopleCapacity.ToString());
-                        }          
+                        }
                     if (!GatheredResourcesOverall.Equals(currentGameObjectScript.GatheredResourcesOverall))
                         {
                         GatheredResourcesOverall = currentGameObjectScript.GatheredResourcesOverall;
@@ -59,5 +61,35 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 }
 
             }
+
+        private int GrabTheResourceWithTheLargesValue()
+            {
+            List<string> keyList = new List<string>(currentGameObjectScript.StortedResources.Keys);
+            if (keyList.Count == 1)
+                {
+                this.ResourceWithTheHighestAmount = keyList[0];
+                return 0;
+                }
+            int x = currentGameObjectScript.StortedResources[keyList[0]];
+            int ResourceWithTheHighestValue = 0;
+            for (int i = 0; i < keyList.Count; i++)
+                {
+                if (x < currentGameObjectScript.StortedResources[keyList[i]])
+                    {
+                    x = currentGameObjectScript.StortedResources[keyList[i]];
+                    ResourceWithTheHighestValue = i;
+                    if (i == keyList.Count)
+                        {
+                        this.ResourceWithTheHighestAmount = keyList[ResourceWithTheHighestValue];
+                        return ResourceWithTheHighestValue;
+                        }
+                    }
+                continue;
+                }
+            this.ResourceWithTheHighestAmount = keyList[ResourceWithTheHighestValue];
+            return ResourceWithTheHighestValue;
+            }
         }
     }
+
+

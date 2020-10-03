@@ -1,10 +1,8 @@
-﻿using Assets.Scripts.Buildings.ResourceBuildings;
+﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using Assets.Scripts.Buildings.ResourceBuildings;
 using Assets.Scripts.Buildings.SocialBuildings;
-using Assets.Scripts.TerrainGeneration;
-using System;
+using Assets.Scripts.Ui.Menus.InfoUI;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,6 +17,7 @@ namespace Assets.Scripts.Buildings
         public GameObject[] placeableObjectPrefabs;
         public GameObject currentPlaceableObject;
         private bool objectPlacable;
+        private static int lastButtonHit;
 
         private void Start()
             {
@@ -61,15 +60,25 @@ namespace Assets.Scripts.Buildings
             }
         private void Update()
             {
-
             if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
                 {
+                DrawGatheringCircle.DrawCircle(currentPlaceableObject, ResourceBuildingAccountant.ResourceCollectingRadius);
                 MoveCurrentObjectToMouse();
-                DrawCircle(currentPlaceableObject, ResourceBuildingBase.ResourceCollectingRadius);
-                ReleaseIfClicked();
+                CreateBuildingIfClicked();
                 }
             }
-
+        private GameObject GetLocalMesh()
+            {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hitInfo))
+                {
+                if (hitInfo.transform.gameObject.layer == 11)
+                    {
+                    return hitInfo.transform.gameObject;
+                    }
+                }
+            return null;
+            }
         public void OnButtonClick(int buildingId)
             {
             if (currentPlaceableObject != null)
@@ -78,16 +87,15 @@ namespace Assets.Scripts.Buildings
                 currentPlaceableObject = null;
                 return;
                 }
+            lastButtonHit = buildingId;
             currentPlaceableObject = Instantiate(placeableObjectPrefabs[buildingId]);
-
             }
         public void ClearCurser()
             {
             Destroy(currentPlaceableObject);
             currentPlaceableObject = null;
             }
-
-        private void MoveCurrentObjectToMouse()
+        private GameObject MoveCurrentObjectToMouse()
             {
             float gameObjectSizeOffsetY = currentPlaceableObject.transform.localScale.y / 2;
             GameObject[] hitObject;
@@ -99,162 +107,199 @@ namespace Assets.Scripts.Buildings
                     {
                     currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x, gameObjectSizeOffsetY, hitInfo.point.z);
                     }
-                hitObject = ScannForObjectsInArea(hitInfo, false);
+                hitObject = ScannForObjectsInArea(hitInfo, 4);
                 if (hitObject[0] == null)
                     {
                     objectPlacable = true;
-                    currentPlaceableObject.GetComponent<Renderer>().material.color = currentPlaceableObject.GetComponent<IBuildings>().BuildingColor;
+                    BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
                     }
                 else
                     {
-                    var currentPlacableObjectCollider = currentPlaceableObject.GetComponent<BoxCollider>();
-                    foreach (var objectInList in hitObject)
+                    BoxCollider currentPlacableObjectCollider = currentPlaceableObject.GetComponent<BoxCollider>();
+                    foreach (var hitObjectInList in hitObject)
                         {
-                        if (objectInList == null)
+                        if (hitObjectInList == null)
                             {
                             break;
                             }
-                        var hitobjectCollider = objectInList.GetComponent<BoxCollider>();
+                        BoxCollider hitobjectCollider = hitObjectInList.GetComponent<BoxCollider>();
                         if (currentPlacableObjectCollider.bounds.Intersects(hitobjectCollider.bounds))
                             {
                             objectPlacable = false;
-                            currentPlaceableObject.GetComponent<Renderer>().material.color = UnityEngine.Color.magenta;
-                            break;
+                            BuildingColoringSystem.SetColorForCollisions(currentPlaceableObject, Color.magenta);
+                            return hitobjectCollider.gameObject;
                             }
                         else
                             {
                             objectPlacable = true;
-                            currentPlaceableObject.GetComponent<Renderer>().material.color = currentPlaceableObject.GetComponent<IBuildings>().BuildingColor;
+                            BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
                             }
                         }
                     }
                 }
+            return currentPlaceableObject;
             }
-        private void ReleaseIfClicked()
+        private void CreateBuildingIfClicked()
             {
             if (Input.GetMouseButtonDown(0) && objectPlacable)
                 {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hitInfo))
+                if (currentPlaceableObject.name.Contains("Social"))
                     {
-                    _ = new GameObject[20];
-                    GameObject[] gameObjectArray = ScannForObjectsInArea(hitInfo, true);
-                    int hitObjectCount = 0;
-                    foreach (var hitObject in gameObjectArray)
-                        {
-                        if (hitObject != null)
-                            {
-                            hitObjectCount++;
-                            }
-                        }
-                    GameObject[] hitBuildingArray = new GameObject[hitObjectCount];
-                    Array.Copy(gameObjectArray, hitBuildingArray, hitObjectCount);                  
-                    if (currentPlaceableObject.name.Contains("Social"))
-                        {
-                        if (hitBuildingArray.Length == 0)
-                            {
-                            CreateSocialBuilding(false, null);
-                            return;
-                            }
-                        int x = 1;
-                        foreach (GameObject child in hitBuildingArray)
-                            {
-                            if (child.name != currentPlaceableObject.name && x >= hitBuildingArray.Length)
-                                {
-                                CreateSocialBuilding(false, null);
-                                break;
-                                }
-                            else if (child.name == currentPlaceableObject.name)
-                                {
-                                CreateSocialBuilding(true, hitBuildingArray[x - 1].transform.parent.gameObject);
-                                break;
-                                }
-                            else
-                                {
-                                x++;
-                                continue;
-                                }
-                            }
-                        }
-                    else if (currentPlaceableObject.name.Contains("Resouce"))
-                        {
-                        if (hitBuildingArray.Length == 0)
-                            {
-                            CreateResouceBuilding(false, null);
-                            return;
-                            }
-                        int x = 1;
-                        foreach (GameObject child in hitBuildingArray)
-                            {
-                            if (child.name != currentPlaceableObject.name && x >= hitBuildingArray.Length)
-                                {
-                                CreateResouceBuilding(false, null);
-                                break;
-                                }
-                            else if (child.name == currentPlaceableObject.name)
-                                {
-                                CreateResouceBuilding(true, hitBuildingArray[x - 1].transform.parent.gameObject);
-                                break;
-                                }
-                            else
-                                {
-                                x++;
-                                continue;
-                                }
-                            }
-                        }
+                    CreateSocialBuilding(0);
+                    }
+                else if (currentPlaceableObject.name.Contains("Resouce"))
+                    {
+                    CreateResouceBuilding(0);
                     }
                 }
             }
-
-        private void CreateResouceBuilding(bool sameBuildingTypeNearby, GameObject parent)
+        public void CreateResouceBuilding(int couplingPosition)
             {
-            currentPlaceableObject.layer = 9;
-            currentPlaceableObject.AddComponent<ResourceBuildingBase>();
-            if (sameBuildingTypeNearby == false)
+            if (couplingPosition == 0)
                 {
+                GameObject ground = GetLocalMesh();
+                currentPlaceableObject.layer = 9;
+                currentPlaceableObject.AddComponent<ResourceBuildingAccountant>();
                 string[] buildingName = currentPlaceableObject.name.Split('-');
                 GameObject resouceBuildingMain = new GameObject
                     {
                     name = "(ResouceBuildingMain)-" + buildingName[1]
                     };
                 resouceBuildingMain.AddComponent<ResourceBuildingsManagment>();
+                resouceBuildingMain.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
+                resouceBuildingMain.transform.parent = ground.transform;
                 currentPlaceableObject.transform.parent = resouceBuildingMain.transform;
+                Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
+                currentPlaceableObject = null;
                 }
             else
                 {
-                currentPlaceableObject.transform.parent = parent.transform;
-                currentPlaceableObject.GetComponent<ResourceBuildingBase>().GatherableResouceInArea = parent.transform.GetChild(0).GetComponent<ResourceBuildingBase>().GatherableResouceInArea;
+                var generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
+                var newGameobject = Instantiate(generalUi.CurrentOnClickGameObject.transform.parent.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab, generalUi.CurrentOnClickGameObject.transform.parent.transform);
+                CreateBuildingAtPosition(couplingPosition, 9, generalUi.CurrentOnClickGameObject, newGameobject);
                 }
-            Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
-            currentPlaceableObject = null;
             }
-
-        private void CreateSocialBuilding(bool sameBuildingTypeNearby, GameObject parent)
+        public void CreateSocialBuilding(int couplingPosition)
             {
-            currentPlaceableObject.layer = 8;
-            currentPlaceableObject.AddComponent<SocialBuildingBase>();
-            if (sameBuildingTypeNearby == false)
+            if (couplingPosition == 0)
                 {
+                GameObject ground = GetLocalMesh();
+                currentPlaceableObject.layer = 8;
+                currentPlaceableObject.AddComponent<SocialBuildingBase>();
                 string[] buildingName = currentPlaceableObject.name.Split('-');
                 GameObject socilaBuildingMain = new GameObject
                     {
                     name = "(SocialBuildingMain)-" + buildingName[1]
                     };
                 socilaBuildingMain.AddComponent<SocialBuildingManagment>();
+                socilaBuildingMain.GetComponent<SocialBuildingManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
+                socilaBuildingMain.transform.parent = ground.transform;
                 currentPlaceableObject.transform.parent = socilaBuildingMain.transform;
+                Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
+                currentPlaceableObject = null;
                 }
             else
                 {
-                currentPlaceableObject.transform.parent = parent.transform;
+                var generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
+                var newGameobject = Instantiate(generalUi.CurrentOnClickGameObject.transform.parent.GetComponent<SocialBuildingManagment>().GameobjectPrefab, generalUi.CurrentOnClickGameObject.transform.parent.transform);
+                CreateBuildingAtPosition(couplingPosition, 8, generalUi.CurrentOnClickGameObject, newGameobject);
                 }
-            Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
-            currentPlaceableObject = null;
             }
-        private GameObject[] ScannForObjectsInArea(RaycastHit hitInfo, bool buildingScann)
+
+        private void CreateBuildingAtPosition(int couplingPosition, int buildingTyp, GameObject selectedGameobject, GameObject newGameobject)
             {
-            Collider[] collidersInArea = new Collider[100];
-            int collisions = Physics.OverlapSphereNonAlloc(hitInfo.point, 15, collidersInArea);
+            AddBuildingTypInfos(newGameobject, buildingTyp);
+            Vector3 newPosition = GetBuildingPosition(couplingPosition, selectedGameobject);
+            if (newPosition != selectedGameobject.transform.position)
+                {
+                newGameobject.transform.position = newPosition;
+                }
+            else
+                {
+                Destroy(newGameobject);
+                Debug.Log("Position taken");
+                }
+            }
+
+        private Vector3 GetBuildingPosition(int couplingPosition, GameObject selectedGameobject)
+            {
+            //North
+            if (couplingPosition == 1)
+                {
+                Vector3 newPosition = new Vector3(selectedGameobject.transform.position.x, selectedGameobject.transform.position.y, selectedGameobject.transform.position.z + selectedGameobject.transform.lossyScale.z);
+                if (HaveNeightbourAtPosition(newPosition, selectedGameobject.transform.parent.GetComponent<IBuildingManagment>().ListOfChildren))
+                    {
+                    return selectedGameobject.transform.position;
+                    }
+                return newPosition;
+                }
+            //East
+            else if (couplingPosition == 2)
+                {
+                Vector3 newPosition = new Vector3(selectedGameobject.transform.position.x + selectedGameobject.transform.lossyScale.x, selectedGameobject.transform.position.y, selectedGameobject.transform.position.z);
+                if (HaveNeightbourAtPosition(newPosition, selectedGameobject.transform.parent.GetComponent<IBuildingManagment>().ListOfChildren))
+                    {
+                    return selectedGameobject.transform.position;
+                    }
+                return newPosition;
+                }
+            //South
+            else if (couplingPosition == 3)
+                {
+                Vector3 newPosition = new Vector3(selectedGameobject.transform.position.x, selectedGameobject.transform.position.y, selectedGameobject.transform.position.z - selectedGameobject.transform.lossyScale.z);
+                if (HaveNeightbourAtPosition(newPosition, selectedGameobject.transform.parent.GetComponent<IBuildingManagment>().ListOfChildren))
+                    {
+                    return selectedGameobject.transform.position;
+                    }
+                return newPosition;
+                }
+            //West
+            else if (couplingPosition == 4)
+                {
+                Vector3 newPosition = new Vector3(selectedGameobject.transform.position.x - selectedGameobject.transform.lossyScale.x, selectedGameobject.transform.position.y, selectedGameobject.transform.position.z);
+                if (HaveNeightbourAtPosition(newPosition, selectedGameobject.transform.parent.GetComponent<IBuildingManagment>().ListOfChildren))
+                    {
+                    return selectedGameobject.transform.position;
+                    }
+                return newPosition;
+                }
+            return selectedGameobject.transform.position;
+            }
+
+        private bool HaveNeightbourAtPosition(Vector3 newPosition, List<GameObject> neighbourPosititions)
+            {
+            foreach (var neighbour in neighbourPosititions)
+                {
+                if (neighbour.transform.position == newPosition)
+                    {
+                    return true;
+                    }
+                }
+            return false;
+            }
+
+        private void AddBuildingTypInfos(GameObject newGameobject, int buildingTyp)
+            {
+            newGameobject.layer = buildingTyp;
+            if (buildingTyp == 8)
+                {
+                newGameobject.AddComponent<SocialBuildingBase>();
+                }
+            else if (buildingTyp == 9)
+                {
+                newGameobject.AddComponent<ResourceBuildingAccountant>();
+                }
+            else
+                {
+                Debug.Log(buildingTyp + " not found");
+                }
+            }
+
+
+        private GameObject[] ScannForObjectsInArea(RaycastHit hitInfo, int scannRadius)
+            {
+            Collider[] collidersInArea = new Collider[20];
+            int collisions = Physics.OverlapSphereNonAlloc(hitInfo.point, scannRadius, collidersInArea);
             GameObject[] gameObjectArray = new GameObject[collisions];
             if (collisions <= 2)
                 {
@@ -267,24 +312,9 @@ namespace Assets.Scripts.Buildings
                     {
                     return gameObjectArray;
                     }
-                if (buildingScann && (collider.gameObject.layer == 8 || collider.gameObject.layer == 9))
+                if (collider.gameObject.layer == 8 || collider.gameObject.layer == 9 || collider.gameObject.layer == 10)
                     {
-                    GameObject parent = collider.transform.parent.gameObject;
-                    if (gameObjectArray.Contains(parent))
-                        continue;
-                    else
-                        {
-                        if (i > 40)
-                            {
-                            return gameObjectArray;
-                            }
-                        gameObjectArray[i] = collider.gameObject;
-                        i++;
-                        }
-                    }
-                else if (!buildingScann && (collider.gameObject.layer == 8 || collider.gameObject.layer == 9 || collider.gameObject.layer == 10))
-                    {
-                    if (i > 40)
+                    if (i > 20)
                         {
                         return gameObjectArray;
                         }
@@ -294,33 +324,5 @@ namespace Assets.Scripts.Buildings
                 }
             return gameObjectArray;
             }
-        private static void DrawCircle(GameObject container, float radius, float lineWidth = 0.2f)
-            {
-            var segments = 360;
-            if (container.GetComponent<LineRenderer>() == null)
-                {
-                container.AddComponent<LineRenderer>();
-                }
-            else
-                {
-                var line = container.GetComponent<LineRenderer>();
-                line.useWorldSpace = false;
-                line.startWidth = lineWidth;
-                line.endWidth = lineWidth;
-                line.positionCount = segments + 1;
-
-                var pointCount = segments + 1;
-                var points = new Vector3[pointCount];
-
-                for (int i = 0; i < pointCount; i++)
-                    {
-                    var rad = Mathf.Deg2Rad * (i * 360f / segments);
-                    points[i] = new Vector3(Mathf.Sin(rad) * radius, 0, Mathf.Cos(rad) * radius);
-                    }
-
-                line.SetPositions(points);
-                }
-            }
         }
-
     }

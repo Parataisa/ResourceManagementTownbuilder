@@ -16,8 +16,6 @@ namespace ResourceGeneration.ResourceVariationen
         public event Action<ResourceBase> ResourceGenerated;
         public int FractionValiesForThePatch;
 
-
-
         protected virtual void Start()
             {
             this.ResourceName = GetResourceName();
@@ -75,8 +73,8 @@ namespace ResourceGeneration.ResourceVariationen
             {
             Vector3 size;
             size.x = UnityEngine.Random.Range(0.95f, 1.05f) * quantity / patchSize / 1000;
-            size.y = size.x; 
-            size.z = size.x;  
+            size.y = size.x;
+            size.z = size.x;
             return size;
             }
         public static Vector3 GetPositionOfResource(Vector2 area)

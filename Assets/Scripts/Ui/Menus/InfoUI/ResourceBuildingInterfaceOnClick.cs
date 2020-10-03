@@ -5,22 +5,21 @@ using UnityEngine;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
-    class ResourceBuildingInterfaceOnClick : MonoBehaviour
+    class ResourceBuildingInterfaceOnClick : OnClickInterfaceBase
         {
-        public GameObject selectedGameobject;
-        internal GameObject savedeGameObject;
-        internal string ObjectName = "";
         private List<string> DropdownOptions = new List<string>();
-        private TMP_Dropdown Dropdown;
+        private TMP_Dropdown ResourcesDropdown;
         private void Awake()
             {
-            FindObjectOfType<GeneralUserInterfaceManagment>().OnClickInfoPanelToggled += GetGameObject;
-            Dropdown = this.transform.Find("ListOfChildrenDropdown").GetComponent<TMP_Dropdown>();
+            generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
+            generalUi.OnClickInfoPanelToggled += GetGameObject;
+            ResourcesDropdown = this.transform.Find("ListOfResourcesDropdown").GetComponent<TMP_Dropdown>();
             }
         private void Start()
             {
             savedeGameObject = selectedGameobject;
-            Dropdown.onValueChanged.AddListener(delegate { DropdownValueChanged(); });
+            generalUi.CurrentOnClickGameObject = selectedGameobject;
+            ResourcesDropdown.onValueChanged.AddListener(delegate { DropdownValueChanged(); });
             }
         private void Update()
             {
@@ -30,23 +29,28 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     {
                     return;
                     }
+                if (selectedGameobject != savedeGameObject)
+                    {
+                    savedeGameObject = selectedGameobject;
+                    generalUi.CurrentOnClickGameObject = selectedGameobject;
+                    }
                 if (ObjectName.Length == 0)
                     {
-                    ObjectName = GetObjectName(selectedGameobject.transform.name);
+                    ObjectName = GetObjectName(selectedGameobject.transform.parent.name);
                     this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                     }
                 if (selectedGameobject != savedeGameObject || DropdownOptions.Count.Equals(0))
                     {
-                    ObjectName = GetObjectName(selectedGameobject.transform.name);
+                    ObjectName = GetObjectName(selectedGameobject.transform.parent.name);
                     this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                     DropdownOptions.Clear();
                     int i = 0;
                     int x = 0;
-                    foreach (var child in selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().GatherableResouceInArea)
+                    foreach (var child in selectedGameobject.transform.parent.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea)
                         {
-                        if (selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().GatherableResouceInArea[x] == null)
+                        if (selectedGameobject.transform.parent.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea[x] == null)
                             {
-                            Dropdown.ClearOptions();
+                            ResourcesDropdown.ClearOptions();
                             DropdownOptions.Clear();
                             x++;
                             continue;
@@ -55,19 +59,19 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         i++;
                         DropdownOptions.Add(i + " " + GetObjectName(child.name));
                         }
-                    Dropdown.ClearOptions();
-                    Dropdown.AddOptions(DropdownOptions);
+                    ResourcesDropdown.ClearOptions();
+                    ResourcesDropdown.AddOptions(DropdownOptions);
                     savedeGameObject = selectedGameobject;
                     }
-                if (selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().selecedResource != Dropdown.value)
+                if (selectedGameobject.transform.parent.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().selecedResource != ResourcesDropdown.value)
                     {
-                    Dropdown.value = selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().selecedResource;
+                    ResourcesDropdown.value = selectedGameobject.transform.parent.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().selecedResource;
                     }
                 }
             }
         void DropdownValueChanged()
             {
-            selectedGameobject.transform.GetChild(0).GetComponent<ResourceBuildingBase>().SetSelecedResource(Dropdown.value); 
+            selectedGameobject.transform.parent.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().SetSelecedResource(ResourcesDropdown.value);
             }
 
         private string GetObjectName(string name)

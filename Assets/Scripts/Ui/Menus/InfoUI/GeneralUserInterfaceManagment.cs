@@ -11,9 +11,12 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         public GameObject ResouceBuildingUserInterface;
         public GameObject SocialBuildingUserInterface;
         public GameObject ResourceBuildingInterfaceOnClick;
+        public GameObject SocialBuildingInterfaceOnClick;
         public EventSystem EventSystem;
         public event Action<GameObject> ShortInfoPanelToggeled;
         public event Action<GameObject> OnClickInfoPanelToggled;
+
+        public GameObject CurrentOnClickGameObject;
         public void Start()
             {
             camera = Camera.main;
@@ -23,9 +26,13 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             Ray mouseRay = camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(mouseRay, out RaycastHit hitInfo))
                 {
-                if (ResourceBuildingInterfaceOnClick.activeSelf == true && Input.GetMouseButtonDown(0) && !EventSystem.IsPointerOverGameObject()) 
+                if (ResourceBuildingInterfaceOnClick.activeSelf == true && Input.GetMouseButtonDown(0) && !EventSystem.IsPointerOverGameObject())
                     {
                     ResourceBuildingInterfaceOnClick.SetActive(false);
+                    }
+                if (SocialBuildingInterfaceOnClick.activeSelf == true && Input.GetMouseButtonDown(0) && !EventSystem.IsPointerOverGameObject())
+                    {
+                    SocialBuildingInterfaceOnClick.SetActive(false);
                     }
                 if (hitInfo.transform.gameObject.layer == 8 || hitInfo.transform.gameObject.layer == 9 || hitInfo.transform.gameObject.layer == 10)
                     {
@@ -39,10 +46,11 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         }
                     else if (parent.name.Contains("(ResouceBuildingMain)-"))
                         {
-                        if (Input.GetMouseButtonDown(0) && ResouceBuildingUserInterface.activeSelf &&  hitInfo.transform.gameObject.layer == 9)
+                        if (Input.GetMouseButtonDown(0) && ResouceBuildingUserInterface.activeSelf && hitInfo.transform.gameObject.layer == 9)
                             {
                             ResourceBuildingInterfaceOnClick.SetActive(true);
-                            OnClickInfoPanelToggled?.Invoke(parent);
+                            SocialBuildingInterfaceOnClick.SetActive(false);
+                            OnClickInfoPanelToggled?.Invoke(hitInfo.transform.gameObject);
                             }
                         ResouceBuildingUserInterface.SetActive(true);
                         ResoucePatchUserInterface.SetActive(false);
@@ -53,8 +61,9 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         {
                         if (Input.GetMouseButtonDown(0) && SocialBuildingUserInterface.activeSelf && hitInfo.transform.gameObject.layer == 8)
                             {
-                           // ResourceBuildingInterfaceOnClick.SetActive(true);
-                           // OnClickInfoPanelToggled?.Invoke(parent);
+                            SocialBuildingInterfaceOnClick.SetActive(true);
+                            ResourceBuildingInterfaceOnClick.SetActive(false);
+                            OnClickInfoPanelToggled?.Invoke(hitInfo.transform.gameObject);
                             }
                         SocialBuildingUserInterface.SetActive(true);
                         ResoucePatchUserInterface.SetActive(false);

@@ -1,26 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-
-namespace Assets.Scripts.Buildings.SocialBuildings
+﻿namespace Assets.Scripts.Buildings.SocialBuildings
     {
-    class House : MonoBehaviour , ISocialBuildings
+    class House : SocialBuildingBase
         {
-        private Color color = new Color();
-        public Color BuildingColor { get => color; }
-
-        private Color GetBuildingsColor()
+        protected override void Start()
             {
-            Color color = GetComponent<Renderer>().material.color;
-            return color;
+            base.Start();
             }
 
-        private void Start()
-            {
-            color = GetBuildingsColor();
-            }
         }
     }
