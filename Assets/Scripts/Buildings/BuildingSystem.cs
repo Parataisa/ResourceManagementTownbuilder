@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
 using Assets.Scripts.Buildings.ResourceBuildings;
 using Assets.Scripts.Buildings.SocialBuildings;
-using System;
+using Assets.Scripts.Ui.Menus.InfoUI;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -17,6 +17,7 @@ namespace Assets.Scripts.Buildings
         public GameObject[] placeableObjectPrefabs;
         public GameObject currentPlaceableObject;
         private bool objectPlacable;
+        private static int lastButtonHit;
 
         private void Start()
             {
@@ -59,14 +60,13 @@ namespace Assets.Scripts.Buildings
             }
         private void Update()
             {
-
             if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
                 {
                 DrawGatheringCircle.DrawCircle(currentPlaceableObject, ResourceBuildingAccountant.ResourceCollectingRadius);
-                CreateBuildingIfClicked(MoveCurrentObjectToMouse().Item1, MoveCurrentObjectToMouse().Item2, GetLocalMesh());
+                MoveCurrentObjectToMouse();
+                CreateBuildingIfClicked();
                 }
             }
-
         private GameObject GetLocalMesh()
             {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -79,7 +79,6 @@ namespace Assets.Scripts.Buildings
                 }
             return null;
             }
-
         public void OnButtonClick(int buildingId)
             {
             if (currentPlaceableObject != null)
@@ -88,6 +87,7 @@ namespace Assets.Scripts.Buildings
                 currentPlaceableObject = null;
                 return;
                 }
+            lastButtonHit = buildingId;
             currentPlaceableObject = Instantiate(placeableObjectPrefabs[buildingId]);
             }
         public void ClearCurser()
@@ -95,19 +95,14 @@ namespace Assets.Scripts.Buildings
             Destroy(currentPlaceableObject);
             currentPlaceableObject = null;
             }
-
-        private Tuple<bool, GameObject> MoveCurrentObjectToMouse()
+        private GameObject MoveCurrentObjectToMouse()
             {
             float gameObjectSizeOffsetY = currentPlaceableObject.transform.localScale.y / 2;
-            bool IsbuildingHit = false;
             GameObject[] hitObject;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hitInfo))
                 {
-                if (!IsbuildingHit)
-                    {
-                    currentPlaceableObject.transform.position = hitInfo.point;
-                    }
+                currentPlaceableObject.transform.position = hitInfo.point;
                 if (currentPlaceableObject.transform.position.y != gameObjectSizeOffsetY)
                     {
                     currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x, gameObjectSizeOffsetY, hitInfo.point.z);
@@ -116,7 +111,6 @@ namespace Assets.Scripts.Buildings
                 if (hitObject[0] == null)
                     {
                     objectPlacable = true;
-                    IsbuildingHit = false;
                     BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
                     }
                 else
@@ -131,26 +125,9 @@ namespace Assets.Scripts.Buildings
                         BoxCollider hitobjectCollider = hitObjectInList.GetComponent<BoxCollider>();
                         if (currentPlacableObjectCollider.bounds.Intersects(hitobjectCollider.bounds))
                             {
-                            if (hitobjectCollider.transform.gameObject.layer == 8 || hitobjectCollider.transform.gameObject.layer == 9)
-                                {
-                                if (currentPlaceableObject.GetComponent<IBuildings>().BuildingTyp == hitobjectCollider.gameObject.GetComponent<IBuildings>().BuildingTyp)
-                                    {
-                                    IsbuildingHit = CouplingBuildingsWithEatchOther(currentPlaceableObject, hitobjectCollider.gameObject);
-                                    return Tuple.Create(IsbuildingHit, hitobjectCollider.gameObject);
-                                    }
-                                else
-                                    {
-                                    objectPlacable = false;
-                                    BuildingColoringSystem.SetColorForCollisions(currentPlaceableObject, Color.magenta);
-                                    return Tuple.Create(IsbuildingHit, hitobjectCollider.gameObject);
-                                    }
-                                }
-                            else
-                                {
-                                objectPlacable = false;
-                                BuildingColoringSystem.SetColorForCollisions(currentPlaceableObject, Color.magenta);
-                                return Tuple.Create(IsbuildingHit, hitobjectCollider.gameObject);
-                                }
+                            objectPlacable = false;
+                            BuildingColoringSystem.SetColorForCollisions(currentPlaceableObject, Color.magenta);
+                            return hitobjectCollider.gameObject;
                             }
                         else
                             {
@@ -160,149 +137,164 @@ namespace Assets.Scripts.Buildings
                         }
                     }
                 }
-            return Tuple.Create(IsbuildingHit, currentPlaceableObject);
+            return currentPlaceableObject;
             }
-        private bool CouplingBuildingsWithEatchOther(GameObject c, GameObject h)
-            {
-            Vector3 MouseCurserWorldPosition = new Vector3();
-            Plane plane = new Plane(Vector3.up, 0);
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (plane.Raycast(ray, out float distance))
-                {
-                MouseCurserWorldPosition = ray.GetPoint(distance);
-                }
-            if (BuildingSystemHitChecker.NorthHitCheck(h, MouseCurserWorldPosition))
-                {
-                if (SetBuildingCouplingPosition.MoveBuildingToTheNorth(c, h))
-                    {
-                    BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
-                    objectPlacable = true;
-                    return true;
-                    }
-                else
-                    {
-                    objectPlacable = false;
-                    BuildingColoringSystem.SetColorForCollisions(currentPlaceableObject, Color.magenta);
-                    }
-                }
-            else if (BuildingSystemHitChecker.EastHitCheck(h, MouseCurserWorldPosition))
-                {
-                if(SetBuildingCouplingPosition.MoveBuildingToTheEast(c, h))
-                    {
-                    BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
-                    objectPlacable = true;
-                    return true;
-                    }
-                else
-                    {
-                    objectPlacable = false;
-                    BuildingColoringSystem.SetColorForCollisions(currentPlaceableObject, Color.magenta);
-                    }
-                }
-            else if (BuildingSystemHitChecker.SouthHitCheck(h, MouseCurserWorldPosition))
-                {
-                if(SetBuildingCouplingPosition.MoveBuildingToTheSouth(c, h))
-                    {
-                    BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
-                    objectPlacable = true;
-                    return true;
-                    }
-                else
-                    {
-                    objectPlacable = false;
-                    BuildingColoringSystem.SetColorForCollisions(currentPlaceableObject, Color.magenta);
-                    }
-                }
-            else if (BuildingSystemHitChecker.WestHitCheck(h, MouseCurserWorldPosition))
-                {
-                if(SetBuildingCouplingPosition.MoveBuildingToTheWest(c, h))
-                    {
-                    BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
-                    objectPlacable = true;
-                    return true;
-                    }
-                else
-                    {
-                    objectPlacable = false;
-                    BuildingColoringSystem.SetColorForCollisions(currentPlaceableObject, Color.magenta);
-                    }
-                }
-            return false;
-            }
-        private void CreateBuildingIfClicked(bool IsbuildingHit, GameObject hitBuilding, GameObject localMesh)
+        private void CreateBuildingIfClicked()
             {
             if (Input.GetMouseButtonDown(0) && objectPlacable)
                 {
                 if (currentPlaceableObject.name.Contains("Social"))
                     {
-                    if (!IsbuildingHit)
-                        {
-                        CreateSocialBuilding(IsbuildingHit, null, localMesh);
-                        }
-                    else if (IsbuildingHit)
-                        {
-                        CreateSocialBuilding(IsbuildingHit, hitBuilding.transform.parent.gameObject, localMesh);
-                        }
+                    CreateSocialBuilding(0);
                     }
                 else if (currentPlaceableObject.name.Contains("Resouce"))
                     {
-                    if (!IsbuildingHit)
-                        {
-                        CreateResouceBuilding(IsbuildingHit, null, localMesh);
-                        return;
-                        }
-                    else if (IsbuildingHit)
-                        {
-                        CreateResouceBuilding(IsbuildingHit, hitBuilding.transform.parent.gameObject, localMesh);
-                        }
+                    CreateResouceBuilding(0);
                     }
                 }
             }
-        private void CreateResouceBuilding(bool sameBuildingTypeNearby, GameObject parent, GameObject localMesh)
+        public void CreateResouceBuilding(int couplingPosition)
             {
-            currentPlaceableObject.layer = 9;
-            currentPlaceableObject.AddComponent<ResourceBuildingAccountant>();
-            if (sameBuildingTypeNearby == false)
+            if (couplingPosition == 0)
                 {
+                GameObject ground = GetLocalMesh();
+                currentPlaceableObject.layer = 9;
+                currentPlaceableObject.AddComponent<ResourceBuildingAccountant>();
                 string[] buildingName = currentPlaceableObject.name.Split('-');
                 GameObject resouceBuildingMain = new GameObject
                     {
                     name = "(ResouceBuildingMain)-" + buildingName[1]
                     };
                 resouceBuildingMain.AddComponent<ResourceBuildingsManagment>();
-                resouceBuildingMain.transform.parent = localMesh.transform;
+                resouceBuildingMain.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
+                resouceBuildingMain.transform.parent = ground.transform;
                 currentPlaceableObject.transform.parent = resouceBuildingMain.transform;
+                Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
+                currentPlaceableObject = null;
                 }
             else
                 {
-                currentPlaceableObject.transform.parent = parent.transform;
-                currentPlaceableObject.GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea = parent.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea;
+                var generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
+                var newGameobject = Instantiate(generalUi.CurrentOnClickGameObject.transform.parent.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab, generalUi.CurrentOnClickGameObject.transform.parent.transform);
+                CreateBuildingAtPosition(couplingPosition, 9, generalUi.CurrentOnClickGameObject, newGameobject);
                 }
-            Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
-            currentPlaceableObject = null;
             }
-        private void CreateSocialBuilding(bool sameBuildingTypeNearby, GameObject parent, GameObject localMesh)
+        public void CreateSocialBuilding(int couplingPosition)
             {
-            currentPlaceableObject.layer = 8;
-            currentPlaceableObject.AddComponent<SocialBuildingBase>();
-            if (sameBuildingTypeNearby == false)
+            if (couplingPosition == 0)
                 {
+                GameObject ground = GetLocalMesh();
+                currentPlaceableObject.layer = 8;
+                currentPlaceableObject.AddComponent<SocialBuildingBase>();
                 string[] buildingName = currentPlaceableObject.name.Split('-');
                 GameObject socilaBuildingMain = new GameObject
                     {
                     name = "(SocialBuildingMain)-" + buildingName[1]
                     };
                 socilaBuildingMain.AddComponent<SocialBuildingManagment>();
-                socilaBuildingMain.transform.parent = localMesh.transform;
+                socilaBuildingMain.GetComponent<SocialBuildingManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
+                socilaBuildingMain.transform.parent = ground.transform;
                 currentPlaceableObject.transform.parent = socilaBuildingMain.transform;
+                Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
+                currentPlaceableObject = null;
                 }
             else
                 {
-                currentPlaceableObject.transform.parent = parent.transform;
+                var generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
+                var newGameobject = Instantiate(generalUi.CurrentOnClickGameObject.transform.parent.GetComponent<SocialBuildingManagment>().GameobjectPrefab, generalUi.CurrentOnClickGameObject.transform.parent.transform);
+                CreateBuildingAtPosition(couplingPosition, 8, generalUi.CurrentOnClickGameObject, newGameobject);
                 }
-            Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
-            currentPlaceableObject = null;
             }
+
+        private void CreateBuildingAtPosition(int couplingPosition, int buildingTyp, GameObject selectedGameobject, GameObject newGameobject)
+            {
+            AddBuildingTypInfos(newGameobject, buildingTyp);
+            Vector3 newPosition = GetBuildingPosition(couplingPosition, selectedGameobject);
+            if (newPosition != selectedGameobject.transform.position)
+                {
+                newGameobject.transform.position = newPosition;
+                }
+            else
+                {
+                Destroy(newGameobject);
+                Debug.Log("Position taken");
+                }
+            }
+
+        private Vector3 GetBuildingPosition(int couplingPosition, GameObject selectedGameobject)
+            {
+            //North
+            if (couplingPosition == 1)
+                {
+                Vector3 newPosition = new Vector3(selectedGameobject.transform.position.x, selectedGameobject.transform.position.y, selectedGameobject.transform.position.z + selectedGameobject.transform.lossyScale.z);
+                if (HaveNeightbourAtPosition(newPosition, selectedGameobject.transform.parent.GetComponent<IBuildingManagment>().ListOfChildren))
+                    {
+                    return selectedGameobject.transform.position;
+                    }
+                return newPosition;
+                }
+            //East
+            else if (couplingPosition == 2)
+                {
+                Vector3 newPosition = new Vector3(selectedGameobject.transform.position.x + selectedGameobject.transform.lossyScale.x, selectedGameobject.transform.position.y, selectedGameobject.transform.position.z);
+                if (HaveNeightbourAtPosition(newPosition, selectedGameobject.transform.parent.GetComponent<IBuildingManagment>().ListOfChildren))
+                    {
+                    return selectedGameobject.transform.position;
+                    }
+                return newPosition;
+                }
+            //South
+            else if (couplingPosition == 3)
+                {
+                Vector3 newPosition = new Vector3(selectedGameobject.transform.position.x, selectedGameobject.transform.position.y, selectedGameobject.transform.position.z - selectedGameobject.transform.lossyScale.z);
+                if (HaveNeightbourAtPosition(newPosition, selectedGameobject.transform.parent.GetComponent<IBuildingManagment>().ListOfChildren))
+                    {
+                    return selectedGameobject.transform.position;
+                    }
+                return newPosition;
+                }
+            //West
+            else if (couplingPosition == 4)
+                {
+                Vector3 newPosition = new Vector3(selectedGameobject.transform.position.x - selectedGameobject.transform.lossyScale.x, selectedGameobject.transform.position.y, selectedGameobject.transform.position.z);
+                if (HaveNeightbourAtPosition(newPosition, selectedGameobject.transform.parent.GetComponent<IBuildingManagment>().ListOfChildren))
+                    {
+                    return selectedGameobject.transform.position;
+                    }
+                return newPosition;
+                }
+            return selectedGameobject.transform.position;
+            }
+
+        private bool HaveNeightbourAtPosition(Vector3 newPosition, List<GameObject> neighbourPosititions)
+            {
+            foreach (var neighbour in neighbourPosititions)
+                {
+                if (neighbour.transform.position == newPosition)
+                    {
+                    return true;
+                    }
+                }
+            return false;
+            }
+
+        private void AddBuildingTypInfos(GameObject newGameobject, int buildingTyp)
+            {
+            newGameobject.layer = buildingTyp;
+            if (buildingTyp == 8)
+                {
+                newGameobject.AddComponent<SocialBuildingBase>();
+                }
+            else if (buildingTyp == 9)
+                {
+                newGameobject.AddComponent<ResourceBuildingAccountant>();
+                }
+            else
+                {
+                Debug.Log(buildingTyp + " not found");
+                }
+            }
+
 
         private GameObject[] ScannForObjectsInArea(RaycastHit hitInfo, int scannRadius)
             {

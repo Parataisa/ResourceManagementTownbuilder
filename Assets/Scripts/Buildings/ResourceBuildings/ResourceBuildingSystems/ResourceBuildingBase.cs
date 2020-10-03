@@ -12,11 +12,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         public string BuildingTyp => this.GetType().Name;
         public Vector3 BuildingPosition => this.gameObject.transform.position;
         public Vector3 BuildingSize => this.gameObject.transform.lossyScale;
-        private Color GetBuildingsColor()
-            {
-            Color color = GetComponent<Renderer>().material.color;
-            return color;
-            }
+
         protected virtual void Start()
             {
             SetResouces(resouces);
@@ -25,6 +21,11 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         virtual internal List<string> SetResouces(List<string> resoucesToGather)
             {
             return resouces;
+            }
+        private Color GetBuildingsColor()
+            {
+            Color color = GetComponent<Renderer>().material.color;
+            return color;
             }
         }
     }

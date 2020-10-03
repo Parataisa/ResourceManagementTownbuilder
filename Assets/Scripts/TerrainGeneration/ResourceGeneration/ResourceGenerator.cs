@@ -155,7 +155,7 @@ namespace Assets.Scripts.TerrainGeneration.RecourceGeneration
                             }
                         }
                     }
-                }            
+                }
             Destroy(child);
             scriptOfTheResource.SizeOfTheResource = AreasOfChildObjects.Count;
             }

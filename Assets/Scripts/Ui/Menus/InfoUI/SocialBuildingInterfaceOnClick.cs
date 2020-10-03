@@ -3,19 +3,17 @@ using UnityEngine;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
-    class SocialBuildingInterfaceOnClick : MonoBehaviour
+    class SocialBuildingInterfaceOnClick : OnClickInterfaceBase
         {
-        public GameObject selectedGameobject;
-        internal GameObject savedeGameObject;
-        internal string ObjectName = "";
-
         private void Awake()
             {
-            FindObjectOfType<GeneralUserInterfaceManagment>().OnClickInfoPanelToggled += GetGameObject;
+            generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
+            generalUi.OnClickInfoPanelToggled += GetGameObject;
             }
         private void Start()
             {
             savedeGameObject = selectedGameobject;
+            generalUi.CurrentOnClickGameObject = selectedGameobject;
             }
         private void Update()
             {
@@ -25,13 +23,18 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     {
                     return;
                     }
+                if (selectedGameobject != savedeGameObject)
+                    {
+                    savedeGameObject = selectedGameobject;
+                    generalUi.CurrentOnClickGameObject = selectedGameobject;
+                    }
                 if (ObjectName.Length == 0)
                     {
-                    ObjectName = GetObjectName(selectedGameobject.transform.name);
+                    ObjectName = GetObjectName(selectedGameobject.transform.parent.name);
                     this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                     if (selectedGameobject != savedeGameObject)
                         {
-                        ObjectName = GetObjectName(selectedGameobject.transform.name);
+                        ObjectName = GetObjectName(selectedGameobject.transform.parent.name);
                         this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                         }
                     }

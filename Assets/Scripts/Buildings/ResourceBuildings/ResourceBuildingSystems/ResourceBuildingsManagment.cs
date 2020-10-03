@@ -1,11 +1,12 @@
-﻿using ResourceGeneration.ResourceVariationen;
+﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using ResourceGeneration.ResourceVariationen;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Buildings.ResourceBuildings
     {
-    class ResourceBuildingsManagment : MonoBehaviour
+    class ResourceBuildingsManagment : MonoBehaviour, IBuildingManagment
         {
         private List<GameObject> ListOfChildren = new List<GameObject>();
         public ResourceBuildingBase ChildBuildingTyp;
@@ -16,6 +17,8 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         public int WorkingPeople;
         public event Action<GameObject> UpdateResouces;
         public event Action<ResourceBuildingsManagment> ResourceQuantityDecrease;
+        public GameObject GameobjectPrefab;
+        List<GameObject> IBuildingManagment.ListOfChildren { get => ListOfChildren; }
 
         private void Start()
             {

@@ -1,7 +1,5 @@
 ﻿using Assets.Scripts.Ui.Menus.InfoUI;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.TerrainGeneration
@@ -15,13 +13,13 @@ namespace Assets.Scripts.TerrainGeneration
 
         private void Start()
             {
-            XMapSize = MeshGenerator.GetComponent<MeshGenerator>().xSize;   
+            XMapSize = MeshGenerator.GetComponent<MeshGenerator>().xSize;
             ZMapSize = MeshGenerator.GetComponent<MeshGenerator>().zSize - 2;
             WorldMeshesPointList.Add(Vector3.zero);
             }
         public void GenerateNewMesh(int side)
             {
-            GameObject mesh = FindObjectOfType<SocialBuildingInterfaceOnClick>().selectedGameobject.transform.parent.gameObject; 
+            GameObject mesh = FindObjectOfType<SocialBuildingInterfaceOnClick>().selectedGameobject.transform.parent.gameObject;
             Vector3 NewMeshSpawnPosition = GetSpawnPoint(side, mesh);
             if (NewMeshSpawnPosition == mesh.transform.position)
                 {
@@ -38,8 +36,7 @@ namespace Assets.Scripts.TerrainGeneration
 
         private Vector3 GetSpawnPoint(int side, GameObject mesh)
             {
-            Vector3 worldPoint = new Vector3();
-            worldPoint = mesh.transform.position;
+            Vector3 worldPoint = mesh.transform.position;
             if (side == 0)
                 {
                 worldPoint.z += ZMapSize;
@@ -77,14 +74,14 @@ namespace Assets.Scripts.TerrainGeneration
                     }
                 }
             return worldPoint;
-           }
+            }
 
         private bool CheckIfPositionIsFree(Vector3 worldPoint)
             {
             foreach (var savedPoint in WorldMeshesPointList)
                 {
                 if (savedPoint != worldPoint)
-                    {                
+                    {
                     continue;
                     }
                 else if (savedPoint == worldPoint)

@@ -1,24 +1,11 @@
-﻿using UnityEngine;
-
-namespace Assets.Scripts.Buildings.SocialBuildings
+﻿namespace Assets.Scripts.Buildings.SocialBuildings
     {
-    class House : MonoBehaviour, ISocialBuildings
+    class House : SocialBuildingBase
         {
-        private Color color = new Color();
-        public Color BuildingColor { get => color; }
-        public string BuildingTyp => this.GetType().Name;
-        public Vector3 BuildingPosition => this.gameObject.transform.position;
-        public Vector3 BuildingSize => this.gameObject.transform.lossyScale;
-
-        private Color GetBuildingsColor()
+        protected override void Start()
             {
-            Color color = GetComponent<Renderer>().material.color;
-            return color;
+            base.Start();
             }
 
-        private void Start()
-            {
-            color = GetBuildingsColor();
-            }
         }
     }

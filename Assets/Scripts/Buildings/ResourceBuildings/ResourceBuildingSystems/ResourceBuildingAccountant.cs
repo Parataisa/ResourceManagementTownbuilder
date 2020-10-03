@@ -1,6 +1,4 @@
-﻿using Assets.Scripts.Ui.Menus.InfoUI;
-using ResourceGeneration.ResourceVariationen;
-using System;
+﻿using ResourceGeneration.ResourceVariationen;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -29,7 +27,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             if (!GatherableResouces.Count.Equals(0))
                 {
                 FindObjectOfType<ResourceBuildingsManagment>().UpdateResouces += UpdateResouces;
-                }        
+                }
             }
 
         private void UpdateResouces(GameObject childBuilding)
@@ -49,7 +47,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                 selectedResouceInArea.QuantityOfTheResource -= 1;
                 selectedResouceInArea.ResourceQuantityCheck();
                 childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().GatheredResourcesOverall += 1;
-                childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().IncreaseGatherResource(1,selectedResouceInArea);
+                childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().IncreaseGatherResource(1, selectedResouceInArea);
                 }
             }
 

@@ -1,6 +1,5 @@
 ﻿using ResourceGeneration.ResourceVariationen;
 using TMPro;
-using UnityEngine;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {

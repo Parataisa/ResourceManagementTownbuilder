@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-namespace Assets.Scripts.Buildings.BuildingSystemHelper
+﻿namespace Assets.Scripts.Buildings.BuildingSystemHelper
     {
+    /*
     public static class SetBuildingCouplingPosition
         {
         public static bool MoveBuildingToTheNorth(GameObject c, GameObject h)
@@ -10,8 +8,10 @@ namespace Assets.Scripts.Buildings.BuildingSystemHelper
             c.transform.position = new Vector3(h.transform.position.x, c.transform.position.y, h.transform.position.z + h.transform.lossyScale.x / 2 + c.transform.lossyScale.x / 2);
             if (!IsPositionAvailable(c, h))
                 {
+                Debug.Log("Not Placable North");
                 return false;
                 }
+            Debug.Log("Placable North");
             return true;
             }
         public static bool MoveBuildingToTheEast(GameObject c, GameObject h)
@@ -19,8 +19,10 @@ namespace Assets.Scripts.Buildings.BuildingSystemHelper
             c.transform.position = new Vector3(h.transform.position.x + h.transform.lossyScale.x / 2 + c.transform.lossyScale.x / 2, c.transform.position.y, h.transform.position.z);
             if (!IsPositionAvailable(c, h))
                 {
+                Debug.Log("Not Placable East");
                 return false;
                 }
+            Debug.Log("Placable East");
             return true;
             }
         public static bool MoveBuildingToTheSouth(GameObject c, GameObject h)
@@ -28,8 +30,10 @@ namespace Assets.Scripts.Buildings.BuildingSystemHelper
             c.transform.position = new Vector3(h.transform.position.x, c.transform.position.y, h.transform.position.z - h.transform.lossyScale.x / 2 - c.transform.lossyScale.x / 2);
             if (!IsPositionAvailable(c, h))
                 {
+                Debug.Log("Not Placable South");
                 return false;
                 }
+            Debug.Log("Placable South");
             return true;
             }
         public static bool MoveBuildingToTheWest(GameObject c, GameObject h)
@@ -37,27 +41,28 @@ namespace Assets.Scripts.Buildings.BuildingSystemHelper
             c.transform.position = new Vector3(h.transform.position.x - h.transform.lossyScale.x / 2 - c.transform.lossyScale.x / 2, c.transform.position.y, h.transform.position.z);
             if (!IsPositionAvailable(c, h))
                 {
+                Debug.Log("Not Placable West");
                 return false;
                 }
+            Debug.Log("Placable West");
             return true;
             }
-        private static bool IsPositionAvailable(GameObject objectToPlace, GameObject parent)
+        private static bool IsPositionAvailable(GameObject objectToPlace, GameObject hitObject)
             {
-            List<Transform> ListOfPositionsOfBuildings = new List<Transform>();
-            if (parent.transform.parent.transform.childCount == 0)
+            List<Vector3> listOfNeighbourPositions = hitObject.GetComponent<IBuildings>().NeighbourPosititions;
+            if (listOfNeighbourPositions.Count == 0)
+                {
                 return true;
-            for (int i = 0; i < parent.transform.parent.transform.childCount; i++)
-                {
-                ListOfPositionsOfBuildings.Add(parent.transform.parent.transform.GetChild(i));
                 }
-            foreach (Transform Child in ListOfPositionsOfBuildings)
+            foreach (var neighbour in listOfNeighbourPositions)
                 {
-                if (Child.position == objectToPlace.transform.position)
+                if (neighbour == objectToPlace.transform.position)
                     {
                     return false;
                     }
+                return true;
                 }
             return true;
             }
-        }
+        } */
     }
