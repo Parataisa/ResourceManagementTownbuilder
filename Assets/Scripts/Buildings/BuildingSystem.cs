@@ -205,7 +205,6 @@ namespace Assets.Scripts.Buildings
                 CreateBuildingAtPosition(couplingPosition, 8, generalUi.CurrentOnClickGameObject, newGameobject);
                 }
             }
-
         private void CreateBuildingAtPosition(int couplingPosition, int buildingTyp, GameObject selectedGameobject, GameObject newGameobject)
             {
             AddBuildingTypInfos(newGameobject, buildingTyp);
@@ -220,7 +219,6 @@ namespace Assets.Scripts.Buildings
                 Debug.Log("Position taken");
                 }
             }
-
         private Vector3 GetBuildingPosition(int couplingPosition, GameObject selectedGameobject)
             {
             //North
@@ -265,7 +263,6 @@ namespace Assets.Scripts.Buildings
                 }
             return selectedGameobject.transform.position;
             }
-
         private bool HaveNeightbourAtPosition(Vector3 newPosition, List<GameObject> neighbourPosititions)
             {
             foreach (var neighbour in neighbourPosititions)
@@ -277,7 +274,6 @@ namespace Assets.Scripts.Buildings
                 }
             return false;
             }
-
         private void AddBuildingTypInfos(GameObject newGameobject, int buildingTyp)
             {
             newGameobject.layer = buildingTyp;
@@ -294,8 +290,6 @@ namespace Assets.Scripts.Buildings
                 Debug.Log(buildingTyp + " not found");
                 }
             }
-
-
         private GameObject[] ScannForObjectsInArea(RaycastHit hitInfo, int scannRadius)
             {
             Collider[] collidersInArea = new Collider[20];
