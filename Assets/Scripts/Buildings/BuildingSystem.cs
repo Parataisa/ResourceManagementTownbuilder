@@ -168,6 +168,7 @@ namespace Assets.Scripts.Buildings
                 resouceBuildingMain.AddComponent<ResourceBuildingsManagment>();
                 resouceBuildingMain.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
                 resouceBuildingMain.transform.parent = ground.transform;
+                ResourceBuildingsManagment.ResourceBuildingMain.Add(resouceBuildingMain);
                 currentPlaceableObject.transform.parent = resouceBuildingMain.transform;
                 Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
                 currentPlaceableObject = null;
@@ -194,6 +195,7 @@ namespace Assets.Scripts.Buildings
                 socilaBuildingMain.AddComponent<SocialBuildingManagment>();
                 socilaBuildingMain.GetComponent<SocialBuildingManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
                 socilaBuildingMain.transform.parent = ground.transform;
+                ResourceBuildingsManagment.ResourceBuildingMain.Add(socilaBuildingMain);
                 currentPlaceableObject.transform.parent = socilaBuildingMain.transform;
                 Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
                 currentPlaceableObject = null;

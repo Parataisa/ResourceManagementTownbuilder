@@ -9,36 +9,35 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
     class ResourceBuildingsManagment : MonoBehaviour, IBuildingManagment
         {
         private List<GameObject> ListOfChildren = new List<GameObject>();
+        List<GameObject> IBuildingManagment.ListOfChildren { get => ListOfChildren; }
+
+        public static List<GameObject> ResourceBuildingMain = new List<GameObject>();
         public ResourceBuildingBase ChildBuildingTyp;
         public int GatheredResourcesOverall = 0;
-        public Dictionary<string, int> StortedResources = new Dictionary<string, int>();
+        public Dictionary<string, int> StoredResources;
         public float ProduktionSpeed;
         public int WorkingPeopleCapacity;
         public int WorkingPeople;
         public event Action<GameObject> UpdateResouces;
         public event Action<ResourceBuildingsManagment> ResourceQuantityDecrease;
         public GameObject GameobjectPrefab;
-        List<GameObject> IBuildingManagment.ListOfChildren { get => ListOfChildren; }
 
         private void Start()
             {
-            AddingChildsToList();
-            ChildBuildingTyp = transform.GetChild(0).GetComponent<ResourceBuildingBase>();
-            for (int i = 0; i < ChildBuildingTyp.ResourceToGather.Count; i++)
-                {
-                StortedResources.Add(ChildBuildingTyp.ResourceToGather[i], 0);
-                }
-            InvokeRepeating("UpdateResoucesMethode", 0.2f, 1f / ProduktionSpeed);
+            StoredResources = new Dictionary<string, int>();
+            AddingChildsToList(StoredResources);
+            InvokeRepeating("UpdateResoucesMethode", 0.02f, 1f / ProduktionSpeed);
+            // Adding to eatch Building its own StartCoroutine or invoke
             }
 
         public void IncreaseGatherResource(int numberOfIncrices, ResourceBase resourceTyp)
             {
-            StortedResources[resourceTyp.ResourceName] += numberOfIncrices;
+            StoredResources[resourceTyp.ResourceName] += numberOfIncrices;
             }
-        private void AddingChildsToList()
+        private void AddingChildsToList(Dictionary<string, int> storedResources)
             {
             int childCount = transform.childCount;
-            ListOfChildren.Clear();
+            ListOfChildren.Clear(); // ToDo:Check if this.child is already in the list if not add it 
             if (childCount != 0)
                 {
                 for (int i = 0; i < childCount; i++)
@@ -46,6 +45,15 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                     this.ListOfChildren.Add(transform.GetChild(i).gameObject);
                     }
                 }
+            ChildBuildingTyp = transform.GetChild(0).GetComponent<ResourceBuildingBase>();
+            for (int i = 0; i < ChildBuildingTyp.ResourceToGather.Count; i++)
+                {
+                if (!storedResources.ContainsKey(ChildBuildingTyp.ResourceToGather[i]))
+                    {
+                    storedResources.Add(ChildBuildingTyp.ResourceToGather[i], 0);
+                    }
+                }
+            this.WorkingPeopleCapacity = 0;
             for (int x = 0; x < childCount; x++)
                 {
                 this.WorkingPeopleCapacity += 10;
@@ -62,13 +70,13 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                 }
             if (!(transform.childCount == ListOfChildren.Count))
                 {
-                AddingChildsToList();
+                AddingChildsToList(StoredResources);
                 this.WorkingPeopleCapacity = ListOfChildren.Count * 10;
                 //ToDO: For now the building is at full capacity
                 this.WorkingPeople = WorkingPeopleCapacity;
                 this.ProduktionSpeed = WorkingPeople;
                 CancelInvoke();
-                InvokeRepeating("UpdateResoucesMethode", 0.2f, 1f / ProduktionSpeed);
+                InvokeRepeating("UpdateResoucesMethode", 0.02f, 4f / ProduktionSpeed);
                 }
             else if (transform.childCount == ListOfChildren.Count && WorkingPeopleCapacity == ListOfChildren.Count * 10)
                 {
@@ -77,11 +85,8 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             }
         private void UpdateResoucesMethode()
             {
-            foreach (var child in ListOfChildren)
-                {
-                UpdateResouces?.Invoke(child);
+                UpdateResouces?.Invoke(this.gameObject);
                 ResourceQuantityDecrease?.Invoke(this);
-                }
             }
         }
     }

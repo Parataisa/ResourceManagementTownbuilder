@@ -28,15 +28,16 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                 {
                 FindObjectOfType<ResourceBuildingsManagment>().UpdateResouces += UpdateResouces;
                 }
+
             }
 
-        private void UpdateResouces(GameObject childBuilding)
+        private void UpdateResouces(GameObject mainBuilding)
             {
             if (GatherableResouceInArea.Count == 0 || GatherableResouceInArea[selecedResource] == null)
                 {
                 return;
                 }
-            var selectedResouceInArea = GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea[selecedResource].GetComponent<ResourceBase>();
+            var selectedResouceInArea = mainBuilding.GetComponentInChildren<ResourceBuildingAccountant>().GatherableResouceInArea[selecedResource].GetComponent<ResourceBase>();
             if (selectedResouceInArea.QuantityOfTheResource <= 0)
                 {
                 GatherableResouceInArea.RemoveAt(selecedResource);
@@ -46,8 +47,8 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                 {
                 selectedResouceInArea.QuantityOfTheResource -= 1;
                 selectedResouceInArea.ResourceQuantityCheck();
-                childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().GatheredResourcesOverall += 1;
-                childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().IncreaseGatherResource(1, selectedResouceInArea);
+                mainBuilding.GetComponent<ResourceBuildingsManagment>().GatheredResourcesOverall += 1;
+                mainBuilding.GetComponent<ResourceBuildingsManagment>().IncreaseGatherResource(1, selectedResouceInArea);
                 }
             }
 
