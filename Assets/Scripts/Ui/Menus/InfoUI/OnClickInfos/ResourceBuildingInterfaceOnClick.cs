@@ -146,7 +146,10 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
 
         void DropdownValueChanged()
             {
-            selectedGameobject.transform.parent.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().SetSelecedResource(ResourcesDropdown.value);
+            for (int i = 0; i < selectedGameobject.transform.parent.transform.childCount; i++)
+                {
+                selectedGameobject.transform.parent.transform.GetChild(i).GetComponent<ResourceBuildingAccountant>().SetSelecedResource(ResourcesDropdown.value);
+                }          
             }
 
         private string GetObjectName(string name)

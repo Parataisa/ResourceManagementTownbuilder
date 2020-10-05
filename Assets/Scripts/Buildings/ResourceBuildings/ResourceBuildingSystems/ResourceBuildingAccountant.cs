@@ -23,12 +23,11 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             {
             ListOfGatherableResources = GetComponent<IResourcBuilding>().ResourceToGather;
             GatherableResouceInArea = GatherableResouceInArea.Count == 0 ? GetUsableResources(ListOfGatherableResources) : GatherableResouceInArea;
-            GatherableResouces = GetResouceQuantityInArea(GatherableResouceInArea);
+            GatherableResouces = GetResourceQuantityInArea(GatherableResouceInArea);
             if (!GatherableResouces.Count.Equals(0))
                 {
                 FindObjectOfType<ResourceBuildingsManagment>().UpdateResouces += UpdateResouces;
                 }
-
             }
 
         private void UpdateResouces(GameObject mainBuilding)
@@ -57,7 +56,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             this.selecedResource = x;
             }
 
-        private List<ResouceQuantityTyps> GetResouceQuantityInArea(List<GameObject> gatherableResouceInArea)
+        private List<ResouceQuantityTyps> GetResourceQuantityInArea(List<GameObject> gatherableResouceInArea)
             {
             List<ResouceQuantityTyps> resouceQuantityInArea = new List<ResouceQuantityTyps>();
             foreach (var resoucePatch in gatherableResouceInArea)

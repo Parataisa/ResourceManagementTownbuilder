@@ -2,6 +2,7 @@
 using Assets.Scripts.Buildings.ResourceBuildings;
 using Assets.Scripts.Buildings.SocialBuildings;
 using Assets.Scripts.Ui.Menus.InfoUI;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -177,7 +178,8 @@ namespace Assets.Scripts.Buildings
                 {
                 var generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
                 var newGameobject = Instantiate(generalUi.CurrentOnClickGameObject.transform.parent.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab, generalUi.CurrentOnClickGameObject.transform.parent.transform);
-                CreateBuildingAtPosition(couplingPosition, 9, generalUi.CurrentOnClickGameObject, newGameobject);
+                AddBuildingToOtherBuilding(couplingPosition, 9, generalUi.CurrentOnClickGameObject, newGameobject);
+                AddGatherableResourcesToBuilding(newGameobject, generalUi.CurrentOnClickGameObject);
                 }
             }
         public void CreateSocialBuilding(int couplingPosition)
@@ -204,10 +206,17 @@ namespace Assets.Scripts.Buildings
                 {
                 var generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
                 var newGameobject = Instantiate(generalUi.CurrentOnClickGameObject.transform.parent.GetComponent<SocialBuildingManagment>().GameobjectPrefab, generalUi.CurrentOnClickGameObject.transform.parent.transform);
-                CreateBuildingAtPosition(couplingPosition, 8, generalUi.CurrentOnClickGameObject, newGameobject);
+                AddBuildingToOtherBuilding(couplingPosition, 8, generalUi.CurrentOnClickGameObject, newGameobject);
                 }
             }
-        private void CreateBuildingAtPosition(int couplingPosition, int buildingTyp, GameObject selectedGameobject, GameObject newGameobject)
+
+        private void AddGatherableResourcesToBuilding(GameObject newGameobject, GameObject selectedBuilding)
+            {
+            newGameobject.GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea = selectedBuilding.GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea;
+            newGameobject.GetComponent<ResourceBuildingAccountant>().selecedResource = selectedBuilding.GetComponent<ResourceBuildingAccountant>().selecedResource;
+            }
+
+        private void AddBuildingToOtherBuilding(int couplingPosition, int buildingTyp, GameObject selectedGameobject, GameObject newGameobject)
             {
             AddBuildingTypInfos(newGameobject, buildingTyp);
             Vector3 newPosition = GetBuildingPosition(couplingPosition, selectedGameobject);
