@@ -7,6 +7,7 @@ namespace Assets.Scripts.Buildings.SocialBuildings
     class SocialBuildingManagment : MonoBehaviour, IBuildingManagment
         {
         readonly List<GameObject> ListOfChildren = new List<GameObject>();
+        public static List<GameObject> SocialBuildingMain = new List<GameObject>();
         public string SocialBuildingType = "";
         public float BirthRate;
         public int People;

@@ -20,11 +20,11 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 {
                 if (selectedGameobject == null)
                     {
-                    currentGameObjectScript = selectedGameobject.GetComponent<ResourceBuildingsManagment>();
+                    currentGameObjectScript = selectedGameobject.GetComponentInParent<ResourceBuildingsManagment>();
                     }
-                if (currentGameObjectScript != selectedGameobject.GetComponent<ResourceBuildingsManagment>())
+                if (currentGameObjectScript != selectedGameobject.GetComponentInParent<ResourceBuildingsManagment>())
                     {
-                    currentGameObjectScript = selectedGameobject.GetComponent<ResourceBuildingsManagment>();
+                    currentGameObjectScript = selectedGameobject.GetComponentInParent<ResourceBuildingsManagment>();
                     }
                 else
                     {

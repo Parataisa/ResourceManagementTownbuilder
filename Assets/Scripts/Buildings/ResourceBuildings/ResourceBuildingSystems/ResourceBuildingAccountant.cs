@@ -21,12 +21,12 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             }
         public void Start()
             {
-            ListOfGatherableResources = GetComponent<IResourcBuilding>().ResourceToGather;
+            ListOfGatherableResources = GetComponentInChildren<IResourcBuilding>().ResourceToGather;
             GatherableResouceInArea = GatherableResouceInArea.Count == 0 ? GetUsableResources(ListOfGatherableResources) : GatherableResouceInArea;
             GatherableResouces = GetResourceQuantityInArea(GatherableResouceInArea);
             if (!GatherableResouces.Count.Equals(0))
                 {
-                FindObjectOfType<ResourceBuildingsManagment>().UpdateResouces += UpdateResouces;
+                this.GetComponent<ResourceBuildingsManagment>().UpdateResouces += UpdateResouces;
                 }
             }
 
@@ -36,11 +36,11 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                 {
                 return;
                 }
-            var selectedResouceInArea = mainBuilding.GetComponentInChildren<ResourceBuildingAccountant>().GatherableResouceInArea[selecedResource].GetComponent<ResourceBase>();
+            var selectedResouceInArea = mainBuilding.GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea[selecedResource].GetComponent<ResourceBase>();
             if (selectedResouceInArea.QuantityOfTheResource <= 0)
                 {
                 GatherableResouceInArea.RemoveAt(selecedResource);
-                FindObjectOfType<ResourceBuildingsManagment>().UpdateResouces -= UpdateResouces;
+                mainBuilding.GetComponent<ResourceBuildingsManagment>().UpdateResouces -= UpdateResouces;
                 }
             else
                 {
@@ -137,7 +137,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         public List<GameObject> GetUsableResources(List<string> resources)
             {
             List<GameObject> usableResources = new List<GameObject>();
-            GameObject[] resourceInArea = ScannForResources(ResourceCollectingRadius, this.transform.position, 100);
+            GameObject[] resourceInArea = ScannForResources(ResourceCollectingRadius, this.transform.GetChild(0).transform.position, 100);
             if (resourceInArea[0] == null)
                 {
                 return usableResources;

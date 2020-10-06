@@ -24,7 +24,10 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             {
             generalUserInterfaceManagment.ShortInfoPanelToggeled -= GetGameObject;
             }
-
+        private void OnEnable()
+            {
+            generalUserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
+            }
         private void GetGameObject(GameObject gameObject)
             {
             selectedGameobject = gameObject;

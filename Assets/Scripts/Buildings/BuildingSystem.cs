@@ -157,20 +157,19 @@ namespace Assets.Scripts.Buildings
         public void CreateResouceBuilding(int couplingPosition)
             {
             if (couplingPosition == 0)
-                {
-                GameObject ground = GetLocalMesh();
-                currentPlaceableObject.layer = 9;
-                currentPlaceableObject.AddComponent<ResourceBuildingAccountant>();
+                { 
                 string[] buildingName = currentPlaceableObject.name.Split('-');
                 GameObject resouceBuildingMain = new GameObject
                     {
                     name = "(ResouceBuildingMain)-" + buildingName[1]
                     };
+                currentPlaceableObject.transform.parent = resouceBuildingMain.transform;
+                resouceBuildingMain.AddComponent<ResourceBuildingAccountant>();
                 resouceBuildingMain.AddComponent<ResourceBuildingsManagment>();
                 resouceBuildingMain.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
-                resouceBuildingMain.transform.parent = ground.transform;
+                resouceBuildingMain.transform.parent = GetLocalMesh().transform;
                 ResourceBuildingsManagment.ResourceBuildingMain.Add(resouceBuildingMain);
-                currentPlaceableObject.transform.parent = resouceBuildingMain.transform;
+                currentPlaceableObject.layer = 9;
                 Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
                 currentPlaceableObject = null;
                 }
@@ -179,26 +178,23 @@ namespace Assets.Scripts.Buildings
                 var generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
                 var newGameobject = Instantiate(generalUi.CurrentOnClickGameObject.transform.parent.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab, generalUi.CurrentOnClickGameObject.transform.parent.transform);
                 AddBuildingToOtherBuilding(couplingPosition, 9, generalUi.CurrentOnClickGameObject, newGameobject);
-                AddGatherableResourcesToBuilding(newGameobject, generalUi.CurrentOnClickGameObject);
                 }
             }
         public void CreateSocialBuilding(int couplingPosition)
             {
             if (couplingPosition == 0)
                 {
-                GameObject ground = GetLocalMesh();
-                currentPlaceableObject.layer = 8;
-                currentPlaceableObject.AddComponent<SocialBuildingBase>();
                 string[] buildingName = currentPlaceableObject.name.Split('-');
                 GameObject socilaBuildingMain = new GameObject
                     {
                     name = "(SocialBuildingMain)-" + buildingName[1]
                     };
+                currentPlaceableObject.transform.parent = socilaBuildingMain.transform;
                 socilaBuildingMain.AddComponent<SocialBuildingManagment>();
                 socilaBuildingMain.GetComponent<SocialBuildingManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
-                socilaBuildingMain.transform.parent = ground.transform;
-                ResourceBuildingsManagment.ResourceBuildingMain.Add(socilaBuildingMain);
-                currentPlaceableObject.transform.parent = socilaBuildingMain.transform;
+                socilaBuildingMain.transform.parent = GetLocalMesh().transform;
+                SocialBuildingManagment.SocialBuildingMain.Add(socilaBuildingMain);
+                currentPlaceableObject.layer = 8;
                 Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
                 currentPlaceableObject = null;
                 }
@@ -209,13 +205,6 @@ namespace Assets.Scripts.Buildings
                 AddBuildingToOtherBuilding(couplingPosition, 8, generalUi.CurrentOnClickGameObject, newGameobject);
                 }
             }
-
-        private void AddGatherableResourcesToBuilding(GameObject newGameobject, GameObject selectedBuilding)
-            {
-            newGameobject.GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea = selectedBuilding.GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea;
-            newGameobject.GetComponent<ResourceBuildingAccountant>().selecedResource = selectedBuilding.GetComponent<ResourceBuildingAccountant>().selecedResource;
-            }
-
         private void AddBuildingToOtherBuilding(int couplingPosition, int buildingTyp, GameObject selectedGameobject, GameObject newGameobject)
             {
             AddBuildingTypInfos(newGameobject, buildingTyp);
@@ -288,18 +277,6 @@ namespace Assets.Scripts.Buildings
         private void AddBuildingTypInfos(GameObject newGameobject, int buildingTyp)
             {
             newGameobject.layer = buildingTyp;
-            if (buildingTyp == 8)
-                {
-                newGameobject.AddComponent<SocialBuildingBase>();
-                }
-            else if (buildingTyp == 9)
-                {
-                newGameobject.AddComponent<ResourceBuildingAccountant>();
-                }
-            else
-                {
-                Debug.Log(buildingTyp + " not found");
-                }
             }
         private GameObject[] ScannForObjectsInArea(RaycastHit hitInfo, int scannRadius)
             {

@@ -115,9 +115,9 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 ObjectName = GetObjectName(selectedGameobject.transform.parent.name);
                 this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                 }
-            if (selectedGameobject.transform.parent.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().selecedResource != ResourcesDropdown.value)
+            if (selectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().selecedResource != ResourcesDropdown.value)
                 {
-                ResourcesDropdown.value = selectedGameobject.transform.parent.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().selecedResource;
+                ResourcesDropdown.value = selectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().selecedResource;
                 }
             }
 
@@ -125,9 +125,9 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             {
             int i = 0;
             int x = 0;
-            foreach (var child in selectedGameobject.transform.parent.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea)
+            foreach (var child in selectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea)
                 {
-                if (selectedGameobject.transform.parent.transform.GetChild(0).GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea[x] == null)
+                if (selectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea[x] == null)
                     {
                     ResourcesDropdown.ClearOptions();
                     DropdownOptions.Clear();
@@ -146,10 +146,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
 
         void DropdownValueChanged()
             {
-            for (int i = 0; i < selectedGameobject.transform.parent.transform.childCount; i++)
-                {
-                selectedGameobject.transform.parent.transform.GetChild(i).GetComponent<ResourceBuildingAccountant>().SetSelecedResource(ResourcesDropdown.value);
-                }          
+            selectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().SetSelecedResource(ResourcesDropdown.value);
             }
 
         private string GetObjectName(string name)
