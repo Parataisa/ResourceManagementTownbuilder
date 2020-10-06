@@ -2832,6 +2832,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedGameobject: {fileID: 0}
+  generalUserInterfaceManagment: {fileID: 552225512}
   StortedResources: 0
   ProduktionSpeed: 0
   WorkingPeopleCapacity: 0
@@ -4808,6 +4809,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedGameobject: {fileID: 0}
+  generalUserInterfaceManagment: {fileID: 552225512}
   BirthRate: 0
   People: 0
   PeopleCapacity: 0
@@ -8732,6 +8734,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedGameobject: {fileID: 0}
+  generalUserInterfaceManagment: {fileID: 552225512}
 --- !u!114 &1890822909
 MonoBehaviour:
   m_ObjectHideFlags: 0

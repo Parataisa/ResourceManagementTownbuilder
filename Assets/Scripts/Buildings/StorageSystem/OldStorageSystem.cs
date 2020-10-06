@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace Assets.Scripts.Buildings.StorageSystem
     {
-    class StorageSystem
+    class OldStorageSystem
         {
         public GameObject MainBuilding;
         public Dictionary<string, int> StoredResources;
         public Dictionary<GameObject, ResourceLink> DictionaryOfImages;
-        public StorageSystem(GameObject mainBuidling, Dictionary<string,int> storedResources)
+        public OldStorageSystem(GameObject mainBuidling, Dictionary<string,int> storedResources)
             {
             MainBuilding = mainBuidling;
             StoredResources = storedResources;

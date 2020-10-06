@@ -5,9 +5,10 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         {
         public GameObject selectedGameobject;
         internal string ObjectName = "";
+        public GeneralUserInterfaceManagment generalUserInterfaceManagment;
         private void Start()
             {
-            FindObjectOfType<GeneralUserInterfaceManagment>().ShortInfoPanelToggeled += GetGameObject;
+            generalUserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
             }
         private void LateUpdate()
             {
@@ -15,9 +16,13 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 {
                 if (this.gameObject.activeSelf)
                     {
-                    FindObjectOfType<GeneralUserInterfaceManagment>().ShortInfoPanelToggeled += GetGameObject;
+                    generalUserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
                     }
                 }
+            }
+        private void OnDisable()
+            {
+            generalUserInterfaceManagment.ShortInfoPanelToggeled -= GetGameObject;
             }
 
         private void GetGameObject(GameObject gameObject)
