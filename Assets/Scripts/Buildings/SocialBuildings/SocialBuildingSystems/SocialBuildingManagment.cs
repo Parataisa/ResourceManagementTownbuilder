@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,8 +10,8 @@ namespace Assets.Scripts.Buildings.SocialBuildings
         readonly List<GameObject> ListOfChildren = new List<GameObject>();
         public static List<GameObject> SocialBuildingMain = new List<GameObject>();
         public string SocialBuildingType = "";
-        public float BirthRate;
-        public int People;
+        public float BirthRate = 0.2f;
+        public int People = 2;
         public int PeopleCapacity;
         public GameObject GameobjectPrefab;
 
@@ -19,7 +20,9 @@ namespace Assets.Scripts.Buildings.SocialBuildings
         private void Start()
             {
             AddingChildsToList();
-            this.SocialBuildingType = GetSocialBuildingName();
+            SocialBuildingType = GetSocialBuildingName();
+            StartCoroutine(BirthTimer(BirthRate));
+
             }
         private void Update()
             {
@@ -30,10 +33,7 @@ namespace Assets.Scripts.Buildings.SocialBuildings
             if (!(transform.childCount == ListOfChildren.Count))
                 {
                 AddingChildsToList();
-                this.PeopleCapacity = ListOfChildren.Count * 10;
-                //ToDO: For now the building is at full capacity
-                this.People = PeopleCapacity;
-                this.BirthRate = People / 10;
+                PeopleCapacity = ListOfChildren.Count * 10;
                 }
             else if (transform.childCount == ListOfChildren.Count && PeopleCapacity == ListOfChildren.Count * 10)
                 {
@@ -44,27 +44,41 @@ namespace Assets.Scripts.Buildings.SocialBuildings
         private void AddingChildsToList()
             {
             int childCount = transform.childCount;
-            ListOfChildren.Clear();
             if (childCount != 0)
                 {
                 for (int i = 0; i < childCount; i++)
                     {
-                    this.ListOfChildren.Add(transform.GetChild(i).gameObject);
+                    if (ListOfChildren.Contains(transform.GetChild(i).gameObject))
+                        {
+                        continue;
+                        }
+                    else
+                        {
+                        ListOfChildren.Add(transform.GetChild(i).gameObject);
+                        PeopleCapacity += 10;
+                        }
                     }
-                }
-            for (int x = 0; x < childCount; x++)
-                {
-                this.PeopleCapacity += 10;
-                this.People = PeopleCapacity;
-                this.BirthRate = People / 10;
                 }
             }
 
         private string GetSocialBuildingName()
             {
-            string[] BuildingNameArray = this.ListOfChildren[0].gameObject.name.Split('-');
+            string[] BuildingNameArray = ListOfChildren[0].gameObject.name.Split('-');
             return BuildingNameArray[1].Split('(')[0];
             }
+        IEnumerator BirthTimer(float birthRate)
+            {
+            if (People != PeopleCapacity)
+                {
+                float birthTime = 0;
+                while (birthTime < 1)
+                    {
+                    birthTime += birthRate;
+                    yield return new WaitForSeconds(1f);
+                    }
+                People += 1;
+                StartCoroutine(BirthTimer(BirthRate));
+                }
+            }
         }
-
     }

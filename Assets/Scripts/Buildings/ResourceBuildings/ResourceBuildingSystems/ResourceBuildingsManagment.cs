@@ -59,12 +59,12 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                     storedResources.Add(ChildBuildingTyp.ResourceToGather[i], 0);
                     }
                 }
-            this.WorkingPeopleCapacity = 0;
+            WorkingPeopleCapacity = 0;
             for (int x = 0; x < childCount; x++)
                 {
-                this.WorkingPeopleCapacity += 10;
-                this.WorkingPeople = WorkingPeopleCapacity;
-                this.ProduktionSpeed = WorkingPeople;
+                WorkingPeopleCapacity += 10;
+                WorkingPeople = WorkingPeopleCapacity;
+                ProduktionSpeed = WorkingPeople;
                 }
             }
 
@@ -77,10 +77,10 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             if (!(transform.childCount == ListOfChildren.Count))
                 {
                 AddingChildsToList(StoredResources);
-                this.WorkingPeopleCapacity = ListOfChildren.Count * 10;
+                WorkingPeopleCapacity = ListOfChildren.Count * 10;
                 //ToDO: For now the building is at full capacity
-                this.WorkingPeople = WorkingPeopleCapacity;
-                this.ProduktionSpeed = WorkingPeople;
+                WorkingPeople = WorkingPeopleCapacity;
+                ProduktionSpeed = WorkingPeople;
                 CancelInvoke();
                 InvokeRepeating("UpdateResoucesMethode", 0.02f, 4f / ProduktionSpeed);
                 }
