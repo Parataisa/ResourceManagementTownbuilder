@@ -4,21 +4,61 @@ using UnityEngine;
 
 namespace Assets.Scripts.AvailableResouceManagment
     {
-    class AvailableManpower
+    class AvailableManpower : MonoBehaviour
         {
-        private List<GameObject> SocialBuildingList = SocialBuildingManagment.SocialBuildingMain;
+        private List<GameObject> SocialBuildingList = new List<GameObject>();
+        private List<GameObject> SubscribedMainBuildings = new List<GameObject>();
         public int AvailablePeople;
+        private bool fistRun = false;
+        private int numberOfBuildingsInList = 0;
 
-        private void NewSocialBuildingListIteration()
+        public void Start()
             {
-            foreach (var MainBuildings in SocialBuildingList)
+            SocialBuildingList = SocialBuildingManagment.SocialBuildingMain;
+            }
+        public void LateUpdate()
+            {
+            if (SocialBuildingList.Count == 0)
                 {
-                AvailablePeople += MainBuildings.GetComponent<SocialBuildingManagment>().People;
+                return;
+                }
+            else if (!fistRun)
+                {
+                NewSocialBuildingListIteration();
+                fistRun = true;
+                }
+            else if (numberOfBuildingsInList != SocialBuildingList.Count)
+                {
+                foreach (var Building in SocialBuildingList)
+                    {
+                    if (SubscribedMainBuildings.Contains(Building))
+                        {
+                        continue;
+                        }
+                    else
+                        {
+                        AddSocialBuildingToList(Building);
+                        }
+                    }
                 }
             }
-        private void AddedToSocialBuildingList(GameObject NewSocialBuidling)
+        private void NewSocialBuildingListIteration()
             {
-            AvailablePeople += NewSocialBuidling.GetComponent<SocialBuildingManagment>().People;
+            foreach (var Building in SocialBuildingList)
+                {
+                AddSocialBuildingToList(Building);
+                }
+            }
+        private void AddSocialBuildingToList(GameObject Building)
+            {
+            AvailablePeople += Building.GetComponent<SocialBuildingManagment>().People;
+            numberOfBuildingsInList += 1;
+            Building.GetComponent<SocialBuildingManagment>().PersonBirth += BirthTimer;
+            SubscribedMainBuildings.Add(Building);
+            }
+        private void BirthTimer()
+            {
+            AvailablePeople += 1;
             }
         }
     }

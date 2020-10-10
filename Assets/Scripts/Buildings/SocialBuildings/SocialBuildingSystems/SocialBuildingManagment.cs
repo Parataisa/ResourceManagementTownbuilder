@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace Assets.Scripts.Buildings.SocialBuildings
         public int People = 2;
         public int PeopleCapacity;
         public GameObject GameobjectPrefab;
+        public Action PersonBirth;
 
         List<GameObject> IBuildingManagment.ListOfChildren { get => ListOfChildren; }
 
@@ -77,6 +79,7 @@ namespace Assets.Scripts.Buildings.SocialBuildings
                     yield return new WaitForSeconds(1f);
                     }
                 People += 1;
+                PersonBirth?.Invoke();
                 StartCoroutine(BirthTimer(BirthRate));
                 }
             }
