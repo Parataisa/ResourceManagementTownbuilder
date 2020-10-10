@@ -37,12 +37,18 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         private void AddingChildsToList(Dictionary<string, int> storedResources)
             {
             int childCount = transform.childCount;
-            ListOfChildren.Clear(); // ToDo:Check if this.child is already in the list if not add it 
             if (childCount != 0)
                 {
                 for (int i = 0; i < childCount; i++)
                     {
-                    this.ListOfChildren.Add(transform.GetChild(i).gameObject);
+                    if (ListOfChildren.Contains(transform.GetChild(i).gameObject))
+                        {
+                        continue;
+                        }
+                    else
+                        {
+                        ListOfChildren.Add(transform.GetChild(i).gameObject);
+                        }
                     }
                 }
             ChildBuildingTyp = transform.GetChild(0).GetComponent<ResourceBuildingBase>();
@@ -85,8 +91,8 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             }
         private void UpdateResoucesMethode()
             {
-                UpdateResouces?.Invoke(this.gameObject);
-                ResourceQuantityDecrease?.Invoke(this);
+            UpdateResouces?.Invoke(this.gameObject);
+            ResourceQuantityDecrease?.Invoke(this);
             }
         }
     }
