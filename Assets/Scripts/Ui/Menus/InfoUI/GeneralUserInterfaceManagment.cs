@@ -15,8 +15,8 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         public EventSystem EventSystem;
         public event Action<GameObject> ShortInfoPanelToggeled;
         public event Action<GameObject> OnClickInfoPanelToggled;
-
         public GameObject CurrentOnClickGameObject;
+
         public void Start()
             {
             camera = Camera.main;
@@ -48,8 +48,8 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         {
                         if (Input.GetMouseButtonDown(0) && ResouceBuildingUserInterface.activeSelf && hitInfo.transform.gameObject.layer == 9)
                             {
-                            ResourceBuildingInterfaceOnClick.SetActive(true);
                             SocialBuildingInterfaceOnClick.SetActive(false);
+                            ResourceBuildingInterfaceOnClick.SetActive(true);
                             OnClickInfoPanelToggled?.Invoke(hitInfo.transform.gameObject);
                             }
                         ResouceBuildingUserInterface.SetActive(true);
@@ -61,8 +61,8 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         {
                         if (Input.GetMouseButtonDown(0) && SocialBuildingUserInterface.activeSelf && hitInfo.transform.gameObject.layer == 8)
                             {
-                            SocialBuildingInterfaceOnClick.SetActive(true);
                             ResourceBuildingInterfaceOnClick.SetActive(false);
+                            SocialBuildingInterfaceOnClick.SetActive(true);
                             OnClickInfoPanelToggled?.Invoke(hitInfo.transform.gameObject);
                             }
                         SocialBuildingUserInterface.SetActive(true);

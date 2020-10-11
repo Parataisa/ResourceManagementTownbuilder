@@ -15,6 +15,15 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             savedeGameObject = selectedGameobject;
             generalUi.CurrentOnClickGameObject = selectedGameobject;
             }
+        private void OnDisable()
+            {
+            savedeGameObject = null;
+            selectedGameobject = null;
+            }
+        private void OnEnable()
+            {
+            generalUi.CurrentOnClickGameObject = selectedGameobject;
+            }
         private void Update()
             {
             if (this.enabled)

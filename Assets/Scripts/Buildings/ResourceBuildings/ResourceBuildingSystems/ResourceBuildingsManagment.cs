@@ -18,15 +18,15 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         public float ProduktionSpeed;
         public int WorkingPeopleCapacity;
         public int WorkingPeople;
+        public GameObject GameobjectPrefab;
         public event Action<GameObject> UpdateResouces;
         public event Action<ResourceBuildingsManagment> ResourceQuantityDecrease;
-        public GameObject GameobjectPrefab;
 
         private void Start()
             {
             StoredResources = new Dictionary<string, int>();
             AddingChildsToList(StoredResources);
-            InvokeRepeating("UpdateResoucesMethode", 0.02f, 1f / ProduktionSpeed);
+            InvokeRepeating("UpdateResoucesMethode", 0.02f, 4f / ProduktionSpeed);
             // Adding to eatch Building its own StartCoroutine or invoke
             }
 
@@ -37,6 +37,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         private void AddingChildsToList(Dictionary<string, int> storedResources)
             {
             int childCount = transform.childCount;
+            ListOfChildren.Clear();
             if (childCount != 0)
                 {
                 for (int i = 0; i < childCount; i++)

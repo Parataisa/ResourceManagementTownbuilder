@@ -7,11 +7,11 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
     {
     class ResourceBuildingAccountant : MonoBehaviour
         {
-        public List<ResouceQuantityTyps> GatherableResouces;
         public List<GameObject> GatherableResouceInArea = new List<GameObject>();
-        private List<string> ListOfGatherableResources;
         public const float ResourceCollectingRadius = 10;
         public int selecedResource = 0;
+        private List<string> ListOfGatherableResources;
+        private List<ResouceQuantityTyps> GatherableResouces;
 
         public class ResouceQuantityTyps
             {

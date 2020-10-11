@@ -14,6 +14,8 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         public GameObject ItemImagePrefab;
         private List<string> keyList = new List<string>();
         private List<string> storedResourceList = new List<string>();
+
+
         private void Awake()
             {
             generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
@@ -26,6 +28,12 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 {
                 Destroy(child.gameObject);
                 }
+            savedeGameObject = null;
+            selectedGameobject = null;
+            }
+        private void OnEnable()
+            {
+            generalUi.CurrentOnClickGameObject = selectedGameobject;
             }
 
         private void AddingItems()

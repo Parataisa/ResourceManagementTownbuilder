@@ -2,7 +2,6 @@
 using Assets.Scripts.Buildings.ResourceBuildings;
 using Assets.Scripts.Buildings.SocialBuildings;
 using Assets.Scripts.Ui.Menus.InfoUI;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,12 +12,13 @@ namespace Assets.Scripts.Buildings
         {
         public GameObject buildingPanel;
         public static Dictionary<int, string> buildingDirectory = new Dictionary<int, string>();
-        public UnityEngine.Object[] ResouceBuildingsListObjects;
-        public UnityEngine.Object[] SocialBuildingsListObjects;
-        public GameObject[] placeableObjectPrefabs;
         public GameObject currentPlaceableObject;
+        public GameObject[] placeableObjectPrefabs;
+        private UnityEngine.Object[] ResouceBuildingsListObjects;
+        private UnityEngine.Object[] SocialBuildingsListObjects;
         private bool objectPlacable;
         private static int lastButtonHit;
+        private bool CreatingBuilding = false;
 
         private void Start()
             {
@@ -157,7 +157,7 @@ namespace Assets.Scripts.Buildings
         public void CreateResouceBuilding(int couplingPosition)
             {
             if (couplingPosition == 0)
-                { 
+                {
                 string[] buildingName = currentPlaceableObject.name.Split('-');
                 GameObject resouceBuildingMain = new GameObject
                     {
@@ -173,11 +173,13 @@ namespace Assets.Scripts.Buildings
                 Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
                 currentPlaceableObject = null;
                 }
-            else
+            else if (!CreatingBuilding)
                 {
+                CreatingBuilding = true;
                 var generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
                 var newGameobject = Instantiate(generalUi.CurrentOnClickGameObject.transform.parent.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab, generalUi.CurrentOnClickGameObject.transform.parent.transform);
                 AddBuildingToOtherBuilding(couplingPosition, 9, generalUi.CurrentOnClickGameObject, newGameobject);
+                CreatingBuilding = false;
                 }
             }
         public void CreateSocialBuilding(int couplingPosition)
@@ -198,11 +200,13 @@ namespace Assets.Scripts.Buildings
                 Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
                 currentPlaceableObject = null;
                 }
-            else
+            else if (!CreatingBuilding)
                 {
+                CreatingBuilding = true;
                 var generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
                 var newGameobject = Instantiate(generalUi.CurrentOnClickGameObject.transform.parent.GetComponent<SocialBuildingManagment>().GameobjectPrefab, generalUi.CurrentOnClickGameObject.transform.parent.transform);
                 AddBuildingToOtherBuilding(couplingPosition, 8, generalUi.CurrentOnClickGameObject, newGameobject);
+                CreatingBuilding = false;
                 }
             }
         private void AddBuildingToOtherBuilding(int couplingPosition, int buildingTyp, GameObject selectedGameobject, GameObject newGameobject)
@@ -219,6 +223,7 @@ namespace Assets.Scripts.Buildings
                 Debug.Log("Position taken");
                 }
             }
+
         private Vector3 GetBuildingPosition(int couplingPosition, GameObject selectedGameobject)
             {
             //North

@@ -8,7 +8,7 @@ namespace Assets.Scripts.Buildings.SocialBuildings
     {
     class SocialBuildingManagment : MonoBehaviour, IBuildingManagment
         {
-        readonly List<GameObject> ListOfChildren = new List<GameObject>();
+        private readonly List<GameObject> ListOfChildren = new List<GameObject>();
         public static List<GameObject> SocialBuildingMain = new List<GameObject>();
         public string SocialBuildingType = "";
         public float BirthRate = 0.2f;
@@ -46,6 +46,7 @@ namespace Assets.Scripts.Buildings.SocialBuildings
         private void AddingChildsToList()
             {
             int childCount = transform.childCount;
+            ListOfChildren.Clear();
             if (childCount != 0)
                 {
                 for (int i = 0; i < childCount; i++)

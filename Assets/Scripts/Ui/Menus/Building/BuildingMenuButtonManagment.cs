@@ -46,7 +46,6 @@ public class BuildingMenuButtonManagment : MonoBehaviour
                     currentRow++;
                     }
                 }
-
             }
         }
 

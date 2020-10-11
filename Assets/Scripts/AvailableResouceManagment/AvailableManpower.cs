@@ -9,6 +9,7 @@ namespace Assets.Scripts.AvailableResouceManagment
         private List<GameObject> SocialBuildingList = new List<GameObject>();
         private List<GameObject> SubscribedMainBuildings = new List<GameObject>();
         public int AvailablePeople;
+        public int BusyPeople = 0;
         private bool fistRun = false;
         private int numberOfBuildingsInList = 0;
 
