@@ -26,8 +26,6 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             {
             StoredResources = new Dictionary<string, int>();
             AddingChildsToList(StoredResources);
-            InvokeRepeating("UpdateResoucesMethode", 0.02f, 4f / ProduktionSpeed);
-            // Adding to eatch Building its own StartCoroutine or invoke
             }
 
         public void IncreaseGatherResource(int numberOfIncrices, ResourceBase resourceTyp)
@@ -64,7 +62,6 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             for (int x = 0; x < childCount; x++)
                 {
                 WorkingPeopleCapacity += 10;
-                WorkingPeople = WorkingPeopleCapacity;
                 ProduktionSpeed = WorkingPeople;
                 }
             }
@@ -79,16 +76,20 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                 {
                 AddingChildsToList(StoredResources);
                 WorkingPeopleCapacity = ListOfChildren.Count * 10;
-                //ToDO: For now the building is at full capacity
-                WorkingPeople = WorkingPeopleCapacity;
                 ProduktionSpeed = WorkingPeople;
                 CancelInvoke();
-                InvokeRepeating("UpdateResoucesMethode", 0.02f, 4f / ProduktionSpeed);
+                InvokeRepeating(nameof(UpdateResoucesMethode), 0.02f, 4f / ProduktionSpeed);
                 }
             else if (transform.childCount == ListOfChildren.Count && WorkingPeopleCapacity == ListOfChildren.Count * 10)
                 {
                 return;
                 }
+            }
+        public void UpdateWorkingPeople()
+            {
+            ProduktionSpeed = WorkingPeople;
+            CancelInvoke();
+            InvokeRepeating(nameof(UpdateResoucesMethode), 0.02f, 4f / ProduktionSpeed);
             }
         private void UpdateResoucesMethode()
             {

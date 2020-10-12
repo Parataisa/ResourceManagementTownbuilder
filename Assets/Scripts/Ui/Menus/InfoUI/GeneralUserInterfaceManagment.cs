@@ -15,6 +15,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         public EventSystem EventSystem;
         public event Action<GameObject> ShortInfoPanelToggeled;
         public event Action<GameObject> OnClickInfoPanelToggled;
+        public event Action OnClickInfoPanelTextUpdate; 
         public GameObject CurrentOnClickGameObject;
 
         public void Start()
@@ -51,6 +52,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                             SocialBuildingInterfaceOnClick.SetActive(false);
                             ResourceBuildingInterfaceOnClick.SetActive(true);
                             OnClickInfoPanelToggled?.Invoke(hitInfo.transform.gameObject);
+                            OnClickInfoPanelTextUpdate?.Invoke();
                             }
                         ResouceBuildingUserInterface.SetActive(true);
                         ResoucePatchUserInterface.SetActive(false);
