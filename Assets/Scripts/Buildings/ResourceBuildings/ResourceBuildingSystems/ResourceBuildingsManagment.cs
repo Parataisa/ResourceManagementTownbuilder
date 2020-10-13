@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
 using ResourceGeneration.ResourceVariationen;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,11 +22,13 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         public GameObject GameobjectPrefab;
         public event Action<GameObject> UpdateResouces;
         public event Action<ResourceBuildingsManagment> ResourceQuantityDecrease;
+        public bool CoroutinRunning;
 
         private void Start()
             {
             StoredResources = new Dictionary<string, int>();
             AddingChildsToList(StoredResources);
+            StartCoroutine(UpdateResoucesMethode());
             }
 
         public void IncreaseGatherResource(int numberOfIncrices, ResourceBase resourceTyp)
@@ -58,12 +61,8 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                     storedResources.Add(ChildBuildingTyp.ResourceToGather[i], 0);
                     }
                 }
-            WorkingPeopleCapacity = 0;
-            for (int x = 0; x < childCount; x++)
-                {
-                WorkingPeopleCapacity += 10;
-                ProduktionSpeed = WorkingPeople;
-                }
+            WorkingPeopleCapacity = childCount * 10;
+            UpdateWorkingPeople();
             }
 
         private void Update()
@@ -75,26 +74,31 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             if (!(transform.childCount == ListOfChildren.Count))
                 {
                 AddingChildsToList(StoredResources);
-                WorkingPeopleCapacity = ListOfChildren.Count * 10;
-                ProduktionSpeed = WorkingPeople;
-                CancelInvoke();
-                InvokeRepeating(nameof(UpdateResoucesMethode), 0.02f, 4f / ProduktionSpeed);
-                }
-            else if (transform.childCount == ListOfChildren.Count && WorkingPeopleCapacity == ListOfChildren.Count * 10)
-                {
-                return;
                 }
             }
         public void UpdateWorkingPeople()
             {
             ProduktionSpeed = WorkingPeople;
-            CancelInvoke();
-            InvokeRepeating(nameof(UpdateResoucesMethode), 0.02f, 4f / ProduktionSpeed);
+            if (!CoroutinRunning)
+                {
+                StartCoroutine(UpdateResoucesMethode());
+                }
             }
-        private void UpdateResoucesMethode()
+        private IEnumerator UpdateResoucesMethode()
             {
-            UpdateResouces?.Invoke(this.gameObject);
-            ResourceQuantityDecrease?.Invoke(this);
+            if (ProduktionSpeed != 0)
+                {
+                CoroutinRunning = true;
+                float gatherTimer = 0;
+                while (gatherTimer < 1)
+                    {
+                    gatherTimer += 0.1f;
+                    yield return new WaitForSeconds(2 / ProduktionSpeed);
+                    }
+                UpdateResouces?.Invoke(this.gameObject);
+                ResourceQuantityDecrease?.Invoke(this);
+                StartCoroutine(UpdateResoucesMethode());
+                }
             }
         }
     }

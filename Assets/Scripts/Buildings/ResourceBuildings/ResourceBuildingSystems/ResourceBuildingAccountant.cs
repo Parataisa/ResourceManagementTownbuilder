@@ -1,4 +1,5 @@
 ﻿using ResourceGeneration.ResourceVariationen;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -41,8 +42,11 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                 {
                 GatherableResouceInArea.RemoveAt(selecedResource);
                 mainBuilding.GetComponent<ResourceBuildingsManagment>().UpdateResouces -= UpdateResouces;
+                mainBuilding.GetComponent<ResourceBuildingsManagment>().StopAllCoroutines();
+                mainBuilding.GetComponent<ResourceBuildingsManagment>().CoroutinRunning = false;
+
                 }
-            else
+            else if (mainBuilding.GetComponent<ResourceBuildingsManagment>().WorkingPeople > 0)
                 {
                 selectedResouceInArea.QuantityOfTheResource -= 1;
                 selectedResouceInArea.ResourceQuantityCheck();
@@ -99,7 +103,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                 }
             return resouceQuantityInArea;
             }
-
+            
         private GameObject[] ScannForResources(float radius, Vector3 startpoint, int maxScannedResources)
             {
             Collider[] collidersInArea = new Collider[maxScannedResources];
