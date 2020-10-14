@@ -9,7 +9,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems
         [SerializeField] private AvailableManpower Manpower;
         [SerializeField] private ResourceBuildingInterfaceOnClick ResourceBuidlingOnClickUi;
         [SerializeField] private GameObject WorkingPeopleText;
-        private ResourceBuildingsManagment selectedBuilding;
+        public ResourceBuildingsManagment selectedBuilding;
         private int selectedBuildingCapacity = 0;
 
         private void Start()
