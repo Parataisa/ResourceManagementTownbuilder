@@ -31,7 +31,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             StartCoroutine(UpdateResoucesMethode());
             }
 
-        public void IncreaseGatherResource(int numberOfIncrices, ResourceBase resourceTyp)
+        public void IncreaseGatherResource(int numberOfIncrices, IResources resourceTyp)
             {
             StoredResources[resourceTyp.ResourceName] += numberOfIncrices;
             }

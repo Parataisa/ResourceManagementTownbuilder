@@ -10,7 +10,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             }
         override internal List<string> SetResouces(List<string> resoucesToGather)
             {
-            resoucesToGather.Add("Tree");
+            resoucesToGather.Add("Wood");
             return resouces;
             }
         }

@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Buildings.ResourceBuildings;
-using Assets.Scripts.Ui.Menus.InfoUI;
+﻿using Assets.Scripts.Ui.Menus.InfoUI;
 using UnityEngine;
 
 namespace Assets.Scripts.Buildings.BuildingSystemHelper
