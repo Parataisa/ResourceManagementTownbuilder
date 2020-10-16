@@ -14,8 +14,8 @@ namespace Assets.Scripts.Buildings
         public static Dictionary<int, string> buildingDirectory = new Dictionary<int, string>();
         public GameObject currentPlaceableObject;
         public GameObject[] placeableObjectPrefabs;
-        private UnityEngine.Object[] ResouceBuildingsListObjects;
-        private UnityEngine.Object[] SocialBuildingsListObjects;
+        private Object[] ResouceBuildingsListObjects;
+        private Object[] SocialBuildingsListObjects;
         private bool objectPlacable;
         private static int lastButtonHit;
         private bool CreatingBuilding = false;
@@ -27,8 +27,16 @@ namespace Assets.Scripts.Buildings
             placeableObjectPrefabs = new GameObject[ResouceBuildingsListObjects.Length + SocialBuildingsListObjects.Length];
             GetBuildingsInPlacableObjects(ResouceBuildingsListObjects, SocialBuildingsListObjects, placeableObjectPrefabs);
             }
-
-        private void GetBuildingsInPlacableObjects(UnityEngine.Object[] resouceBuildingsListObjects, UnityEngine.Object[] socialBuildingsListObjects, GameObject[] placeableObject)
+        private void Update()
+            {
+            if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
+                {
+                DrawGatheringCircle.DrawCircle(currentPlaceableObject, ResourceBuildingAccountant.ResourceCollectingRadius);
+                MoveCurrentObjectToMouse();
+                CreateBuildingIfClicked();
+                }
+            }
+        private void GetBuildingsInPlacableObjects(Object[] resouceBuildingsListObjects, Object[] socialBuildingsListObjects, GameObject[] placeableObject)
             {
             if (buildingDirectory.Count == 0)
                 {
@@ -40,8 +48,7 @@ namespace Assets.Scripts.Buildings
                 UpdatePlaceableObjects(resouceBuildingsListObjects, socialBuildingsListObjects, placeableObject);
                 }
             }
-
-        private static void UpdatePlaceableObjects(UnityEngine.Object[] resouceBuildingsListObjects, UnityEngine.Object[] socialBuildingsListObjects, GameObject[] placeableObject)
+        private static void UpdatePlaceableObjects(Object[] resouceBuildingsListObjects, Object[] socialBuildingsListObjects, GameObject[] placeableObject)
             {
             int i = 0;
             foreach (var resouceBuilding in resouceBuildingsListObjects)
@@ -59,15 +66,8 @@ namespace Assets.Scripts.Buildings
                 i++;
                 }
             }
-        private void Update()
-            {
-            if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
-                {
-                DrawGatheringCircle.DrawCircle(currentPlaceableObject, ResourceBuildingAccountant.ResourceCollectingRadius);
-                MoveCurrentObjectToMouse();
-                CreateBuildingIfClicked();
-                }
-            }
+
+
         private GameObject GetLocalMesh()
             {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -212,7 +212,7 @@ namespace Assets.Scripts.Buildings
         private void AddBuildingToOtherBuilding(int couplingPosition, int buildingTyp, GameObject selectedGameobject, GameObject newGameobject)
             {
             AddBuildingTypInfos(newGameobject, buildingTyp);
-            Vector3 newPosition = GetBuildingPosition(couplingPosition, selectedGameobject);
+            Vector3 newPosition = GetChildBuildingPosition.GetPosition(couplingPosition, selectedGameobject);
             if (newPosition != selectedGameobject.transform.position)
                 {
                 newGameobject.transform.position = newPosition;
@@ -222,62 +222,6 @@ namespace Assets.Scripts.Buildings
                 Destroy(newGameobject);
                 Debug.Log("Position taken");
                 }
-            }
-
-        private Vector3 GetBuildingPosition(int couplingPosition, GameObject selectedGameobject)
-            {
-            //North
-            if (couplingPosition == 1)
-                {
-                Vector3 newPosition = new Vector3(selectedGameobject.transform.position.x, selectedGameobject.transform.position.y, selectedGameobject.transform.position.z + selectedGameobject.transform.lossyScale.z);
-                if (HaveNeightbourAtPosition(newPosition, selectedGameobject.transform.parent.GetComponent<IBuildingManagment>().ListOfChildren))
-                    {
-                    return selectedGameobject.transform.position;
-                    }
-                return newPosition;
-                }
-            //East
-            else if (couplingPosition == 2)
-                {
-                Vector3 newPosition = new Vector3(selectedGameobject.transform.position.x + selectedGameobject.transform.lossyScale.x, selectedGameobject.transform.position.y, selectedGameobject.transform.position.z);
-                if (HaveNeightbourAtPosition(newPosition, selectedGameobject.transform.parent.GetComponent<IBuildingManagment>().ListOfChildren))
-                    {
-                    return selectedGameobject.transform.position;
-                    }
-                return newPosition;
-                }
-            //South
-            else if (couplingPosition == 3)
-                {
-                Vector3 newPosition = new Vector3(selectedGameobject.transform.position.x, selectedGameobject.transform.position.y, selectedGameobject.transform.position.z - selectedGameobject.transform.lossyScale.z);
-                if (HaveNeightbourAtPosition(newPosition, selectedGameobject.transform.parent.GetComponent<IBuildingManagment>().ListOfChildren))
-                    {
-                    return selectedGameobject.transform.position;
-                    }
-                return newPosition;
-                }
-            //West
-            else if (couplingPosition == 4)
-                {
-                Vector3 newPosition = new Vector3(selectedGameobject.transform.position.x - selectedGameobject.transform.lossyScale.x, selectedGameobject.transform.position.y, selectedGameobject.transform.position.z);
-                if (HaveNeightbourAtPosition(newPosition, selectedGameobject.transform.parent.GetComponent<IBuildingManagment>().ListOfChildren))
-                    {
-                    return selectedGameobject.transform.position;
-                    }
-                return newPosition;
-                }
-            return selectedGameobject.transform.position;
-            }
-        private bool HaveNeightbourAtPosition(Vector3 newPosition, List<GameObject> neighbourPosititions)
-            {
-            foreach (var neighbour in neighbourPosititions)
-                {
-                if (neighbour.transform.position == newPosition)
-                    {
-                    return true;
-                    }
-                }
-            return false;
             }
         private void AddBuildingTypInfos(GameObject newGameobject, int buildingTyp)
             {
