@@ -6,7 +6,6 @@ namespace ResourceGeneration.ResourceVariationen
     public class ResourceBase : MonoBehaviour, IResources
         {
         public int SizeOfTheResource;
-        private int quantityOfTheResource;
         private int startingQuantity;
         public Vector3 PositionOnTheMap;
         public Vector2 AreaOfTheResource;
@@ -16,35 +15,35 @@ namespace ResourceGeneration.ResourceVariationen
         public int FractionValiesForThePatch;
 
         public string ResourceName => GetResourceName();
-        public int QuantityOfTheResource { get => quantityOfTheResource; set => quantityOfTheResource = value; }
+        public int QuantityOfTheResource { get; set; }
 
         protected virtual void Start()
             {
-            quantityOfTheResource = GetQuantityOfTheResource();
-            this.startingQuantity = quantityOfTheResource;
-            this.SizeOfTheResource = GetSizeOfTheResource(quantityOfTheResource);
-            this.SizeOfTheModel = GetRandomSizeForTheModel(quantityOfTheResource, SizeOfTheResource);
+            QuantityOfTheResource = GetQuantityOfTheResource();
+            this.startingQuantity = QuantityOfTheResource;
+            this.SizeOfTheResource = GetSizeOfTheResource(QuantityOfTheResource);
+            this.SizeOfTheModel = GetRandomSizeForTheModel(QuantityOfTheResource, SizeOfTheResource);
             this.AreaOfTheResource = GetAreaOfTheResource(SizeOfTheModel, SizeOfTheResource);
             this.PositionOnTheMap = GetPositionOfResource(AreaOfTheResource);
-            this.FractionValiesForThePatch = quantityOfTheResource / this.SizeOfTheResource;
+            this.FractionValiesForThePatch = QuantityOfTheResource / this.SizeOfTheResource;
             ChooseLocationEvent?.Invoke(this.gameObject);
             ResourceGenerated?.Invoke(this);
 
             }
         public void ResourceQuantityCheck()
             {
-            if (this.startingQuantity == quantityOfTheResource)
+            if (this.startingQuantity == QuantityOfTheResource)
                 {
                 return;
                 }
             else
                 {
-                if ((this.startingQuantity - quantityOfTheResource) % this.FractionValiesForThePatch == 0)
+                if ((this.startingQuantity - QuantityOfTheResource) % this.FractionValiesForThePatch == 0)
                     {
                     Destroy(this.transform.GetChild(0).gameObject);
                     this.SizeOfTheResource -= 1;
                     }
-                else if (quantityOfTheResource <= 0)
+                else if (QuantityOfTheResource <= 0)
                     {
                     Destroy(this.gameObject);
                     }

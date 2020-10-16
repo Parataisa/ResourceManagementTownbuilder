@@ -4,13 +4,12 @@ namespace ResourceGeneration.ResourceVariationen
     {
     class Wild : MonoBehaviour, IResources
         {
-        private int quantityOfTheResource;
         public string ResourceName { get => GetResourceName(); }
-        public int QuantityOfTheResource { get => quantityOfTheResource; set => quantityOfTheResource = value; }
+        public int QuantityOfTheResource { get; set; }
 
         public void Start()
             {
-            quantityOfTheResource = GetQuantityOfTheResource();
+            QuantityOfTheResource = GetQuantityOfTheResource();
             }
         private string GetResourceName()
             {
