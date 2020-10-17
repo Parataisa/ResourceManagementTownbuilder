@@ -7437,7 +7437,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc2bf297acad6434380e99b4f11f4b91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceBuidlingOnClickUi: {fileID: 847780747}
+  OnClickBuilding: {fileID: 0}
+  GeneralUserInterfaceManagment: {fileID: 552225512}
   ResourceBuildingInterfaceOnClick: {fileID: 847780743}
   SocialBuildingInterfaceOnClick: {fileID: 48888179}
 --- !u!1 &1360625249
