@@ -3,11 +3,13 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
     {
     class GeneralUserInterface : MonoBehaviour
         {
-        public GameObject selectedGameobject;
+        internal GameObject selectedGameobject;
         internal string ObjectName = "";
+
         private void Start()
             {
-            FindObjectOfType<GeneralUserInterfaceManagment>().ShortInfoPanelToggeled += GetGameObject;
+            selectedGameobject = GeneralUserInterfaceManagment.CurrentOnClickGameObject;
+            GeneralUserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
             }
         private void LateUpdate()
             {
@@ -15,11 +17,18 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 {
                 if (this.gameObject.activeSelf)
                     {
-                    FindObjectOfType<GeneralUserInterfaceManagment>().ShortInfoPanelToggeled += GetGameObject;
+                    GeneralUserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
                     }
                 }
             }
-
+        private void OnDisable()
+            {
+            GeneralUserInterfaceManagment.ShortInfoPanelToggeled -= GetGameObject;
+            }
+        private void OnEnable()
+            {
+            GeneralUserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
+            }
         private void GetGameObject(GameObject gameObject)
             {
             selectedGameobject = gameObject;
@@ -29,7 +38,5 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             string[] BuildingNameArray = name.Split('-');
             return BuildingNameArray[1].Split('(')[0];
             }
-
-
         }
     }

@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Buildings.ResourceBuildings
     {
-    interface IResourcBuilding : IBuildings
+    interface IResourcBuilding
         {
         List<string> ResourceToGather { get; set; }
         }

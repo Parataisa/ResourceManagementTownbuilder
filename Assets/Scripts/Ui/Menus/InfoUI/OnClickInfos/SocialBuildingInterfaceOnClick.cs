@@ -1,40 +1,39 @@
 ﻿using TMPro;
-using UnityEngine;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
     class SocialBuildingInterfaceOnClick : OnClickInterfaceBase
         {
-        private void Awake()
+        protected override void Start()
             {
-            generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
-            generalUi.OnClickInfoPanelToggled += GetGameObject;
+            base.Start();
+            GeneralUserInterfaceManagment.CurrentOnClickGameObject = SelectedGameobject;
             }
-        private void Start()
+        private void OnDisable()
             {
-            savedeGameObject = selectedGameobject;
-            generalUi.CurrentOnClickGameObject = selectedGameobject;
+            savedeGameObject = null;
+            SelectedGameobject = null;
             }
         private void Update()
             {
             if (this.enabled)
                 {
-                if (selectedGameobject == null)
+                if (SelectedGameobject == null)
                     {
                     return;
                     }
-                if (selectedGameobject != savedeGameObject)
+                if (SelectedGameobject != savedeGameObject)
                     {
-                    savedeGameObject = selectedGameobject;
-                    generalUi.CurrentOnClickGameObject = selectedGameobject;
+                    savedeGameObject = SelectedGameobject;
+                    GeneralUserInterfaceManagment.CurrentOnClickGameObject = SelectedGameobject;
                     }
                 if (ObjectName.Length == 0)
                     {
-                    ObjectName = GetObjectName(selectedGameobject.transform.parent.name);
+                    ObjectName = GetObjectName(SelectedGameobject.transform.parent.name);
                     this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
-                    if (selectedGameobject != savedeGameObject)
+                    if (SelectedGameobject != savedeGameObject)
                         {
-                        ObjectName = GetObjectName(selectedGameobject.transform.parent.name);
+                        ObjectName = GetObjectName(SelectedGameobject.transform.parent.name);
                         this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                         }
                     }
@@ -44,11 +43,6 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             {
             string[] BuildingNameArray = name.Split('-');
             return BuildingNameArray[1].Split('(')[0];
-            }
-
-        private void GetGameObject(GameObject gameObject)
-            {
-            selectedGameobject = gameObject;
             }
         }
     }

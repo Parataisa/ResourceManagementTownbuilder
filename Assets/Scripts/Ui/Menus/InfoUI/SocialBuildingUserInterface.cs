@@ -37,6 +37,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     if (!PeopleCapacity.Equals(currentGameObjectScript.PeopleCapacity))
                         {
                         PeopleCapacity = currentGameObjectScript.PeopleCapacity;
+                        this.transform.Find("People").GetComponent<TextMeshProUGUI>().SetText(People.ToString() + "/" + PeopleCapacity.ToString());
                         }
                     if (!People.Equals(currentGameObjectScript.People))
                         {

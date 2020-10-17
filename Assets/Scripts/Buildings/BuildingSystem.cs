@@ -12,12 +12,13 @@ namespace Assets.Scripts.Buildings
         {
         public GameObject buildingPanel;
         public static Dictionary<int, string> buildingDirectory = new Dictionary<int, string>();
-        public UnityEngine.Object[] ResouceBuildingsListObjects;
-        public UnityEngine.Object[] SocialBuildingsListObjects;
-        public GameObject[] placeableObjectPrefabs;
         public GameObject currentPlaceableObject;
+        public GameObject[] placeableObjectPrefabs;
+        private Object[] ResouceBuildingsListObjects;
+        private Object[] SocialBuildingsListObjects;
         private bool objectPlacable;
         private static int lastButtonHit;
+        private bool CreatingBuilding = false;
 
         private void Start()
             {
@@ -26,8 +27,16 @@ namespace Assets.Scripts.Buildings
             placeableObjectPrefabs = new GameObject[ResouceBuildingsListObjects.Length + SocialBuildingsListObjects.Length];
             GetBuildingsInPlacableObjects(ResouceBuildingsListObjects, SocialBuildingsListObjects, placeableObjectPrefabs);
             }
-
-        private void GetBuildingsInPlacableObjects(UnityEngine.Object[] resouceBuildingsListObjects, UnityEngine.Object[] socialBuildingsListObjects, GameObject[] placeableObject)
+        private void Update()
+            {
+            if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
+                {
+                DrawGatheringCircle.DrawCircle(currentPlaceableObject, ResourceBuildingAccountant.ResourceCollectingRadius);
+                MoveCurrentObjectToMouse();
+                CreateBuildingIfClicked();
+                }
+            }
+        private void GetBuildingsInPlacableObjects(Object[] resouceBuildingsListObjects, Object[] socialBuildingsListObjects, GameObject[] placeableObject)
             {
             if (buildingDirectory.Count == 0)
                 {
@@ -39,8 +48,7 @@ namespace Assets.Scripts.Buildings
                 UpdatePlaceableObjects(resouceBuildingsListObjects, socialBuildingsListObjects, placeableObject);
                 }
             }
-
-        private static void UpdatePlaceableObjects(UnityEngine.Object[] resouceBuildingsListObjects, UnityEngine.Object[] socialBuildingsListObjects, GameObject[] placeableObject)
+        private static void UpdatePlaceableObjects(Object[] resouceBuildingsListObjects, Object[] socialBuildingsListObjects, GameObject[] placeableObject)
             {
             int i = 0;
             foreach (var resouceBuilding in resouceBuildingsListObjects)
@@ -58,15 +66,8 @@ namespace Assets.Scripts.Buildings
                 i++;
                 }
             }
-        private void Update()
-            {
-            if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
-                {
-                DrawGatheringCircle.DrawCircle(currentPlaceableObject, ResourceBuildingAccountant.ResourceCollectingRadius);
-                MoveCurrentObjectToMouse();
-                CreateBuildingIfClicked();
-                }
-            }
+
+
         private GameObject GetLocalMesh()
             {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -157,59 +158,61 @@ namespace Assets.Scripts.Buildings
             {
             if (couplingPosition == 0)
                 {
-                GameObject ground = GetLocalMesh();
-                currentPlaceableObject.layer = 9;
-                currentPlaceableObject.AddComponent<ResourceBuildingAccountant>();
                 string[] buildingName = currentPlaceableObject.name.Split('-');
                 GameObject resouceBuildingMain = new GameObject
                     {
                     name = "(ResouceBuildingMain)-" + buildingName[1]
                     };
+                currentPlaceableObject.transform.parent = resouceBuildingMain.transform;
+                resouceBuildingMain.AddComponent<ResourceBuildingAccountant>();
                 resouceBuildingMain.AddComponent<ResourceBuildingsManagment>();
                 resouceBuildingMain.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
-                resouceBuildingMain.transform.parent = ground.transform;
-                currentPlaceableObject.transform.parent = resouceBuildingMain.transform;
+                resouceBuildingMain.transform.parent = GetLocalMesh().transform;
+                ResourceBuildingsManagment.ResourceBuildingMain.Add(resouceBuildingMain);
+                currentPlaceableObject.layer = 9;
                 Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
                 currentPlaceableObject = null;
                 }
-            else
+            else if (!CreatingBuilding)
                 {
-                var generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
-                var newGameobject = Instantiate(generalUi.CurrentOnClickGameObject.transform.parent.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab, generalUi.CurrentOnClickGameObject.transform.parent.transform);
-                CreateBuildingAtPosition(couplingPosition, 9, generalUi.CurrentOnClickGameObject, newGameobject);
+                CreatingBuilding = true;
+                var generalUi = GeneralUserInterfaceManagment.CurrentOnClickGameObject;
+                var newGameobject = Instantiate(generalUi.transform.parent.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab, generalUi.transform.parent.transform);
+                AddBuildingToOtherBuilding(couplingPosition, 9, generalUi, newGameobject);
+                CreatingBuilding = false;
                 }
             }
         public void CreateSocialBuilding(int couplingPosition)
             {
             if (couplingPosition == 0)
                 {
-                GameObject ground = GetLocalMesh();
-                currentPlaceableObject.layer = 8;
-                currentPlaceableObject.AddComponent<SocialBuildingBase>();
                 string[] buildingName = currentPlaceableObject.name.Split('-');
                 GameObject socilaBuildingMain = new GameObject
                     {
                     name = "(SocialBuildingMain)-" + buildingName[1]
                     };
+                currentPlaceableObject.transform.parent = socilaBuildingMain.transform;
                 socilaBuildingMain.AddComponent<SocialBuildingManagment>();
                 socilaBuildingMain.GetComponent<SocialBuildingManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
-                socilaBuildingMain.transform.parent = ground.transform;
-                currentPlaceableObject.transform.parent = socilaBuildingMain.transform;
+                socilaBuildingMain.transform.parent = GetLocalMesh().transform;
+                SocialBuildingManagment.SocialBuildingMain.Add(socilaBuildingMain);
+                currentPlaceableObject.layer = 8;
                 Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
                 currentPlaceableObject = null;
                 }
-            else
+            else if (!CreatingBuilding)
                 {
-                var generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
-                var newGameobject = Instantiate(generalUi.CurrentOnClickGameObject.transform.parent.GetComponent<SocialBuildingManagment>().GameobjectPrefab, generalUi.CurrentOnClickGameObject.transform.parent.transform);
-                CreateBuildingAtPosition(couplingPosition, 8, generalUi.CurrentOnClickGameObject, newGameobject);
+                CreatingBuilding = true;
+                var generalUi = GeneralUserInterfaceManagment.CurrentOnClickGameObject;
+                var newGameobject = Instantiate(generalUi.transform.parent.GetComponent<SocialBuildingManagment>().GameobjectPrefab, generalUi.transform.parent.transform);
+                AddBuildingToOtherBuilding(couplingPosition, 8, generalUi, newGameobject);
+                CreatingBuilding = false;
                 }
             }
-
-        private void CreateBuildingAtPosition(int couplingPosition, int buildingTyp, GameObject selectedGameobject, GameObject newGameobject)
+        private void AddBuildingToOtherBuilding(int couplingPosition, int buildingTyp, GameObject selectedGameobject, GameObject newGameobject)
             {
             AddBuildingTypInfos(newGameobject, buildingTyp);
-            Vector3 newPosition = GetBuildingPosition(couplingPosition, selectedGameobject);
+            Vector3 newPosition = GetChildBuildingPosition.GetPosition(couplingPosition, selectedGameobject);
             if (newPosition != selectedGameobject.transform.position)
                 {
                 newGameobject.transform.position = newPosition;
@@ -220,82 +223,10 @@ namespace Assets.Scripts.Buildings
                 Debug.Log("Position taken");
                 }
             }
-
-        private Vector3 GetBuildingPosition(int couplingPosition, GameObject selectedGameobject)
-            {
-            //North
-            if (couplingPosition == 1)
-                {
-                Vector3 newPosition = new Vector3(selectedGameobject.transform.position.x, selectedGameobject.transform.position.y, selectedGameobject.transform.position.z + selectedGameobject.transform.lossyScale.z);
-                if (HaveNeightbourAtPosition(newPosition, selectedGameobject.transform.parent.GetComponent<IBuildingManagment>().ListOfChildren))
-                    {
-                    return selectedGameobject.transform.position;
-                    }
-                return newPosition;
-                }
-            //East
-            else if (couplingPosition == 2)
-                {
-                Vector3 newPosition = new Vector3(selectedGameobject.transform.position.x + selectedGameobject.transform.lossyScale.x, selectedGameobject.transform.position.y, selectedGameobject.transform.position.z);
-                if (HaveNeightbourAtPosition(newPosition, selectedGameobject.transform.parent.GetComponent<IBuildingManagment>().ListOfChildren))
-                    {
-                    return selectedGameobject.transform.position;
-                    }
-                return newPosition;
-                }
-            //South
-            else if (couplingPosition == 3)
-                {
-                Vector3 newPosition = new Vector3(selectedGameobject.transform.position.x, selectedGameobject.transform.position.y, selectedGameobject.transform.position.z - selectedGameobject.transform.lossyScale.z);
-                if (HaveNeightbourAtPosition(newPosition, selectedGameobject.transform.parent.GetComponent<IBuildingManagment>().ListOfChildren))
-                    {
-                    return selectedGameobject.transform.position;
-                    }
-                return newPosition;
-                }
-            //West
-            else if (couplingPosition == 4)
-                {
-                Vector3 newPosition = new Vector3(selectedGameobject.transform.position.x - selectedGameobject.transform.lossyScale.x, selectedGameobject.transform.position.y, selectedGameobject.transform.position.z);
-                if (HaveNeightbourAtPosition(newPosition, selectedGameobject.transform.parent.GetComponent<IBuildingManagment>().ListOfChildren))
-                    {
-                    return selectedGameobject.transform.position;
-                    }
-                return newPosition;
-                }
-            return selectedGameobject.transform.position;
-            }
-
-        private bool HaveNeightbourAtPosition(Vector3 newPosition, List<GameObject> neighbourPosititions)
-            {
-            foreach (var neighbour in neighbourPosititions)
-                {
-                if (neighbour.transform.position == newPosition)
-                    {
-                    return true;
-                    }
-                }
-            return false;
-            }
-
         private void AddBuildingTypInfos(GameObject newGameobject, int buildingTyp)
             {
             newGameobject.layer = buildingTyp;
-            if (buildingTyp == 8)
-                {
-                newGameobject.AddComponent<SocialBuildingBase>();
-                }
-            else if (buildingTyp == 9)
-                {
-                newGameobject.AddComponent<ResourceBuildingAccountant>();
-                }
-            else
-                {
-                Debug.Log(buildingTyp + " not found");
-                }
             }
-
-
         private GameObject[] ScannForObjectsInArea(RaycastHit hitInfo, int scannRadius)
             {
             Collider[] collidersInArea = new Collider[20];

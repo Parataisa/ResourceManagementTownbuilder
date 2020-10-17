@@ -401,6 +401,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2968735219526951684}
   - component: {fileID: 2871235239629508560}
+  - component: {fileID: 2533393920768532066}
   m_Layer: 0
   m_Name: (ResoucePatch)-TreeMain
   m_TagString: Untagged
@@ -435,15 +436,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1db6b6544f6d48441a11b6ef1ed8186f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceName: 
   SizeOfTheResource: 0
   QuantityOfTheResource: 0
   PositionOnTheMap: {x: 0, y: 0, z: 0}
   AreaOfTheResource: {x: 0, y: 0}
   SizeOfTheModel: {x: 0, y: 0, z: 0}
   FractionValiesForThePatch: 0
-  WildSizeOfTheResource: 0
-  WildQuantityOfTheResource: 0
+--- !u!114 &2533393920768532066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3260103986029736512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc79135e4d31a5f4c892ada886ff27df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  QuantityOfTheResource: 0
 --- !u!1 &4450551465871069179
 GameObject:
   m_ObjectHideFlags: 0

@@ -46,7 +46,6 @@ public class BuildingMenuButtonManagment : MonoBehaviour
                     currentRow++;
                     }
                 }
-
             }
         }
 
@@ -54,10 +53,14 @@ public class BuildingMenuButtonManagment : MonoBehaviour
         {
         if (panel.transform.childCount == 0)
             {
-            Invoke("CreateButtons", 0.1f);
+            Invoke(nameof(CreateButtons), 0.1f);
             }
-        else
+        else if (panel.transform.childCount == aktiveButtons.Length)
             {
+            return;
+            }
+           else
+            { 
             int i = 0;
             foreach (Transform child in panel.transform)
                 {
@@ -65,7 +68,7 @@ public class BuildingMenuButtonManagment : MonoBehaviour
                 Destroy(aktiveButtons[i].gameObject);
                 i++;
                 }
-            Invoke("CreateButtons", 0.1f);
+            Invoke(nameof(CreateButtons), 0.1f);
             }
         }
     private void AddingButtonParameter(string nameOfTheObject, GameObject newButton, Vector3 localVector3)

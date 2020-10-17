@@ -1,4 +1,5 @@
 ﻿using ResourceGeneration.ResourceVariationen;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,47 +8,75 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
     {
     class ResourceBuildingAccountant : MonoBehaviour
         {
-        public List<ResouceQuantityTyps> GatherableResouces;
         public List<GameObject> GatherableResouceInArea = new List<GameObject>();
-        private List<string> ListOfGatherableResources;
         public const float ResourceCollectingRadius = 10;
         public int selecedResource = 0;
+        private List<string> ListOfGatherableResources;
+        private List<ResouceQuantityTyps> GatherableResouces;
 
         public class ResouceQuantityTyps
             {
-            public GameObject resoucePatch;
             public int resouceQuantity;
             public string resouceName;
             }
         public void Start()
             {
-            ListOfGatherableResources = GetComponent<IResourcBuilding>().ResourceToGather;
+            ListOfGatherableResources = GetComponentInChildren<IResourcBuilding>().ResourceToGather;
             GatherableResouceInArea = GatherableResouceInArea.Count == 0 ? GetUsableResources(ListOfGatherableResources) : GatherableResouceInArea;
-            GatherableResouces = GetResouceQuantityInArea(GatherableResouceInArea);
+            GatherableResouces = GetResourceQuantityInArea(GatherableResouceInArea);
             if (!GatherableResouces.Count.Equals(0))
                 {
-                FindObjectOfType<ResourceBuildingsManagment>().UpdateResouces += UpdateResouces;
+                this.GetComponent<ResourceBuildingsManagment>().UpdateResouces += UpdateResouces;
                 }
             }
 
-        private void UpdateResouces(GameObject childBuilding)
+        private void UpdateResouces(GameObject mainBuilding)
             {
             if (GatherableResouceInArea.Count == 0 || GatherableResouceInArea[selecedResource] == null)
                 {
                 return;
                 }
-            var selectedResouceInArea = GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea[selecedResource].GetComponent<ResourceBase>();
-            if (selectedResouceInArea.QuantityOfTheResource <= 0)
+            var selectedResouceInArea = mainBuilding.GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea[selecedResource].GetComponents<IResources>();
+            if (selectedResouceInArea.Length == 1)
                 {
-                GatherableResouceInArea.RemoveAt(selecedResource);
-                FindObjectOfType<ResourceBuildingsManagment>().UpdateResouces -= UpdateResouces;
+                if (selectedResouceInArea[0].QuantityOfTheResource <= 0)
+                    {
+                    GatherableResouceInArea.RemoveAt(selecedResource);
+                    mainBuilding.GetComponent<ResourceBuildingsManagment>().UpdateResouces -= UpdateResouces;
+                    mainBuilding.GetComponent<ResourceBuildingsManagment>().StopAllCoroutines();
+                    mainBuilding.GetComponent<ResourceBuildingsManagment>().CoroutinRunning = false;
+
+                    }
+                else if (mainBuilding.GetComponent<ResourceBuildingsManagment>().WorkingPeople > 0)
+                    {
+                    selectedResouceInArea[0].QuantityOfTheResource -= 1;
+                    selectedResouceInArea[0].ResourceQuantityCheck();
+                    mainBuilding.GetComponent<ResourceBuildingsManagment>().GatheredResourcesOverall += 1;
+                    mainBuilding.GetComponent<ResourceBuildingsManagment>().IncreaseGatherResource(1, selectedResouceInArea[0]);
+                    }
                 }
             else
                 {
-                selectedResouceInArea.QuantityOfTheResource -= 1;
-                selectedResouceInArea.ResourceQuantityCheck();
-                childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().GatheredResourcesOverall += 1;
-                childBuilding.transform.parent.GetComponent<ResourceBuildingsManagment>().IncreaseGatherResource(1, selectedResouceInArea);
+                foreach (var Resource in selectedResouceInArea)
+                    {
+                    if (mainBuilding.transform.GetChild(0).GetComponent<IResourcBuilding>().ResourceToGather.Contains(Resource.ResourceName))
+                        {
+                        if (Resource.QuantityOfTheResource <= 0)
+                            {
+                            GatherableResouceInArea.RemoveAt(selecedResource);
+                            mainBuilding.GetComponent<ResourceBuildingsManagment>().UpdateResouces -= UpdateResouces;
+                            mainBuilding.GetComponent<ResourceBuildingsManagment>().StopAllCoroutines();
+                            mainBuilding.GetComponent<ResourceBuildingsManagment>().CoroutinRunning = false;
+                            }
+                        else if (mainBuilding.GetComponent<ResourceBuildingsManagment>().WorkingPeople > 0)
+                            {
+                            Resource.QuantityOfTheResource -= 1;
+                            Resource.ResourceQuantityCheck();
+                            mainBuilding.GetComponent<ResourceBuildingsManagment>().GatheredResourcesOverall += 1;
+                            mainBuilding.GetComponent<ResourceBuildingsManagment>().IncreaseGatherResource(1, Resource);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -56,12 +85,12 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             this.selecedResource = x;
             }
 
-        private List<ResouceQuantityTyps> GetResouceQuantityInArea(List<GameObject> gatherableResouceInArea)
+        private List<ResouceQuantityTyps> GetResourceQuantityInArea(List<GameObject> gatherableResouceInArea)
             {
             List<ResouceQuantityTyps> resouceQuantityInArea = new List<ResouceQuantityTyps>();
             foreach (var resoucePatch in gatherableResouceInArea)
                 {
-                var resouceScript = resoucePatch.GetComponent<ResourceBase>();
+                var resouceScript = resoucePatch.GetComponent<IResources>();
                 ResouceQuantityTyps resouceQuantityTyps = new ResouceQuantityTyps
                     {
                     resouceName = resouceScript.ResourceName
@@ -69,7 +98,6 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                 if (resouceQuantityInArea.Count == 0)
                     {
                     resouceQuantityTyps.resouceQuantity = resouceScript.QuantityOfTheResource;
-                    resouceQuantityTyps.resoucePatch = resouceScript.gameObject;
                     resouceQuantityInArea.Add(resouceQuantityTyps);
                     }
                 else
@@ -90,7 +118,6 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                         else
                             {
                             resouceQuantityTyps.resouceQuantity = resouceScript.QuantityOfTheResource;
-                            resouceQuantityTyps.resoucePatch = resouceScript.gameObject;
                             resouceQuantityInArea.Add(resouceQuantityTyps);
                             break;
                             }
@@ -99,7 +126,33 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                 }
             return resouceQuantityInArea;
             }
+            
 
+        public List<GameObject> GetUsableResources(List<string> resources)
+            {
+            List<GameObject> usableResources = new List<GameObject>();
+            GameObject[] resourceInArea = ScannForResources(ResourceCollectingRadius, this.transform.GetChild(0).transform.position, 100);
+            if (resourceInArea[0] == null)
+                {
+                return usableResources;
+                }
+            foreach (GameObject savedResource in resourceInArea)
+                {
+                if (savedResource == null)
+                    {
+                    return usableResources;
+                    }
+                var ResourceOnGameobject = savedResource.GetComponents<IResources>();
+                foreach (var Resource in ResourceOnGameobject)
+                    {
+                    if (resources.Contains(Resource.ResourceName))
+                        {
+                        usableResources.Add(savedResource);
+                        }
+                    }
+                }
+            return usableResources;
+            }
         private GameObject[] ScannForResources(float radius, Vector3 startpoint, int maxScannedResources)
             {
             Collider[] collidersInArea = new Collider[maxScannedResources];
@@ -133,27 +186,6 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                     }
                 }
             return gameObjectArray;
-            }
-        public List<GameObject> GetUsableResources(List<string> resources)
-            {
-            List<GameObject> usableResources = new List<GameObject>();
-            GameObject[] resourceInArea = ScannForResources(ResourceCollectingRadius, this.transform.position, 100);
-            if (resourceInArea[0] == null)
-                {
-                return usableResources;
-                }
-            foreach (GameObject savedResource in resourceInArea)
-                {
-                if (savedResource == null)
-                    {
-                    return usableResources;
-                    }
-                else if (resources.Contains(savedResource.GetComponent<ResourceBase>().ResourceName))
-                    {
-                    usableResources.Add(savedResource);
-                    }
-                }
-            return usableResources;
             }
         }
     }
