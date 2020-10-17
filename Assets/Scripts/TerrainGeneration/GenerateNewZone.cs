@@ -19,7 +19,7 @@ namespace Assets.Scripts.TerrainGeneration
             }
         public void GenerateNewMesh(int side)
             {
-            GameObject mesh = FindObjectOfType<SocialBuildingInterfaceOnClick>().selectedGameobject.transform.parent.gameObject;
+            GameObject mesh = FindObjectOfType<SocialBuildingInterfaceOnClick>().SelectedGameobject.transform.parent.gameObject;
             Vector3 NewMeshSpawnPosition = GetSpawnPoint(side, mesh);
             if (NewMeshSpawnPosition == mesh.transform.position)
                 {

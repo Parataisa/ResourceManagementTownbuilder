@@ -3,12 +3,13 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
     {
     class GeneralUserInterface : MonoBehaviour
         {
-        public GameObject selectedGameobject;
+        internal GameObject selectedGameobject;
         internal string ObjectName = "";
-        public GeneralUserInterfaceManagment generalUserInterfaceManagment;
+        //public GeneralUserInterfaceManagment generalUserInterfaceManagment;
         private void Start()
             {
-            generalUserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
+            selectedGameobject = GeneralUserInterfaceManagment.CurrentOnClickGameObject;
+            GeneralUserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
             }
         private void LateUpdate()
             {
@@ -16,17 +17,17 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 {
                 if (this.gameObject.activeSelf)
                     {
-                    generalUserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
+                    GeneralUserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
                     }
                 }
             }
         private void OnDisable()
             {
-            generalUserInterfaceManagment.ShortInfoPanelToggeled -= GetGameObject;
+            GeneralUserInterfaceManagment.ShortInfoPanelToggeled -= GetGameObject;
             }
         private void OnEnable()
             {
-            generalUserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
+            GeneralUserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
             }
         private void GetGameObject(GameObject gameObject)
             {

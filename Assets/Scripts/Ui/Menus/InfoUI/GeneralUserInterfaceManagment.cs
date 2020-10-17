@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -13,10 +14,10 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         public GameObject ResourceBuildingInterfaceOnClick;
         public GameObject SocialBuildingInterfaceOnClick;
         public EventSystem EventSystem;
-        public event Action<GameObject> ShortInfoPanelToggeled;
-        public event Action<GameObject> OnClickInfoPanelToggled;
-        public event Action OnClickInfoPanelTextUpdate; 
-        public GameObject CurrentOnClickGameObject;
+        public static event Action<GameObject> ShortInfoPanelToggeled;
+        public static event Action<GameObject> OnClickInfoPanelToggled;
+        public event Action OnClickInfoPanelTextUpdate;
+        public static GameObject CurrentOnClickGameObject;
 
         public void Start()
             {

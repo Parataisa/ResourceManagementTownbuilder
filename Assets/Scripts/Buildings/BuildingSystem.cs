@@ -176,9 +176,9 @@ namespace Assets.Scripts.Buildings
             else if (!CreatingBuilding)
                 {
                 CreatingBuilding = true;
-                var generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
-                var newGameobject = Instantiate(generalUi.CurrentOnClickGameObject.transform.parent.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab, generalUi.CurrentOnClickGameObject.transform.parent.transform);
-                AddBuildingToOtherBuilding(couplingPosition, 9, generalUi.CurrentOnClickGameObject, newGameobject);
+                var generalUi = GeneralUserInterfaceManagment.CurrentOnClickGameObject;
+                var newGameobject = Instantiate(generalUi.transform.parent.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab, generalUi.transform.parent.transform);
+                AddBuildingToOtherBuilding(couplingPosition, 9, generalUi, newGameobject);
                 CreatingBuilding = false;
                 }
             }
@@ -203,9 +203,9 @@ namespace Assets.Scripts.Buildings
             else if (!CreatingBuilding)
                 {
                 CreatingBuilding = true;
-                var generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
-                var newGameobject = Instantiate(generalUi.CurrentOnClickGameObject.transform.parent.GetComponent<SocialBuildingManagment>().GameobjectPrefab, generalUi.CurrentOnClickGameObject.transform.parent.transform);
-                AddBuildingToOtherBuilding(couplingPosition, 8, generalUi.CurrentOnClickGameObject, newGameobject);
+                var generalUi = GeneralUserInterfaceManagment.CurrentOnClickGameObject;
+                var newGameobject = Instantiate(generalUi.transform.parent.GetComponent<SocialBuildingManagment>().GameobjectPrefab, generalUi.transform.parent.transform);
+                AddBuildingToOtherBuilding(couplingPosition, 8, generalUi, newGameobject);
                 CreatingBuilding = false;
                 }
             }

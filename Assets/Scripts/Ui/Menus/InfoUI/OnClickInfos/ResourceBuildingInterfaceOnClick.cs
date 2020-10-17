@@ -18,8 +18,6 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
 
         private void Awake()
             {
-            generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
-            generalUi.OnClickInfoPanelToggled += GetGameObject;
             ResourcesDropdown = this.transform.Find("ListOfResourcesDropdown").GetComponent<TMP_Dropdown>();
             }
         private void OnDisable()
@@ -29,17 +27,12 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 Destroy(child.gameObject);
                 }
             savedeGameObject = null;
-            selectedGameobject = null;
+            SelectedGameobject = null;
             }
-        private void OnEnable()
-            {
-            generalUi.CurrentOnClickGameObject = selectedGameobject;
-            }
-
         private void AddingItems()
             {
             keyList.Clear();
-            keyList.AddRange(selectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources.Keys);
+            keyList.AddRange(SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources.Keys);
             storedResourceList.Clear();
             foreach (Transform child in ScrollViewContent.transform)
                 {
@@ -47,7 +40,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 }
             foreach (var Resource in keyList)
                 {
-                if (selectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources[Resource] != 0)
+                if (SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources[Resource] != 0)
                     {
                     storedResourceList.Add(Resource);
                     continue;
@@ -57,15 +50,14 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 {
                 var Item = Instantiate(ItemImagePrefab, ScrollViewContent.transform);
                 Item.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(storedResource);
-                Item.transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(selectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources[storedResource].ToString());
+                Item.transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources[storedResource].ToString());
                 Item.name = storedResource;
                 }
             }
 
-        private void Start()
+        protected override void Start()
             {
-            savedeGameObject = selectedGameobject;
-            generalUi.CurrentOnClickGameObject = selectedGameobject;
+            base.Start();
             AddingItems();
             ResourcesDropdown.onValueChanged.AddListener(delegate { DropdownValueChanged(); });
             }
@@ -74,11 +66,11 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             {
             if (this.enabled)
                 {
-                if (selectedGameobject == null)
+                if (SelectedGameobject == null)
                     {
                     return;
                     }
-                foreach (var item in selectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources)
+                foreach (var item in SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources)
                     {
                     if (item.Value != 0)
                         {
@@ -92,15 +84,15 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                             }
                         }
                     }
-                if (storedResourceList.Count != ScrollViewContent.transform.childCount || selectedGameobject != savedeGameObject)
+                if (storedResourceList.Count != ScrollViewContent.transform.childCount || SelectedGameobject != savedeGameObject)
                     {
                     AddingItems();
                     }
                 foreach (var Resource in storedResourceList)
                     {
-                    if (selectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources[Resource] != Convert.ToInt32(ScrollViewContent.transform.Find(Resource).transform.GetChild(1).GetComponent<TextMeshProUGUI>().text))
+                    if (SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources[Resource] != Convert.ToInt32(ScrollViewContent.transform.Find(Resource).transform.GetChild(1).GetComponent<TextMeshProUGUI>().text))
                         {
-                        ScrollViewContent.transform.Find(Resource).transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(selectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources[Resource].ToString());
+                        ScrollViewContent.transform.Find(Resource).transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources[Resource].ToString());
                         }
                     }
                 UpdateUiBuildingInformationen();
@@ -111,21 +103,21 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
 
         private void UpdateUiBuildingInformationen()
             {
-            if (selectedGameobject != savedeGameObject || DropdownOptions.Count.Equals(0))
+            if (SelectedGameobject != savedeGameObject || DropdownOptions.Count.Equals(0))
                 {
-                ObjectName = GetObjectName(selectedGameobject.transform.parent.name);
+                ObjectName = GetObjectName(SelectedGameobject.transform.parent.name);
                 this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                 DropdownOptions.Clear();
                 DropDownMenuHandler();
                 }
             if (ObjectName.Length == 0)
                 {
-                ObjectName = GetObjectName(selectedGameobject.transform.parent.name);
+                ObjectName = GetObjectName(SelectedGameobject.transform.parent.name);
                 this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                 }
-            if (selectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().selecedResource != ResourcesDropdown.value)
+            if (SelectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().selecedResource != ResourcesDropdown.value)
                 {
-                ResourcesDropdown.value = selectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().selecedResource;
+                ResourcesDropdown.value = SelectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().selecedResource;
                 }
             }
 
@@ -133,9 +125,9 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             {
             int i = 0;
             int x = 0;
-            foreach (var child in selectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea)
+            foreach (var child in SelectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea)
                 {
-                if (selectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea[x] == null)
+                if (SelectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea[x] == null)
                     {
                     ResourcesDropdown.ClearOptions();
                     DropdownOptions.Clear();
@@ -148,24 +140,19 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 }
             ResourcesDropdown.ClearOptions();
             ResourcesDropdown.AddOptions(DropdownOptions);
-            savedeGameObject = selectedGameobject;
-            generalUi.CurrentOnClickGameObject = selectedGameobject;
+            savedeGameObject = SelectedGameobject;
+            GeneralUserInterfaceManagment.CurrentOnClickGameObject = SelectedGameobject;
             }
 
         void DropdownValueChanged()
             {
-            selectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().SetSelecedResource(ResourcesDropdown.value);
+            SelectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().SetSelecedResource(ResourcesDropdown.value);
             }
 
         private string GetObjectName(string name)
             {
             string[] BuildingNameArray = name.Split('-');
             return BuildingNameArray[1].Split('(')[0];
-            }
-
-        private void GetGameObject(GameObject gameObject)
-            {
-            selectedGameobject = gameObject;
             }
         }
     }
