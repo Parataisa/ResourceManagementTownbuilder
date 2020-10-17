@@ -1,10 +1,14 @@
 ﻿using TMPro;
-using UnityEngine;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
     class SocialBuildingInterfaceOnClick : OnClickInterfaceBase
         {
+        protected override void Start()
+            {
+            base.Start();
+            GeneralUserInterfaceManagment.CurrentOnClickGameObject = SelectedGameobject;
+            }
         private void OnDisable()
             {
             savedeGameObject = null;

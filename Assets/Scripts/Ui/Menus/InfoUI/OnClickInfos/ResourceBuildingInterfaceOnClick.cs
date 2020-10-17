@@ -15,7 +15,12 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         private List<string> keyList = new List<string>();
         private List<string> storedResourceList = new List<string>();
 
-
+        protected override void Start()
+            {
+            base.Start();
+            AddingItems();
+            ResourcesDropdown.onValueChanged.AddListener(delegate { DropdownValueChanged(); });
+            }
         private void Awake()
             {
             ResourcesDropdown = this.transform.Find("ListOfResourcesDropdown").GetComponent<TMP_Dropdown>();
@@ -29,39 +34,6 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             savedeGameObject = null;
             SelectedGameobject = null;
             }
-        private void AddingItems()
-            {
-            keyList.Clear();
-            keyList.AddRange(SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources.Keys);
-            storedResourceList.Clear();
-            foreach (Transform child in ScrollViewContent.transform)
-                {
-                Destroy(child.gameObject);
-                }
-            foreach (var Resource in keyList)
-                {
-                if (SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources[Resource] != 0)
-                    {
-                    storedResourceList.Add(Resource);
-                    continue;
-                    }
-                }
-            foreach (var storedResource in storedResourceList)
-                {
-                var Item = Instantiate(ItemImagePrefab, ScrollViewContent.transform);
-                Item.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(storedResource);
-                Item.transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources[storedResource].ToString());
-                Item.name = storedResource;
-                }
-            }
-
-        protected override void Start()
-            {
-            base.Start();
-            AddingItems();
-            ResourcesDropdown.onValueChanged.AddListener(delegate { DropdownValueChanged(); });
-            }
-
         private void Update()
             {
             if (this.enabled)
@@ -98,9 +70,31 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 UpdateUiBuildingInformationen();
                 }
             }
-
-
-
+        private void AddingItems()
+            {
+            keyList.Clear();
+            keyList.AddRange(SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources.Keys);
+            storedResourceList.Clear();
+            foreach (Transform child in ScrollViewContent.transform)
+                {
+                Destroy(child.gameObject);
+                }
+            foreach (var Resource in keyList)
+                {
+                if (SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources[Resource] != 0)
+                    {
+                    storedResourceList.Add(Resource);
+                    continue;
+                    }
+                }
+            foreach (var storedResource in storedResourceList)
+                {
+                var Item = Instantiate(ItemImagePrefab, ScrollViewContent.transform);
+                Item.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(storedResource);
+                Item.transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources[storedResource].ToString());
+                Item.name = storedResource;
+                }
+            }
         private void UpdateUiBuildingInformationen()
             {
             if (SelectedGameobject != savedeGameObject || DropdownOptions.Count.Equals(0))
