@@ -6,7 +6,6 @@ namespace Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems
     {
     class ResourceBuildingPeopleManagment : MonoBehaviour
         {
-        [SerializeField] private AvailableManpower Manpower;
         [SerializeField] private ResourceBuildingInterfaceOnClick ResourceBuidlingOnClickUi;
         [SerializeField] private GameObject WorkingPeopleText;
         public ResourceBuildingsManagment selectedBuilding;
@@ -20,12 +19,12 @@ namespace Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems
         public void IncreaseManpower()
             {
             GetSelectedBuilding();
-            if (Manpower.AvailablePeople > Manpower.BusyPeople)
+            if (AvailableManpower.AvailablePeople > AvailableManpower.BusyPeople)
                 {
                 if (selectedBuilding.WorkingPeople < selectedBuildingCapacity)
                     {
                     selectedBuilding.WorkingPeople += 1;
-                    Manpower.BusyPeople += 1;
+                    AvailableManpower.BusyPeople += 1;
                     selectedBuilding.UpdateWorkingPeople();
                     SetWorkingPeopleText();
                     }
@@ -37,7 +36,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems
             if (selectedBuilding.WorkingPeople > 0)
                 {
                 selectedBuilding.WorkingPeople -= 1;
-                Manpower.BusyPeople -= 1;
+                AvailableManpower.BusyPeople -= 1;
                 selectedBuilding.UpdateWorkingPeople();
                 SetWorkingPeopleText();
                 }
