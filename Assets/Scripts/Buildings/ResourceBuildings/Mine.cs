@@ -2,12 +2,8 @@
 
 namespace Assets.Scripts.Buildings.ResourceBuildings
     {
-    class Mine : ResourceBuildingBase, IResourcBuilding
+    class Mine : ResourceBuildingBase
         {
-        protected override void Start()
-            {
-            base.Start();
-            }
         override internal List<string> SetResouces(List<string> resoucesToGather)
             {
             resoucesToGather.Add("Coal");
