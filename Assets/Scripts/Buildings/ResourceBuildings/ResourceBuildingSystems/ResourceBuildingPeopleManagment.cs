@@ -20,11 +20,15 @@ namespace Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems
         public void IncreaseManpower()
             {
             GetSelectedBuilding();
-            if (selectedBuilding.WorkingPeople < selectedBuildingCapacity)
+            if (Manpower.AvailablePeople > Manpower.BusyPeople)
                 {
-                selectedBuilding.WorkingPeople += 1;
-                selectedBuilding.UpdateWorkingPeople();
-                SetWorkingPeopleText();
+                if (selectedBuilding.WorkingPeople < selectedBuildingCapacity)
+                    {
+                    selectedBuilding.WorkingPeople += 1;
+                    Manpower.BusyPeople += 1;
+                    selectedBuilding.UpdateWorkingPeople();
+                    SetWorkingPeopleText();
+                    }
                 }
             }
         public void DecreaseManpower()
@@ -33,6 +37,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems
             if (selectedBuilding.WorkingPeople > 0)
                 {
                 selectedBuilding.WorkingPeople -= 1;
+                Manpower.BusyPeople -= 1;
                 selectedBuilding.UpdateWorkingPeople();
                 SetWorkingPeopleText();
                 }

@@ -4,7 +4,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
     {
     class OnClickInterfaceBase : MonoBehaviour, IOnClickInterface
         {
-        internal string ObjectName = "";
+        internal string objectName = "";
         internal GameObject savedeGameObject;
         internal GameObject selectedGameobject;
 
@@ -21,8 +21,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             GeneralUserInterfaceManagment.OnClickInfoPanelToggled += GetGameObject;
             GeneralUserInterfaceManagment.CurrentOnClickGameObject = SelectedGameobject;
             }
-
-        string IOnClickInterface.ObjectName { get => ObjectName; set => ObjectName = value; }
+        public string ObjectName { get => objectName; set => objectName = value; }
         public GameObject SavedeGameObject { get => savedeGameObject; set => savedeGameObject = value; }
         public GameObject SelectedGameobject { get => selectedGameobject; set => selectedGameobject = value; }
         }

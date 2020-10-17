@@ -5,7 +5,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         {
         internal GameObject selectedGameobject;
         internal string ObjectName = "";
-        //public GeneralUserInterfaceManagment generalUserInterfaceManagment;
+
         private void Start()
             {
             selectedGameobject = GeneralUserInterfaceManagment.CurrentOnClickGameObject;
@@ -38,7 +38,5 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             string[] BuildingNameArray = name.Split('-');
             return BuildingNameArray[1].Split('(')[0];
             }
-
-
         }
     }
