@@ -4856,6 +4856,7 @@ GameObject:
   - component: {fileID: 851169110}
   - component: {fileID: 851169112}
   - component: {fileID: 851169111}
+  - component: {fileID: 851169113}
   m_Layer: 5
   m_Name: AvailablePeople
   m_TagString: Untagged
@@ -4979,6 +4980,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 851169109}
   m_CullTransparentMesh: 0
+--- !u!114 &851169113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851169109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d5f5f130c202c4fb02f5be192c03f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &917635955
 GameObject:
   m_ObjectHideFlags: 0
@@ -5102,8 +5115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c4e283e36c58142a1f1bd74e3c36f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AvailablePeople: 0
-  BusyPeople: 0
 --- !u!4 &920234924
 Transform:
   m_ObjectHideFlags: 0
@@ -5130,7 +5141,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab223a98568334418074ab30e805a83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Manpower: {fileID: 920234923}
   ResourceBuidlingOnClickUi: {fileID: 847780747}
   WorkingPeopleText: {fileID: 1656965389}
   selectedBuilding: {fileID: 0}
