@@ -108,4 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a3e2b5a9f426c84081d65430b6a1fa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainBuilding: {fileID: 0}
+  MaxAmountOfWorker: 0
+  CurrentWorkers: 0
+  MaxAmountOfStorableResources: 0
+  CurrentAmountOfStoredResources: 0

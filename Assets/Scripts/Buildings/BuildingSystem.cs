@@ -14,18 +14,16 @@ namespace Assets.Scripts.Buildings
         public static Dictionary<int, string> buildingDirectory = new Dictionary<int, string>();
         public GameObject currentPlaceableObject;
         public GameObject[] placeableObjectPrefabs;
-        private Object[] ResouceBuildingsListObjects;
-        private Object[] SocialBuildingsListObjects;
+        private Object[] BuildingsListObjects;
         private bool objectPlacable;
         private static int lastButtonHit;
         private bool CreatingBuilding = false;
 
         private void Start()
             {
-            ResouceBuildingsListObjects = Resources.LoadAll("GameObjects/Buildings/ResourceBuildings", typeof(GameObject));
-            SocialBuildingsListObjects = Resources.LoadAll("GameObjects/Buildings/SocialBuildings", typeof(GameObject));
-            placeableObjectPrefabs = new GameObject[ResouceBuildingsListObjects.Length + SocialBuildingsListObjects.Length];
-            GetBuildingsInPlacableObjects(ResouceBuildingsListObjects, SocialBuildingsListObjects, placeableObjectPrefabs);
+            BuildingsListObjects = Resources.LoadAll("GameObjects/Buildings", typeof(GameObject));
+            placeableObjectPrefabs = new GameObject[BuildingsListObjects.Length];
+            GetBuildingsInPlacableObjects(BuildingsListObjects, placeableObjectPrefabs);
             }
         private void Update()
             {
@@ -36,33 +34,26 @@ namespace Assets.Scripts.Buildings
                 CreateBuildingIfClicked();
                 }
             }
-        private void GetBuildingsInPlacableObjects(Object[] resouceBuildingsListObjects, Object[] socialBuildingsListObjects, GameObject[] placeableObject)
+        private void GetBuildingsInPlacableObjects(Object[] buildingArray, GameObject[] placeableObject)
             {
             if (buildingDirectory.Count == 0)
                 {
-                UpdatePlaceableObjects(resouceBuildingsListObjects, socialBuildingsListObjects, placeableObject);
+                UpdatePlaceableObjects(buildingArray, placeableObject);
                 }
             else
                 {
                 buildingDirectory.Clear();
-                UpdatePlaceableObjects(resouceBuildingsListObjects, socialBuildingsListObjects, placeableObject);
+                UpdatePlaceableObjects(buildingArray, placeableObject);
                 }
             }
-        private static void UpdatePlaceableObjects(Object[] resouceBuildingsListObjects, Object[] socialBuildingsListObjects, GameObject[] placeableObject)
+        private static void UpdatePlaceableObjects(Object[] buildingArray, GameObject[] placeableObject)
             {
             int i = 0;
-            foreach (var resouceBuilding in resouceBuildingsListObjects)
+            foreach (var resouceBuilding in buildingArray)
                 {
                 buildingDirectory.Add(i, resouceBuilding.name);
                 placeableObject[i] = (GameObject)resouceBuilding;
                 placeableObject[i].name = resouceBuilding.name;
-                i++;
-                }
-            foreach (var socialBuilding in socialBuildingsListObjects)
-                {
-                buildingDirectory.Add(i, socialBuilding.name);
-                placeableObject[i] = (GameObject)socialBuilding;
-                placeableObject[i].name = socialBuilding.name;
                 i++;
                 }
             }
