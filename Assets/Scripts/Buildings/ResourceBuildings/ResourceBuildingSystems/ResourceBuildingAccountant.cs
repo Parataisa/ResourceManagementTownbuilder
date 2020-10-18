@@ -1,4 +1,5 @@
-﻿using ResourceGeneration.ResourceVariationen;
+﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using ResourceGeneration.ResourceVariationen;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -169,7 +170,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                     {
                     return gameObjectArray;
                     }
-                if (collider.gameObject.layer == 10)
+                if (collider.gameObject.layer == LayerClass.ResourcePatch)
                     {
                     GameObject parent = collider.transform.parent.gameObject;
                     if (gameObjectArray.Contains(parent))

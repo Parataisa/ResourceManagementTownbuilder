@@ -76,7 +76,7 @@ namespace Assets.Scripts.Buildings.BuildingSystemHelper
                     {
                     continue;
                     }
-                else if (collider.gameObject.layer == 8 || collider.gameObject.layer == 9 || collider.gameObject.layer == 10)
+                else if (collider.gameObject.layer == LayerClass.SocialBuildings || collider.gameObject.layer == LayerClass.ResourceBuildings || collider.gameObject.layer == LayerClass.ResourcePatch)
                     {
                     return false;
                     }

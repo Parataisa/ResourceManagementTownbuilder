@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 635602376603293098}
   - component: {fileID: 544575724103555513}
   m_Layer: 2
-  m_Name: (Resouce)-Warehouse
+  m_Name: (Storage-Warehouse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

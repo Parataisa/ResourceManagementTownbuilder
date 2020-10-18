@@ -86,7 +86,7 @@ public class BuildingMenuButtonManagment : MonoBehaviour
     private void SetButtonBuildingNameAndTyp(GameObject newButton, string nameOfTheObject)
         {
         string[] splitName = nameOfTheObject.Split('-');
-        newButton.transform.Find("BuildingType").GetComponent<TextMeshProUGUI>().SetText(splitName[0]);
+        newButton.transform.Find("BuildingType").GetComponent<TextMeshProUGUI>().SetText(splitName[0] + ")");
         newButton.transform.Find("BuildingName").GetComponent<TextMeshProUGUI>().SetText(splitName[1]);
         }
 

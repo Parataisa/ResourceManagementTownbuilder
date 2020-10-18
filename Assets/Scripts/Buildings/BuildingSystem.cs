@@ -64,7 +64,7 @@ namespace Assets.Scripts.Buildings
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hitInfo))
                 {
-                if (hitInfo.transform.gameObject.layer == 11)
+                if (hitInfo.transform.gameObject.layer == LayerClass.Ground)
                     {
                     return hitInfo.transform.gameObject;
                     }
@@ -152,7 +152,7 @@ namespace Assets.Scripts.Buildings
                 string[] buildingName = currentPlaceableObject.name.Split('-');
                 GameObject resouceBuildingMain = new GameObject
                     {
-                    name = "(ResouceBuildingMain)-" + buildingName[1]
+                    name = buildingName[0] + "BuildingMain)-" + buildingName[1]
                     };
                 currentPlaceableObject.transform.parent = resouceBuildingMain.transform;
                 resouceBuildingMain.AddComponent<ResourceBuildingAccountant>();
@@ -160,7 +160,7 @@ namespace Assets.Scripts.Buildings
                 resouceBuildingMain.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
                 resouceBuildingMain.transform.parent = GetLocalMesh().transform;
                 ResourceBuildingsManagment.ResourceBuildingMain.Add(resouceBuildingMain);
-                currentPlaceableObject.layer = 9;
+                currentPlaceableObject.layer = LayerClass.ResourceBuildings;
                 Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
                 currentPlaceableObject = null;
                 }
@@ -169,7 +169,7 @@ namespace Assets.Scripts.Buildings
                 CreatingBuilding = true;
                 var generalUi = GeneralUserInterfaceManagment.CurrentOnClickGameObject;
                 var newGameobject = Instantiate(generalUi.transform.parent.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab, generalUi.transform.parent.transform);
-                AddBuildingToOtherBuilding(couplingPosition, 9, generalUi, newGameobject);
+                AddBuildingToOtherBuilding(couplingPosition, LayerClass.ResourceBuildings, generalUi, newGameobject);
                 CreatingBuilding = false;
                 }
             }
@@ -180,14 +180,14 @@ namespace Assets.Scripts.Buildings
                 string[] buildingName = currentPlaceableObject.name.Split('-');
                 GameObject socilaBuildingMain = new GameObject
                     {
-                    name = "(SocialBuildingMain)-" + buildingName[1]
+                    name = buildingName[0] + "BuildingMain)-" + buildingName[1]
                     };
                 currentPlaceableObject.transform.parent = socilaBuildingMain.transform;
                 socilaBuildingMain.AddComponent<SocialBuildingManagment>();
                 socilaBuildingMain.GetComponent<SocialBuildingManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
                 socilaBuildingMain.transform.parent = GetLocalMesh().transform;
                 SocialBuildingManagment.SocialBuildingMain.Add(socilaBuildingMain);
-                currentPlaceableObject.layer = 8;
+                currentPlaceableObject.layer = LayerClass.SocialBuildings;
                 Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
                 currentPlaceableObject = null;
                 }
@@ -196,7 +196,7 @@ namespace Assets.Scripts.Buildings
                 CreatingBuilding = true;
                 var generalUi = GeneralUserInterfaceManagment.CurrentOnClickGameObject;
                 var newGameobject = Instantiate(generalUi.transform.parent.GetComponent<SocialBuildingManagment>().GameobjectPrefab, generalUi.transform.parent.transform);
-                AddBuildingToOtherBuilding(couplingPosition, 8, generalUi, newGameobject);
+                AddBuildingToOtherBuilding(couplingPosition, LayerClass.SocialBuildings, generalUi, newGameobject);
                 CreatingBuilding = false;
                 }
             }
@@ -234,7 +234,7 @@ namespace Assets.Scripts.Buildings
                     {
                     return gameObjectArray;
                     }
-                if (collider.gameObject.layer == 8 || collider.gameObject.layer == 9 || collider.gameObject.layer == 10)
+                if (collider.gameObject.layer == LayerClass.SocialBuildings || collider.gameObject.layer == LayerClass.ResourceBuildings || collider.gameObject.layer == LayerClass.ResourcePatch)
                     {
                     if (i > 20)
                         {

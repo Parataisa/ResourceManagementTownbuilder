@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -36,7 +37,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     {
                     SocialBuildingInterfaceOnClick.SetActive(false);
                     }
-                if (hitInfo.transform.gameObject.layer == 8 || hitInfo.transform.gameObject.layer == 9 || hitInfo.transform.gameObject.layer == 10)
+                if (hitInfo.transform.gameObject.layer == LayerClass.SocialBuildings || hitInfo.transform.gameObject.layer == LayerClass.ResourceBuildings || hitInfo.transform.gameObject.layer == LayerClass.ResourcePatch)
                     {
                     GameObject parent = hitInfo.transform.parent.gameObject;
                     if (parent.name.Contains("(ResoucePatch)-"))
@@ -48,7 +49,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         }
                     else if (parent.name.Contains("(ResouceBuildingMain)-"))
                         {
-                        if (Input.GetMouseButtonDown(0) && ResouceBuildingUserInterface.activeSelf && hitInfo.transform.gameObject.layer == 9)
+                        if (Input.GetMouseButtonDown(0) && ResouceBuildingUserInterface.activeSelf && hitInfo.transform.gameObject.layer == LayerClass.ResourceBuildings)
                             {
                             SocialBuildingInterfaceOnClick.SetActive(false);
                             ResourceBuildingInterfaceOnClick.SetActive(true);
@@ -62,7 +63,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         }
                     else if (parent.name.Contains("(SocialBuildingMain)-"))
                         {
-                        if (Input.GetMouseButtonDown(0) && SocialBuildingUserInterface.activeSelf && hitInfo.transform.gameObject.layer == 8)
+                        if (Input.GetMouseButtonDown(0) && SocialBuildingUserInterface.activeSelf && hitInfo.transform.gameObject.layer == LayerClass.SocialBuildings)
                             {
                             ResourceBuildingInterfaceOnClick.SetActive(false);
                             SocialBuildingInterfaceOnClick.SetActive(true);
@@ -74,7 +75,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         ShortInfoPanelToggeled?.Invoke(parent);
                         }
                     }
-                else if (hitInfo.transform.gameObject.layer == 11)
+                else if (hitInfo.transform.gameObject.layer == LayerClass.Ground)
                     {
                     ResouceBuildingUserInterface.SetActive(false);
                     ResoucePatchUserInterface.SetActive(false);
