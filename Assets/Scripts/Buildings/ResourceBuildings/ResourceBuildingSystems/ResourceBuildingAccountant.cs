@@ -9,9 +9,10 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
     {
     class ResourceBuildingAccountant : MonoBehaviour
         {
-        public List<GameObject> GatherableResouceInArea = new List<GameObject>();
-        public const float ResourceCollectingRadius = 10;
-        public int selecedResource = 0;
+        public List<GameObject> GatherableResouceInArea { get; private set; } = new List<GameObject>();
+        public static float ResourceCollectingRadius {get => 10;}
+        public int SelecedResource { get; set; }
+
         private List<string> ListOfGatherableResources;
         private List<ResouceQuantityTyps> GatherableResouces;
 
@@ -33,16 +34,16 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
 
         private void UpdateResouces(GameObject mainBuilding)
             {
-            if (GatherableResouceInArea.Count == 0 || GatherableResouceInArea[selecedResource] == null)
+            if (GatherableResouceInArea.Count == 0 || GatherableResouceInArea[SelecedResource] == null)
                 {
                 return;
                 }
-            var selectedResouceInArea = mainBuilding.GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea[selecedResource].GetComponents<IResources>();
+            var selectedResouceInArea = mainBuilding.GetComponent<ResourceBuildingAccountant>().GatherableResouceInArea[SelecedResource].GetComponents<IResources>();
             if (selectedResouceInArea.Length == 1)
                 {
                 if (selectedResouceInArea[0].QuantityOfTheResource <= 0)
                     {
-                    GatherableResouceInArea.RemoveAt(selecedResource);
+                    GatherableResouceInArea.RemoveAt(SelecedResource);
                     mainBuilding.GetComponent<ResourceBuildingsManagment>().UpdateResouces -= UpdateResouces;
                     mainBuilding.GetComponent<ResourceBuildingsManagment>().StopAllCoroutines();
                     mainBuilding.GetComponent<ResourceBuildingsManagment>().CoroutinRunning = false;
@@ -64,7 +65,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                         {
                         if (Resource.QuantityOfTheResource <= 0)
                             {
-                            GatherableResouceInArea.RemoveAt(selecedResource);
+                            GatherableResouceInArea.RemoveAt(SelecedResource);
                             mainBuilding.GetComponent<ResourceBuildingsManagment>().UpdateResouces -= UpdateResouces;
                             mainBuilding.GetComponent<ResourceBuildingsManagment>().StopAllCoroutines();
                             mainBuilding.GetComponent<ResourceBuildingsManagment>().CoroutinRunning = false;
@@ -83,7 +84,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
 
         public void SetSelecedResource(int x)
             {
-            this.selecedResource = x;
+            this.SelecedResource = x;
             }
 
         private List<ResouceQuantityTyps> GetResourceQuantityInArea(List<GameObject> gatherableResouceInArea)

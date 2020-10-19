@@ -10,7 +10,7 @@ public class BuildingMenuToggle : MonoBehaviour
         if (panel != null)
             {
             bool isActive = panel.activeSelf;
-            if (buildingSystem.currentPlaceableObject != null)
+            if (buildingSystem.CurrentPlaceableObject != null)
                 {
                 buildingSystem.ClearCurser();
                 }

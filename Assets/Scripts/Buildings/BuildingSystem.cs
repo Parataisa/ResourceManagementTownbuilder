@@ -10,10 +10,11 @@ namespace Assets.Scripts.Buildings
     {
     public class BuildingSystem : MonoBehaviour
         {
-        public GameObject buildingPanel;
-        public static Dictionary<int, string> buildingDirectory = new Dictionary<int, string>();
-        public GameObject currentPlaceableObject;
-        public GameObject[] placeableObjectPrefabs;
+        public static Dictionary<int, string> BuildingDirectory { get; private set; } = new Dictionary<int, string>();
+        public GameObject CurrentPlaceableObject { get; private set; }
+        public GameObject[] PlaceableObjectPrefabs { get; private set; }
+
+        [SerializeField] private GameObject buildingPanel;
         private Object[] BuildingsListObjects;
         private bool objectPlacable;
         private static int lastButtonHit;
@@ -22,27 +23,27 @@ namespace Assets.Scripts.Buildings
         private void Start()
             {
             BuildingsListObjects = Resources.LoadAll("GameObjects/Buildings", typeof(GameObject));
-            placeableObjectPrefabs = new GameObject[BuildingsListObjects.Length];
-            GetBuildingsInPlacableObjects(BuildingsListObjects, placeableObjectPrefabs);
+            PlaceableObjectPrefabs = new GameObject[BuildingsListObjects.Length];
+            GetBuildingsInPlacableObjects(BuildingsListObjects, PlaceableObjectPrefabs);
             }
         private void Update()
             {
-            if (currentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
+            if (CurrentPlaceableObject != null && !EventSystem.current.IsPointerOverGameObject())
                 {
-                DrawGatheringCircle.DrawCircle(currentPlaceableObject, ResourceBuildingAccountant.ResourceCollectingRadius);
+                DrawGatheringCircle.DrawCircle(CurrentPlaceableObject, ResourceBuildingAccountant.ResourceCollectingRadius);
                 MoveCurrentObjectToMouse();
                 CreateBuildingIfClicked();
                 }
             }
         private void GetBuildingsInPlacableObjects(Object[] buildingArray, GameObject[] placeableObject)
             {
-            if (buildingDirectory.Count == 0)
+            if (BuildingDirectory.Count == 0)
                 {
                 UpdatePlaceableObjects(buildingArray, placeableObject);
                 }
             else
                 {
-                buildingDirectory.Clear();
+                BuildingDirectory.Clear();
                 UpdatePlaceableObjects(buildingArray, placeableObject);
                 }
             }
@@ -51,7 +52,7 @@ namespace Assets.Scripts.Buildings
             int i = 0;
             foreach (var resouceBuilding in buildingArray)
                 {
-                buildingDirectory.Add(i, resouceBuilding.name);
+                BuildingDirectory.Add(i, resouceBuilding.name);
                 placeableObject[i] = (GameObject)resouceBuilding;
                 placeableObject[i].name = resouceBuilding.name;
                 i++;
@@ -73,41 +74,41 @@ namespace Assets.Scripts.Buildings
             }
         public void OnButtonClick(int buildingId)
             {
-            if (currentPlaceableObject != null)
+            if (CurrentPlaceableObject != null)
                 {
-                Destroy(currentPlaceableObject);
-                currentPlaceableObject = null;
+                Destroy(CurrentPlaceableObject);
+                CurrentPlaceableObject = null;
                 return;
                 }
             lastButtonHit = buildingId;
-            currentPlaceableObject = Instantiate(placeableObjectPrefabs[buildingId]);
+            CurrentPlaceableObject = Instantiate(PlaceableObjectPrefabs[buildingId]);
             }
         public void ClearCurser()
             {
-            Destroy(currentPlaceableObject);
-            currentPlaceableObject = null;
+            Destroy(CurrentPlaceableObject);
+            CurrentPlaceableObject = null;
             }
         private GameObject MoveCurrentObjectToMouse()
             {
-            float gameObjectSizeOffsetY = currentPlaceableObject.transform.localScale.y / 2;
+            float gameObjectSizeOffsetY = CurrentPlaceableObject.transform.localScale.y / 2;
             GameObject[] hitObject;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hitInfo))
                 {
-                currentPlaceableObject.transform.position = hitInfo.point;
-                if (currentPlaceableObject.transform.position.y != gameObjectSizeOffsetY)
+                CurrentPlaceableObject.transform.position = hitInfo.point;
+                if (CurrentPlaceableObject.transform.position.y != gameObjectSizeOffsetY)
                     {
-                    currentPlaceableObject.transform.position = new Vector3(hitInfo.point.x, gameObjectSizeOffsetY, hitInfo.point.z);
+                    CurrentPlaceableObject.transform.position = new Vector3(hitInfo.point.x, gameObjectSizeOffsetY, hitInfo.point.z);
                     }
                 hitObject = ScannForObjectsInArea(hitInfo, 4);
                 if (hitObject[0] == null)
                     {
                     objectPlacable = true;
-                    BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
+                    BuildingColoringSystem.ResetBuildingToOrigionColor(CurrentPlaceableObject);
                     }
                 else
                     {
-                    BoxCollider currentPlacableObjectCollider = currentPlaceableObject.GetComponent<BoxCollider>();
+                    BoxCollider currentPlacableObjectCollider = CurrentPlaceableObject.GetComponent<BoxCollider>();
                     foreach (var hitObjectInList in hitObject)
                         {
                         if (hitObjectInList == null)
@@ -118,28 +119,28 @@ namespace Assets.Scripts.Buildings
                         if (currentPlacableObjectCollider.bounds.Intersects(hitobjectCollider.bounds))
                             {
                             objectPlacable = false;
-                            BuildingColoringSystem.SetColorForCollisions(currentPlaceableObject, Color.magenta);
+                            BuildingColoringSystem.SetColorForCollisions(CurrentPlaceableObject, Color.magenta);
                             return hitobjectCollider.gameObject;
                             }
                         else
                             {
                             objectPlacable = true;
-                            BuildingColoringSystem.ResetBuildingToOrigionColor(currentPlaceableObject);
+                            BuildingColoringSystem.ResetBuildingToOrigionColor(CurrentPlaceableObject);
                             }
                         }
                     }
                 }
-            return currentPlaceableObject;
+            return CurrentPlaceableObject;
             }
         private void CreateBuildingIfClicked()
             {
             if (Input.GetMouseButtonDown(0) && objectPlacable)
                 {
-                if (currentPlaceableObject.name.Contains("Social"))
+                if (CurrentPlaceableObject.name.Contains("Social"))
                     {
                     CreateSocialBuilding(0);
                     }
-                else if (currentPlaceableObject.name.Contains("Resouce"))
+                else if (CurrentPlaceableObject.name.Contains("Resouce"))
                     {
                     CreateResouceBuilding(0);
                     }
@@ -151,12 +152,12 @@ namespace Assets.Scripts.Buildings
                 {
                 GameObject newBuilding = GetMainBuildingName();
                 BuildingComponentTypAdder.AddBuildingTyp(newBuilding);
-                newBuilding.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
+                newBuilding.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab = PlaceableObjectPrefabs[lastButtonHit];
                 newBuilding.transform.parent = GetLocalMesh().transform;
                 ResourceBuildingsManagment.ResourceBuildingMain.Add(newBuilding);
-                currentPlaceableObject.layer = LayerClass.ResourceBuildings;
-                Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
-                currentPlaceableObject = null;
+                CurrentPlaceableObject.layer = LayerClass.ResourceBuildings;
+                Destroy(CurrentPlaceableObject.GetComponent<LineRenderer>());
+                CurrentPlaceableObject = null;
                 }
             else if (!CreatingBuilding)
                 {
@@ -175,12 +176,12 @@ namespace Assets.Scripts.Buildings
                 {
                 GameObject newBuilding = GetMainBuildingName();
                 BuildingComponentTypAdder.AddBuildingTyp(newBuilding);
-                newBuilding.GetComponent<SocialBuildingManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
+                newBuilding.GetComponent<SocialBuildingManagment>().GameobjectPrefab = PlaceableObjectPrefabs[lastButtonHit];
                 newBuilding.transform.parent = GetLocalMesh().transform;
                 SocialBuildingManagment.SocialBuildingMain.Add(newBuilding);
-                currentPlaceableObject.layer = LayerClass.SocialBuildings;
-                Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
-                currentPlaceableObject = null;
+                CurrentPlaceableObject.layer = LayerClass.SocialBuildings;
+                Destroy(CurrentPlaceableObject.GetComponent<LineRenderer>());
+                CurrentPlaceableObject = null;
                 }
             else if (!CreatingBuilding)
                 {
@@ -193,12 +194,12 @@ namespace Assets.Scripts.Buildings
             }
         private GameObject GetMainBuildingName()
             {
-            string[] buildingName = currentPlaceableObject.name.Split('-');
+            string[] buildingName = CurrentPlaceableObject.name.Split('-');
             GameObject newBuilding = new GameObject
                 {
                 name = buildingName[0] + "BuildingMain)-" + buildingName[1]
                 };
-            currentPlaceableObject.transform.parent = newBuilding.transform;
+            CurrentPlaceableObject.transform.parent = newBuilding.transform;
             return newBuilding;
             }
         private void AddBuildingToOtherBuilding(int couplingPosition, int buildingTyp, GameObject selectedGameobject, GameObject newGameobject)

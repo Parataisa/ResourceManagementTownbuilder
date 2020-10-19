@@ -109,9 +109,9 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 ObjectName = GetObjectName(SelectedGameobject.transform.parent.name);
                 this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                 }
-            if (SelectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().selecedResource != ResourcesDropdown.value)
+            if (SelectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().SelecedResource != ResourcesDropdown.value)
                 {
-                ResourcesDropdown.value = SelectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().selecedResource;
+                ResourcesDropdown.value = SelectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().SelecedResource;
                 }
             }
 

@@ -9,20 +9,29 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
     {
     class ResourceBuildingsManagment : MonoBehaviour, IBuildingManagment
         {
-        private List<GameObject> ListOfChildren = new List<GameObject>();
-        List<GameObject> IBuildingManagment.ListOfChildren { get => ListOfChildren; }
+        //ToDo: split up this mess
+        private List<GameObject> listOfChildren = new List<GameObject>();
+        private static List<GameObject> resourceBuildingMain = new List<GameObject>();
+        private ResourceBuildingBase childBuildingTyp;
+        private int gatheredResourcesOverall = 0;
+        private Dictionary<string, int> storedResources;
+        private float produktionSpeed;
+        private int workingPeopleCapacity;
+        private int workingPeople;
+        private GameObject gameobjectPrefab;
+        public List<GameObject> ListOfChildren { get => listOfChildren; }
+        public bool CoroutinRunning { get; set; }
+        public int WorkingPeople { get => workingPeople; set => workingPeople = value; }
+        public int WorkingPeopleCapacity { get => workingPeopleCapacity; set => workingPeopleCapacity = value; }
+        public float ProduktionSpeed { get => produktionSpeed; set => produktionSpeed = value; }
+        public Dictionary<string, int> StoredResources { get => storedResources; set => storedResources = value; }
+        public int GatheredResourcesOverall { get => gatheredResourcesOverall; set => gatheredResourcesOverall = value; }
+        internal ResourceBuildingBase ChildBuildingTyp { get => childBuildingTyp; set => childBuildingTyp = value; }
+        public static List<GameObject> ResourceBuildingMain { get => resourceBuildingMain; set => resourceBuildingMain = value; }
+        public GameObject GameobjectPrefab { get => gameobjectPrefab; set => gameobjectPrefab = value; }
 
-        public static List<GameObject> ResourceBuildingMain = new List<GameObject>();
-        public ResourceBuildingBase ChildBuildingTyp;
-        public int GatheredResourcesOverall = 0;
-        public Dictionary<string, int> StoredResources;
-        public float ProduktionSpeed;
-        public int WorkingPeopleCapacity;
-        public int WorkingPeople;
-        public GameObject GameobjectPrefab;
         public event Action<GameObject> UpdateResouces;
         public event Action<ResourceBuildingsManagment> ResourceQuantityDecrease;
-        public bool CoroutinRunning;
 
         private void Start()
             {
@@ -38,18 +47,18 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         private void AddingChildsToList(Dictionary<string, int> storedResources)
             {
             int childCount = transform.childCount;
-            ListOfChildren.Clear();
+            listOfChildren.Clear();
             if (childCount != 0)
                 {
                 for (int i = 0; i < childCount; i++)
                     {
-                    if (ListOfChildren.Contains(transform.GetChild(i).gameObject))
+                    if (listOfChildren.Contains(transform.GetChild(i).gameObject))
                         {
                         continue;
                         }
                     else
                         {
-                        ListOfChildren.Add(transform.GetChild(i).gameObject);
+                        listOfChildren.Add(transform.GetChild(i).gameObject);
                         }
                     }
                 }
@@ -67,11 +76,11 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
 
         private void Update()
             {
-            if (ListOfChildren.Count.Equals(null))
+            if (listOfChildren.Count.Equals(null))
                 {
                 return;
                 }
-            if (!(transform.childCount == ListOfChildren.Count))
+            if (!(transform.childCount == listOfChildren.Count))
                 {
                 AddingChildsToList(StoredResources);
                 }

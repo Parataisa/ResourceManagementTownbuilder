@@ -21,11 +21,11 @@ public class BuildingMenuButtonManagment : MonoBehaviour
         // ToDo: Implement some sort of scrolling when the max number of rows is reached.
         int NumberOfMaxRows = (int)panelHeight / ((int)buttonDimension.y + 20);
         buttonId = 0;
-        int numberOfButtons = BuildingSystem.buildingDirectory.Count;
+        int numberOfButtons = BuildingSystem.BuildingDirectory.Count;
         int rows = GetNumberOfRows(numberOfButtons, NumberOfButtonsPerRow);
         int numberOfButtonsInLastRow = GetNumberOfButtonsLastRow(rows, NumberOfButtonsPerRow, numberOfButtons);
         int currentRow = 1;
-        aktiveButtons = new GameObject[BuildingSystem.buildingDirectory.Count];
+        aktiveButtons = new GameObject[BuildingSystem.BuildingDirectory.Count];
         for (int y = 1; y <= rows; y++)
             {
             for (int i = 0; i < NumberOfButtonsPerRow; i++)
@@ -34,7 +34,7 @@ public class BuildingMenuButtonManagment : MonoBehaviour
                     {
                     break;
                     }
-                string nameOfTheObject = BuildingSystem.buildingDirectory[buttonId];
+                string nameOfTheObject = BuildingSystem.BuildingDirectory[buttonId];
                 buttonPrefab.name = nameOfTheObject;
                 var newButton = Instantiate(buttonPrefab, panel.transform) as GameObject;
                 Vector3 localVector3 = new Vector3((buttonDimension.x / 2 + 20) + (buttonDimension.x + 20) * i, (1000 - (buttonDimension.y / 2) - 20) - (buttonDimension.y + 20) * (currentRow - 1), 0);
@@ -79,7 +79,7 @@ public class BuildingMenuButtonManagment : MonoBehaviour
         newButton.GetComponent<BuildingMenuToggle>().buildingSystem = buildingSystem;
         newButton.GetComponent<BuildingButton>().buttonId = buttonId;
         newButton.GetComponent<BuildingButton>().objectToBuild = nameOfTheObject;
-        newButton.GetComponent<BuildingButton>().buildingPrefab = buildingSystem.placeableObjectPrefabs[buttonId];
+        newButton.GetComponent<BuildingButton>().buildingPrefab = buildingSystem.PlaceableObjectPrefabs[buttonId];
         newButton.GetComponent<Button>().onClick.AddListener(delegate { buildingSystem.OnButtonClick(newButton.GetComponent<BuildingButton>().buttonId); });
         }
 
