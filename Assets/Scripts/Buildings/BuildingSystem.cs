@@ -149,17 +149,11 @@ namespace Assets.Scripts.Buildings
             {
             if (couplingPosition == 0)
                 {
-                string[] buildingName = currentPlaceableObject.name.Split('-');
-                GameObject resouceBuildingMain = new GameObject
-                    {
-                    name = buildingName[0] + "BuildingMain)-" + buildingName[1]
-                    };
-                currentPlaceableObject.transform.parent = resouceBuildingMain.transform;
-                resouceBuildingMain.AddComponent<ResourceBuildingAccountant>();
-                resouceBuildingMain.AddComponent<ResourceBuildingsManagment>();
-                resouceBuildingMain.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
-                resouceBuildingMain.transform.parent = GetLocalMesh().transform;
-                ResourceBuildingsManagment.ResourceBuildingMain.Add(resouceBuildingMain);
+                GameObject newBuilding = GetMainBuildingName();
+                BuildingComponentTypAdder.AddBuildingTyp(newBuilding);
+                newBuilding.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
+                newBuilding.transform.parent = GetLocalMesh().transform;
+                ResourceBuildingsManagment.ResourceBuildingMain.Add(newBuilding);
                 currentPlaceableObject.layer = LayerClass.ResourceBuildings;
                 Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
                 currentPlaceableObject = null;
@@ -173,20 +167,17 @@ namespace Assets.Scripts.Buildings
                 CreatingBuilding = false;
                 }
             }
+
+
         public void CreateSocialBuilding(int couplingPosition)
             {
             if (couplingPosition == 0)
                 {
-                string[] buildingName = currentPlaceableObject.name.Split('-');
-                GameObject socilaBuildingMain = new GameObject
-                    {
-                    name = buildingName[0] + "BuildingMain)-" + buildingName[1]
-                    };
-                currentPlaceableObject.transform.parent = socilaBuildingMain.transform;
-                socilaBuildingMain.AddComponent<SocialBuildingManagment>();
-                socilaBuildingMain.GetComponent<SocialBuildingManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
-                socilaBuildingMain.transform.parent = GetLocalMesh().transform;
-                SocialBuildingManagment.SocialBuildingMain.Add(socilaBuildingMain);
+                GameObject newBuilding = GetMainBuildingName();
+                BuildingComponentTypAdder.AddBuildingTyp(newBuilding);
+                newBuilding.GetComponent<SocialBuildingManagment>().GameobjectPrefab = placeableObjectPrefabs[lastButtonHit];
+                newBuilding.transform.parent = GetLocalMesh().transform;
+                SocialBuildingManagment.SocialBuildingMain.Add(newBuilding);
                 currentPlaceableObject.layer = LayerClass.SocialBuildings;
                 Destroy(currentPlaceableObject.GetComponent<LineRenderer>());
                 currentPlaceableObject = null;
@@ -199,6 +190,16 @@ namespace Assets.Scripts.Buildings
                 AddBuildingToOtherBuilding(couplingPosition, LayerClass.SocialBuildings, generalUi, newGameobject);
                 CreatingBuilding = false;
                 }
+            }
+        private GameObject GetMainBuildingName()
+            {
+            string[] buildingName = currentPlaceableObject.name.Split('-');
+            GameObject newBuilding = new GameObject
+                {
+                name = buildingName[0] + "BuildingMain)-" + buildingName[1]
+                };
+            currentPlaceableObject.transform.parent = newBuilding.transform;
+            return newBuilding;
             }
         private void AddBuildingToOtherBuilding(int couplingPosition, int buildingTyp, GameObject selectedGameobject, GameObject newGameobject)
             {
