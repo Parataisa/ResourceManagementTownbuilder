@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Buildings.SocialBuildings;
+﻿using Assets.Scripts.Buildings;
+using Assets.Scripts.Buildings.SocialBuildings;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,17 +7,13 @@ namespace Assets.Scripts.AvailableResouceManagment
     {
     class AvailableManpower : MonoBehaviour
         {
-        private List<GameObject> SocialBuildingList = new List<GameObject>();
+        public static List<GameObject> SocialBuildingList = new List<GameObject>();
         private List<GameObject> SubscribedMainBuildings = new List<GameObject>();
         public static int AvailablePeople;
         public static int BusyPeople = 0;
         private bool fistRun = false;
         private int numberOfBuildingsInList = 0;
 
-        public void Start()
-            {
-            SocialBuildingList = SocialBuildingManagment.SocialBuildingMain;
-            }
         public void LateUpdate()
             {
             if (SocialBuildingList.Count == 0)

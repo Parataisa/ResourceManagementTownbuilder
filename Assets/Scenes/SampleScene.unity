@@ -1468,7 +1468,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6547335901086974228}
         m_TargetAssemblyTypeName: Assets.Scripts.Buildings.BuildingSystem, Assembly-CSharp
-        m_MethodName: CreateResouceBuilding
+        m_MethodName: CreateBuilding
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3500,7 +3500,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6547335901086974228}
         m_TargetAssemblyTypeName: Assets.Scripts.Buildings.BuildingSystem, Assembly-CSharp
-        m_MethodName: CreateSocialBuilding
+        m_MethodName: CreateBuilding
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4192,7 +4192,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6547335901086974228}
         m_TargetAssemblyTypeName: Assets.Scripts.Buildings.BuildingSystem, Assembly-CSharp
-        m_MethodName: CreateResouceBuilding
+        m_MethodName: CreateBuilding
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4567,7 +4567,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6547335901086974228}
         m_TargetAssemblyTypeName: Assets.Scripts.Buildings.BuildingSystem, Assembly-CSharp
-        m_MethodName: CreateResouceBuilding
+        m_MethodName: CreateBuilding
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8535,7 +8535,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6547335901086974228}
         m_TargetAssemblyTypeName: Assets.Scripts.Buildings.BuildingSystem, Assembly-CSharp
-        m_MethodName: CreateSocialBuilding
+        m_MethodName: CreateBuilding
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8667,7 +8667,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6547335901086974228}
         m_TargetAssemblyTypeName: Assets.Scripts.Buildings.BuildingSystem, Assembly-CSharp
-        m_MethodName: CreateSocialBuilding
+        m_MethodName: CreateBuilding
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9729,7 +9729,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6547335901086974228}
         m_TargetAssemblyTypeName: Assets.Scripts.Buildings.BuildingSystem, Assembly-CSharp
-        m_MethodName: CreateSocialBuilding
+        m_MethodName: CreateBuilding
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10230,7 +10230,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6547335901086974228}
         m_TargetAssemblyTypeName: Assets.Scripts.Buildings.BuildingSystem, Assembly-CSharp
-        m_MethodName: CreateResouceBuilding
+        m_MethodName: CreateBuilding
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
 using Assets.Scripts.Buildings.ResourceBuildings;
-using Assets.Scripts.Buildings.SocialBuildings;
 using Assets.Scripts.Ui.Menus.InfoUI;
 using System.Collections.Generic;
 using UnityEngine;
@@ -136,26 +135,19 @@ namespace Assets.Scripts.Buildings
             {
             if (Input.GetMouseButtonDown(0) && objectPlacable)
                 {
-                if (CurrentPlaceableObject.name.Contains("Social"))
-                    {
-                    CreateSocialBuilding(0);
-                    }
-                else if (CurrentPlaceableObject.name.Contains("Resouce"))
-                    {
-                    CreateResouceBuilding(0);
-                    }
+                CreateBuilding(0);
                 }
             }
-        public void CreateResouceBuilding(int couplingPosition)
+        public void CreateBuilding(int couplingPosition)
             {
             if (couplingPosition == 0)
                 {
                 GameObject newBuilding = GetMainBuildingName();
                 BuildingComponentTypAdder.AddBuildingTyp(newBuilding);
-                newBuilding.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab = PlaceableObjectPrefabs[lastButtonHit];
+                newBuilding.GetComponent<IBuildingManagment>().GameobjectPrefab = PlaceableObjectPrefabs[lastButtonHit];
                 newBuilding.transform.parent = GetLocalMesh().transform;
-                ResourceBuildingsManagment.ResourceBuildingMain.Add(newBuilding);
-                CurrentPlaceableObject.layer = LayerClass.ResourceBuildings;
+                MainBuildingList.BuildingMain.Add(newBuilding);
+                CurrentPlaceableObject.layer = GetLayer(CurrentPlaceableObject);
                 Destroy(CurrentPlaceableObject.GetComponent<LineRenderer>());
                 CurrentPlaceableObject = null;
                 }
@@ -163,35 +155,29 @@ namespace Assets.Scripts.Buildings
                 {
                 CreatingBuilding = true;
                 var generalUi = GeneralUserInterfaceManagment.CurrentOnClickGameObject;
-                var newGameobject = Instantiate(generalUi.transform.parent.GetComponent<ResourceBuildingsManagment>().GameobjectPrefab, generalUi.transform.parent.transform);
-                AddBuildingToOtherBuilding(couplingPosition, LayerClass.ResourceBuildings, generalUi, newGameobject);
+                var newGameobject = Instantiate(generalUi.transform.parent.GetComponent<IBuildingManagment>().GameobjectPrefab, generalUi.transform.parent.transform);
+                AddBuildingToOtherBuilding(couplingPosition, generalUi.layer, generalUi, newGameobject);
                 CreatingBuilding = false;
                 }
             }
 
-
-        public void CreateSocialBuilding(int couplingPosition)
+        private int GetLayer(GameObject building)
             {
-            if (couplingPosition == 0)
+            if (building.name.Contains("Social"))
                 {
-                GameObject newBuilding = GetMainBuildingName();
-                BuildingComponentTypAdder.AddBuildingTyp(newBuilding);
-                newBuilding.GetComponent<SocialBuildingManagment>().GameobjectPrefab = PlaceableObjectPrefabs[lastButtonHit];
-                newBuilding.transform.parent = GetLocalMesh().transform;
-                SocialBuildingManagment.SocialBuildingMain.Add(newBuilding);
-                CurrentPlaceableObject.layer = LayerClass.SocialBuildings;
-                Destroy(CurrentPlaceableObject.GetComponent<LineRenderer>());
-                CurrentPlaceableObject = null;
+                return LayerClass.SocialBuildings;
                 }
-            else if (!CreatingBuilding)
+            else if (building.name.Contains("Resource"))
                 {
-                CreatingBuilding = true;
-                var generalUi = GeneralUserInterfaceManagment.CurrentOnClickGameObject;
-                var newGameobject = Instantiate(generalUi.transform.parent.GetComponent<SocialBuildingManagment>().GameobjectPrefab, generalUi.transform.parent.transform);
-                AddBuildingToOtherBuilding(couplingPosition, LayerClass.SocialBuildings, generalUi, newGameobject);
-                CreatingBuilding = false;
+                return LayerClass.ResourceBuildings;
                 }
+            else if (building.name.Contains("Storage"))
+                {
+                return LayerClass.StorageBuildings;
+                }
+            return 0;
             }
+
         private GameObject GetMainBuildingName()
             {
             string[] buildingName = CurrentPlaceableObject.name.Split('-');

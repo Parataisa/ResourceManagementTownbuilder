@@ -40,14 +40,14 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 if (hitInfo.transform.gameObject.layer == LayerClass.SocialBuildings || hitInfo.transform.gameObject.layer == LayerClass.ResourceBuildings || hitInfo.transform.gameObject.layer == LayerClass.ResourcePatch)
                     {
                     GameObject parent = hitInfo.transform.parent.gameObject;
-                    if (parent.name.Contains("(ResoucePatch)-"))
+                    if (parent.name.Contains("(ResourcePatch)-"))
                         {
                         ResoucePatchUserInterface.SetActive(true);
                         ResouceBuildingUserInterface.SetActive(false);
                         SocialBuildingUserInterface.SetActive(false);
                         ShortInfoPanelToggeled?.Invoke(parent);
                         }
-                    else if (parent.name.Contains("(ResouceBuildingMain)-"))
+                    else if (parent.name.Contains("(ResourceBuildingMain)-"))
                         {
                         if (Input.GetMouseButtonDown(0) && ResouceBuildingUserInterface.activeSelf && hitInfo.transform.gameObject.layer == LayerClass.ResourceBuildings)
                             {

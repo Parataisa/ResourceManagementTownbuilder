@@ -8,16 +8,20 @@ namespace Assets.Scripts.Buildings.SocialBuildings
     {
     class SocialBuildingManagment : MonoBehaviour, IBuildingManagment
         {
-        private readonly List<GameObject> ListOfChildren = new List<GameObject>();
-        public static List<GameObject> SocialBuildingMain = new List<GameObject>();
+        private readonly List<GameObject> listOfChildren = new List<GameObject>();
         public string SocialBuildingType = "";
         public float BirthRate = 0.2f;
         public int People = 2;
         public int PeopleCapacity;
-        public GameObject GameobjectPrefab;
+        private GameObject gameobjectPrefab;
         public Action PersonBirth;
 
-        List<GameObject> IBuildingManagment.ListOfChildren { get => ListOfChildren; }
+        public List<GameObject> ListOfChildren { get => listOfChildren; }
+        public GameObject GameobjectPrefab
+            {
+            get => gameobjectPrefab;
+            set => gameobjectPrefab = value;
+            }
 
         private void Start()
             {
@@ -28,16 +32,16 @@ namespace Assets.Scripts.Buildings.SocialBuildings
             }
         private void Update()
             {
-            if (ListOfChildren.Count.Equals(null))
+            if (listOfChildren.Count.Equals(null))
                 {
                 return;
                 }
-            if (!(transform.childCount == ListOfChildren.Count))
+            if (!(transform.childCount == listOfChildren.Count))
                 {
                 AddingChildsToList();
-                PeopleCapacity = ListOfChildren.Count * 10;
+                PeopleCapacity = listOfChildren.Count * 10;
                 }
-            else if (transform.childCount == ListOfChildren.Count && PeopleCapacity == ListOfChildren.Count * 10)
+            else if (transform.childCount == listOfChildren.Count && PeopleCapacity == listOfChildren.Count * 10)
                 {
                 return;
                 }
@@ -46,18 +50,18 @@ namespace Assets.Scripts.Buildings.SocialBuildings
         private void AddingChildsToList()
             {
             int childCount = transform.childCount;
-            ListOfChildren.Clear();
+            listOfChildren.Clear();
             if (childCount != 0)
                 {
                 for (int i = 0; i < childCount; i++)
                     {
-                    if (ListOfChildren.Contains(transform.GetChild(i).gameObject))
+                    if (listOfChildren.Contains(transform.GetChild(i).gameObject))
                         {
                         continue;
                         }
                     else
                         {
-                        ListOfChildren.Add(transform.GetChild(i).gameObject);
+                        listOfChildren.Add(transform.GetChild(i).gameObject);
                         PeopleCapacity += 10;
                         }
                     }
@@ -66,7 +70,7 @@ namespace Assets.Scripts.Buildings.SocialBuildings
 
         private string GetSocialBuildingName()
             {
-            string[] BuildingNameArray = ListOfChildren[0].gameObject.name.Split('-');
+            string[] BuildingNameArray = listOfChildren[0].gameObject.name.Split('-');
             return BuildingNameArray[1].Split('(')[0];
             }
         IEnumerator BirthTimer(float birthRate)

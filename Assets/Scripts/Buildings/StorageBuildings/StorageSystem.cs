@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Buildings.StorageSystem
+namespace Assets.Scripts.Buildings.StorageBuildings
     {
     class StorageSystem : BuildingBase
         {
