@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5891236114762556538}
   - component: {fileID: 8546372140323927967}
   - component: {fileID: 635602376603293098}
-  - component: {fileID: 544575724103555513}
+  - component: {fileID: 4697315409898720707}
   m_Layer: 2
   m_Name: (Storage-Warehouse
   m_TagString: Untagged
@@ -96,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &544575724103555513
+--- !u!114 &4697315409898720707
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,10 +105,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 628682382620441871}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a3e2b5a9f426c84081d65430b6a1fa1, type: 3}
+  m_Script: {fileID: 11500000, guid: ceb7e14f903408a49b7843d977d53da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxAmountOfWorker: 0
-  CurrentWorkers: 0
-  MaxAmountOfStorableResources: 0
-  CurrentAmountOfStoredResources: 0
