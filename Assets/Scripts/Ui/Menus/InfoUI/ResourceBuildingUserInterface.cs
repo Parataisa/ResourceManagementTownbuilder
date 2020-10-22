@@ -28,14 +28,14 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     }
                 else
                     {
-                    if (!ObjectName.Equals(currentGameObjectScript.ChildBuildingTyp.BuildingTyp))
+                    if (!ObjectName.Equals(currentGameObjectScript.BuildingTyp.BuildingTyp))
                         {
-                        ObjectName = currentGameObjectScript.ChildBuildingTyp.BuildingTyp;
+                        ObjectName = currentGameObjectScript.BuildingTyp.BuildingTyp;
                         this.transform.Find("BuildingName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                         }
                     if (!StortedResources.Equals(currentGameObjectScript.StoredResources))
                         {
-                        StortedResources = currentGameObjectScript.StoredResources[currentGameObjectScript.ChildBuildingTyp.ResourceToGather[GrabTheResourceWithTheLargesValue()]];
+                        StortedResources = currentGameObjectScript.StoredResources[currentGameObjectScript.BuildingTyp.ResourceToGather[GrabTheResourceWithTheLargesValue()]];
                         this.transform.Find("StortedResources").GetComponent<TextMeshProUGUI>().SetText(ResourceWithTheHighestAmount + ": " + StortedResources.ToString());
                         }
                     if (!ProduktionSpeed.Equals(currentGameObjectScript.ProduktionSpeed))

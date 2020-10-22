@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
-using ResourceGeneration.ResourceVariationen;
+﻿using ResourceGeneration.ResourceVariationen;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,16 +6,12 @@ using UnityEngine;
 
 namespace Assets.Scripts.Buildings.ResourceBuildings
     {
-    class ResourceBuildingsManagment : MonoBehaviour, IBuildingManagment
+    class ResourceBuildingsManagment : BuildingManagmentBase
         {
-        //ToDo: split up this mess
-        private List<GameObject> listOfChildren = new List<GameObject>();
-        private ResourceBuildingBase childBuildingTyp;
+        private ResourceBuildingBase buildingTyp;
         private int gatheredResourcesOverall = 0;
         private Dictionary<string, int> storedResources;
-        private GameObject gameobjectPrefab;
         private ResourceBuildingData buildingData;
-        public List<GameObject> ListOfChildren { get => listOfChildren; }
         public bool CoroutinRunning { get; set; }
         public int WorkingPeople
             {
@@ -43,25 +38,20 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             get => gatheredResourcesOverall;
             set => gatheredResourcesOverall = value;
             }
-        internal ResourceBuildingBase ChildBuildingTyp
+        internal ResourceBuildingBase BuildingTyp
             {
-            get => childBuildingTyp;
-            set => childBuildingTyp = value;
-            }
-        public GameObject GameobjectPrefab
-            {
-            get => gameobjectPrefab;
-            set => gameobjectPrefab = value;
+            get => buildingTyp;
+            set => buildingTyp = value;
             }
 
         public event Action<GameObject> UpdateResouces;
         public event Action<ResourceBuildingsManagment> ResourceQuantityDecrease;
 
-        private void Start()
+        protected override void Start()
             {
             buildingData = new ResourceBuildingData();
             StoredResources = new Dictionary<string, int>();
-            AddingChildsToList(StoredResources);
+            base.Start();
             StartCoroutine(UpdateResoucesMethode());
             }
         private void Update()
@@ -69,13 +59,13 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             if (listOfChildren.Count.Equals(null))
                 return;
             if (!(transform.childCount == listOfChildren.Count))
-                AddingChildsToList(StoredResources);
+                AddingChildsToList();
             }
         public void IncreaseGatherResource(int numberOfIncrices, IResources resourceTyp)
             {
             StoredResources[resourceTyp.ResourceName] += numberOfIncrices;
             }
-        private void AddingChildsToList(Dictionary<string, int> storedResources)
+        internal override void AddingChildsToList()
             {
             int childCount = transform.childCount;
             listOfChildren.Clear();
@@ -89,12 +79,12 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                         listOfChildren.Add(transform.GetChild(i).gameObject);
                     }
                 }
-            ChildBuildingTyp = transform.GetChild(0).GetComponent<ResourceBuildingBase>();
-            for (int i = 0; i < ChildBuildingTyp.ResourceToGather.Count; i++)
+            buildingTyp = transform.GetChild(0).GetComponent<ResourceBuildingBase>();
+            for (int i = 0; i < buildingTyp.ResourceToGather.Count; i++)
                 {
-                if (!storedResources.ContainsKey(ChildBuildingTyp.ResourceToGather[i]))
+                if (!this.storedResources.ContainsKey(buildingTyp.ResourceToGather[i]))
                     {
-                    storedResources.Add(ChildBuildingTyp.ResourceToGather[i], 0);
+                    this.storedResources.Add(buildingTyp.ResourceToGather[i], 0);
                     }
                 }
             buildingData.WorkingPeopleCapacity = childCount * 10;

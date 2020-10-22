@@ -1,34 +1,22 @@
-﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
-using System;
+﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Buildings.SocialBuildings
     {
-    class SocialBuildingManagment : MonoBehaviour, IBuildingManagment
+    class SocialBuildingManagment : BuildingManagmentBase
         {
-        private readonly List<GameObject> listOfChildren = new List<GameObject>();
         public string SocialBuildingType = "";
         public float BirthRate = 0.2f;
         public int People = 2;
         public int PeopleCapacity;
-        private GameObject gameobjectPrefab;
         public Action PersonBirth;
 
-        public List<GameObject> ListOfChildren { get => listOfChildren; }
-        public GameObject GameobjectPrefab
+        protected override void Start()
             {
-            get => gameobjectPrefab;
-            set => gameobjectPrefab = value;
-            }
-
-        private void Start()
-            {
-            AddingChildsToList();
+            base.Start();
             SocialBuildingType = GetSocialBuildingName();
             StartCoroutine(BirthTimer(BirthRate));
-
             }
         private void Update()
             {
@@ -46,8 +34,7 @@ namespace Assets.Scripts.Buildings.SocialBuildings
                 return;
                 }
             }
-
-        private void AddingChildsToList()
+        internal override void AddingChildsToList()
             {
             int childCount = transform.childCount;
             listOfChildren.Clear();
