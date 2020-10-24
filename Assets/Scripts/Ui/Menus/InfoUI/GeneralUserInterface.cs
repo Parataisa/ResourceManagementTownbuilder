@@ -8,7 +8,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
 
         private void Start()
             {
-            selectedGameobject = GeneralUserInterfaceManagment.CurrentOnClickGameObject;
+            selectedGameobject = GeneralUserInterfaceManagment.CurrentSelectedGameObject;
             GeneralUserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
             }
         private void LateUpdate()
@@ -37,6 +37,10 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             {
             string[] BuildingNameArray = name.Split('-');
             return BuildingNameArray[1].Split('(')[0];
+            }
+        internal void CloseSelf()
+            {
+            this.gameObject.SetActive(false);
             }
         }
     }

@@ -31,7 +31,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 {
                 Destroy(child.gameObject);
                 }
-            savedeGameObject = null;
+            SavedGameObject = null;
             SelectedGameobject = null;
             }
         private void Update()
@@ -56,7 +56,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                             }
                         }
                     }
-                if (storedResourceList.Count != ScrollViewContent.transform.childCount || SelectedGameobject != savedeGameObject)
+                if (storedResourceList.Count != ScrollViewContent.transform.childCount || SelectedGameobject != SavedGameObject)
                     {
                     AddingItems();
                     }
@@ -97,7 +97,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             }
         private void UpdateUiBuildingInformationen()
             {
-            if (SelectedGameobject != savedeGameObject || DropdownOptions.Count.Equals(0))
+            if (SelectedGameobject != SavedGameObject || DropdownOptions.Count.Equals(0))
                 {
                 ObjectName = GetObjectName(SelectedGameobject.transform.parent.name);
                 this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
@@ -134,8 +134,8 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 }
             ResourcesDropdown.ClearOptions();
             ResourcesDropdown.AddOptions(DropdownOptions);
-            savedeGameObject = SelectedGameobject;
-            GeneralUserInterfaceManagment.CurrentOnClickGameObject = SelectedGameobject;
+            SavedGameObject = SelectedGameobject;
+            GeneralUserInterfaceManagment.CurrentSelectedGameObject = SelectedGameobject;
             }
 
         void DropdownValueChanged()

@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,20 +9,19 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
     class GeneralUserInterfaceManagment : MonoBehaviour
         {
         public new Camera camera;
-        public GameObject ResoucePatchUserInterface;
-        public GameObject ResouceBuildingUserInterface;
-        public GameObject SocialBuildingUserInterface;
-        public GameObject ResourceBuildingInterfaceOnClick;
-        public GameObject SocialBuildingInterfaceOnClick;
+        private List<GeneralUserInterface> generalUserInterfaceBasesList = new List<GeneralUserInterface>();
+        private List<OnClickInterfaceBase> onClickInterfaceBasesList = new List<OnClickInterfaceBase>();
         public EventSystem EventSystem;
         public static event Action<GameObject> ShortInfoPanelToggeled;
         public static event Action<GameObject> OnClickInfoPanelToggled;
         public event Action OnClickInfoPanelTextUpdate;
-        public static GameObject CurrentOnClickGameObject;
+        public static GameObject CurrentSelectedGameObject;
 
         public void Start()
             {
             camera = Camera.main;
+            onClickInterfaceBasesList.AddRange(transform.GetComponentsInChildren<OnClickInterfaceBase>(true));
+            generalUserInterfaceBasesList.AddRange(transform.GetComponentsInChildren<GeneralUserInterface>(true));
             }
         public void Update()
             {
@@ -30,62 +30,74 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 {
                 if (Input.GetMouseButtonDown(0) && !EventSystem.IsPointerOverGameObject())
                     {
-                    ResourceBuildingInterfaceOnClick.SetActive(false);
-                    SocialBuildingInterfaceOnClick.SetActive(false);
+                    CloseOnClickUi(null);
                     }
                 if (LayerClass.GetSolitObjectLayer().Contains(hitInfo.transform.gameObject.layer) && !EventSystem.IsPointerOverGameObject())
                     {
+                    //ResourcePatches
                     GameObject parent = hitInfo.transform.parent.gameObject;
                     if (hitInfo.transform.gameObject.layer == LayerClass.ResourcePatch)
                         {
-                        ResoucePatchUserInterface.SetActive(true);
-                        ResouceBuildingUserInterface.SetActive(false);
-                        SocialBuildingUserInterface.SetActive(false);
+                        CloseGeneralUi(FindObjectOfType<ResourcePatchesUserInterface>(true));
                         ShortInfoPanelToggeled?.Invoke(parent);
                         }
+                    //Resourcebuildings
                     else if (hitInfo.transform.gameObject.layer == LayerClass.ResourceBuildings)
                         {
-                        if (Input.GetMouseButtonDown(0) && ResouceBuildingUserInterface.activeSelf && hitInfo.transform.gameObject.layer == LayerClass.ResourceBuildings)
+                        CloseGeneralUi(FindObjectOfType<ResourceBuildingUserInterface>(true));
+                        ShortInfoPanelToggeled?.Invoke(parent);
+                        if (Input.GetMouseButtonDown(0) && hitInfo.transform.gameObject.layer == LayerClass.ResourceBuildings)
                             {
-                            SocialBuildingInterfaceOnClick.SetActive(false);
-                            ResourceBuildingInterfaceOnClick.SetActive(true);
-                            FindObjectOfType<BuildingMenuToggle>().panel.SetActive(false);
+                            CloseOnClickUi(FindObjectOfType<ResourceBuildingInterfaceOnClick>(true));
                             OnClickInfoPanelToggled?.Invoke(hitInfo.transform.gameObject);
                             OnClickInfoPanelTextUpdate?.Invoke();
+                            FindObjectOfType<BuildingMenuToggle>().panel.SetActive(false);
                             }
-                        ResouceBuildingUserInterface.SetActive(true);
-                        ResoucePatchUserInterface.SetActive(false);
-                        SocialBuildingUserInterface.SetActive(false);
-                        ShortInfoPanelToggeled?.Invoke(parent);
                         }
+                    //SocialBuildings
                     else if (hitInfo.transform.gameObject.layer == LayerClass.SocialBuildings)
                         {
-                        if (Input.GetMouseButtonDown(0) && SocialBuildingUserInterface.activeSelf && hitInfo.transform.gameObject.layer == LayerClass.SocialBuildings)
-                            {
-                            ResourceBuildingInterfaceOnClick.SetActive(false);
-                            SocialBuildingInterfaceOnClick.SetActive(true);
-                            FindObjectOfType<BuildingMenuToggle>().panel.SetActive(false);
-                            OnClickInfoPanelToggled?.Invoke(hitInfo.transform.gameObject);
-                            }
-                        SocialBuildingUserInterface.SetActive(true);
-                        ResoucePatchUserInterface.SetActive(false);
-                        ResouceBuildingUserInterface.SetActive(false);
+                        CloseGeneralUi(FindObjectOfType<SocialBuildingUserInterface>(true));
                         ShortInfoPanelToggeled?.Invoke(parent);
+                        if (Input.GetMouseButtonDown(0) && hitInfo.transform.gameObject.layer == LayerClass.SocialBuildings)
+                            {
+                            CloseOnClickUi(FindObjectOfType<SocialBuildingInterfaceOnClick>(true));
+                            OnClickInfoPanelToggled?.Invoke(hitInfo.transform.gameObject);
+                            FindObjectOfType<BuildingMenuToggle>().panel.SetActive(false);
+                            }
                         }
                     }
+                //Close shortUiInfo
                 else if (hitInfo.transform.gameObject.layer == LayerClass.Ground)
                     {
-                    ResouceBuildingUserInterface.SetActive(false);
-                    ResoucePatchUserInterface.SetActive(false);
-                    SocialBuildingUserInterface.SetActive(false);
+                    CloseGeneralUi(null);
                     }
                 }
             }
 
-        public void CloseOnClickUi()
+        public void CloseOnClickUi(OnClickInterfaceBase self)
             {
-            ResourceBuildingInterfaceOnClick.SetActive(false);
-            SocialBuildingInterfaceOnClick.SetActive(false);
+            foreach (var onClickUi in onClickInterfaceBasesList)
+                {
+                if (onClickUi == self)
+                    {
+                    onClickUi.gameObject.SetActive(true);
+                    continue;
+                    }
+                onClickUi.CloseSelf();
+                }
+            }
+        private void CloseGeneralUi(GeneralUserInterface self)
+            {
+            foreach (var generalUi in generalUserInterfaceBasesList)
+                {
+                if (generalUi == self)
+                    {
+                    generalUi.gameObject.SetActive(true);
+                    continue;
+                    }
+                generalUi.CloseSelf();
+                }
             }
         }
     }

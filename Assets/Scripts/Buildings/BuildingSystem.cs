@@ -153,7 +153,7 @@ namespace Assets.Scripts.Buildings
             else if (!CreatingBuilding)
                 {
                 CreatingBuilding = true;
-                var generalUi = GeneralUserInterfaceManagment.CurrentOnClickGameObject;
+                var generalUi = GeneralUserInterfaceManagment.CurrentSelectedGameObject;
                 var newGameobject = Instantiate(generalUi.transform.parent.GetComponent<IBuildingManagment>().GameobjectPrefab, generalUi.transform.parent.transform);
                 AddBuildingToOtherBuilding(couplingPosition, generalUi.layer, generalUi, newGameobject);
                 CreatingBuilding = false;

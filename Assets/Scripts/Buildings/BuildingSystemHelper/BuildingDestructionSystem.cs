@@ -15,7 +15,7 @@ namespace Assets.Scripts.Buildings.BuildingSystemHelper
         //    }
         public void DestroyMainBuidling()
             {
-            Destroy(GeneralUserInterfaceManagment.CurrentOnClickGameObject);
+            Destroy(GeneralUserInterfaceManagment.CurrentSelectedGameObject);
             SocialBuildingInterfaceOnClick.SetActive(false);
             ResourceBuildingInterfaceOnClick.SetActive(false);
             }

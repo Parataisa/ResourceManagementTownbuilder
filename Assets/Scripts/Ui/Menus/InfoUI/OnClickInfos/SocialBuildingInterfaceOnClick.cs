@@ -7,11 +7,11 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         protected override void Start()
             {
             base.Start();
-            GeneralUserInterfaceManagment.CurrentOnClickGameObject = SelectedGameobject;
+            GeneralUserInterfaceManagment.CurrentSelectedGameObject = SelectedGameobject;
             }
         private void OnDisable()
             {
-            savedeGameObject = null;
+            SavedGameObject = null;
             SelectedGameobject = null;
             }
         private void Update()
@@ -22,16 +22,16 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     {
                     return;
                     }
-                if (SelectedGameobject != savedeGameObject)
+                if (SelectedGameobject != SavedGameObject)
                     {
-                    savedeGameObject = SelectedGameobject;
-                    GeneralUserInterfaceManagment.CurrentOnClickGameObject = SelectedGameobject;
+                    SavedGameObject = SelectedGameobject;
+                    GeneralUserInterfaceManagment.CurrentSelectedGameObject = SelectedGameobject;
                     }
                 if (ObjectName.Length == 0)
                     {
                     ObjectName = GetObjectName(SelectedGameobject.transform.parent.name);
                     this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
-                    if (SelectedGameobject != savedeGameObject)
+                    if (SelectedGameobject != SavedGameObject)
                         {
                         ObjectName = GetObjectName(SelectedGameobject.transform.parent.name);
                         this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);

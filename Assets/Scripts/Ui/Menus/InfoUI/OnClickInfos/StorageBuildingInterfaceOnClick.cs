@@ -24,7 +24,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI.OnClickInfos
                 {
                 Destroy(child.gameObject);
                 }
-            savedeGameObject = null;
+            savedGameObject = null;
             SelectedGameobject = null;
             }
         private void Update()
@@ -49,7 +49,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI.OnClickInfos
                             }
                         }
                     }
-                if (storedResourceList.Count != ScrollViewContent.transform.childCount || SelectedGameobject != savedeGameObject)
+                if (storedResourceList.Count != ScrollViewContent.transform.childCount || SelectedGameobject != savedGameObject)
                     {
                     AddingItems();
                     }
@@ -90,7 +90,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI.OnClickInfos
             }
         private void UpdateUiBuildingInformationen()
             {
-            if (SelectedGameobject != savedeGameObject)
+            if (SelectedGameobject != savedGameObject)
                 {
                 ObjectName = GetObjectName(SelectedGameobject.transform.parent.name);
                 this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);

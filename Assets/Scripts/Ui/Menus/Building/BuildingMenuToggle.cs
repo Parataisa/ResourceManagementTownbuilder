@@ -16,7 +16,7 @@ public class BuildingMenuToggle : MonoBehaviour
         if (panel != null)
             {
             bool isActive = panel.activeSelf;
-            generalUserInterfaceManagment.CloseOnClickUi();
+            generalUserInterfaceManagment.CloseOnClickUi(null);
             if (buildingSystem.CurrentPlaceableObject != null)
                 {
                 buildingSystem.ClearCurser();
