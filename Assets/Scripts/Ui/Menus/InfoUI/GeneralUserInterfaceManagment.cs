@@ -9,8 +9,8 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
     class GeneralUserInterfaceManagment : MonoBehaviour
         {
         public new Camera camera;
-        private List<GeneralUserInterface> generalUserInterfaceBasesList = new List<GeneralUserInterface>();
-        private List<OnClickInterfaceBase> onClickInterfaceBasesList = new List<OnClickInterfaceBase>();
+        private readonly List<GeneralUserInterface> generalUserInterfaceBasesList = new List<GeneralUserInterface>();
+        private readonly List<OnClickInterfaceBase> onClickInterfaceBasesList = new List<OnClickInterfaceBase>();
         public EventSystem EventSystem;
         public static event Action<GameObject> ShortInfoPanelToggeled;
         public static event Action<GameObject> OnClickInfoPanelToggled;

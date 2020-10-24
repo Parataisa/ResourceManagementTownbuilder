@@ -289,7 +289,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Object Name:'
+  m_text: 'Building Name:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2797,11 +2797,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 963194227}
-  ResoucePatchUserInterface: {fileID: 1890822907}
-  ResouceBuildingUserInterface: {fileID: 623166583}
-  SocialBuildingUserInterface: {fileID: 986643563}
-  ResourceBuildingInterfaceOnClick: {fileID: 847780743}
-  SocialBuildingInterfaceOnClick: {fileID: 48888179}
   EventSystem: {fileID: 1832137760}
 --- !u!4 &552225513
 Transform:
@@ -9900,7 +9895,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Object Name:'
+  m_text: 'Resource Name:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
