@@ -9,14 +9,14 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
     {
     class GeneralUserInterfaceManagment : MonoBehaviour
         {
-        public new Camera camera;
-        private readonly List<GeneralUserInterface> generalUserInterfaceBasesList = new List<GeneralUserInterface>();
-        private readonly List<OnClickInterfaceBase> onClickInterfaceBasesList = new List<OnClickInterfaceBase>();
-        public EventSystem EventSystem;
         public static event Action<GameObject> ShortInfoPanelToggeled;
         public static event Action<GameObject> OnClickInfoPanelToggled;
-        public event Action OnClickInfoPanelTextUpdate;
         public static GameObject CurrentSelectedGameObject;
+
+        private new Camera camera;
+        private readonly List<GeneralUserInterface> generalUserInterfaceBasesList = new List<GeneralUserInterface>();
+        private readonly List<OnClickInterfaceBase> onClickInterfaceBasesList = new List<OnClickInterfaceBase>();
+        [SerializeField] private EventSystem EventSystem;
 
         public void Start()
             {
