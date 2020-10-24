@@ -13,7 +13,6 @@ namespace Assets.Scripts.Buildings
         public GameObject CurrentPlaceableObject { get; private set; }
         public GameObject[] PlaceableObjectPrefabs { get; private set; }
 
-        [SerializeField] private GameObject buildingPanel;
         private Object[] BuildingsListObjects;
         private bool objectPlacable;
         private static int lastButtonHit;

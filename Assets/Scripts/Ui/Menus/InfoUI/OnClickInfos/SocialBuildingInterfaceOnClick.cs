@@ -39,10 +39,5 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     }
                 }
             }
-        private string GetObjectName(string name)
-            {
-            string[] BuildingNameArray = name.Split('-');
-            return BuildingNameArray[1].Split('(')[0];
-            }
         }
     }

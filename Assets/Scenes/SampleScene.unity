@@ -1384,6 +1384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 917635955}
   buildingSystem: {fileID: 6547335901086974228}
+  generalUserInterfaceManagment: {fileID: 552225512}
 --- !u!1 &331754738
 GameObject:
   m_ObjectHideFlags: 0

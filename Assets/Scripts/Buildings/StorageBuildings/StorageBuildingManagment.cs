@@ -6,11 +6,13 @@ namespace Assets.Scripts.Buildings.StorageBuildings
     {
     class StorageBuildingManagment : BuildingManagmentBase
         {
-        public Dictionary<string, int> StoredResources = new Dictionary<string, int>();
+        private Dictionary<string, int> storedResources = new Dictionary<string, int>();
         public int MaxAmountOfWorker;
         public int CurrentWorkers;
         public int MaxAmountOfStorableResources;
         public int CurrentAmountOfStoredResources;
+
+        public Dictionary<string, int> StoredResources { get => storedResources; set => storedResources = value; }
 
         private void Update()
             {

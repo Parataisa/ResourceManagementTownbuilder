@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -29,30 +28,28 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             Ray mouseRay = camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(mouseRay, out RaycastHit hitInfo))
                 {
-                if (ResourceBuildingInterfaceOnClick.activeSelf == true && Input.GetMouseButtonDown(0) && !EventSystem.IsPointerOverGameObject())
+                if (Input.GetMouseButtonDown(0) && !EventSystem.IsPointerOverGameObject())
                     {
                     ResourceBuildingInterfaceOnClick.SetActive(false);
-                    }
-                if (SocialBuildingInterfaceOnClick.activeSelf == true && Input.GetMouseButtonDown(0) && !EventSystem.IsPointerOverGameObject())
-                    {
                     SocialBuildingInterfaceOnClick.SetActive(false);
                     }
-                if (hitInfo.transform.gameObject.layer == LayerClass.SocialBuildings || hitInfo.transform.gameObject.layer == LayerClass.ResourceBuildings || hitInfo.transform.gameObject.layer == LayerClass.ResourcePatch)
+                if (LayerClass.GetSolitObjectLayer().Contains(hitInfo.transform.gameObject.layer) && !EventSystem.IsPointerOverGameObject())
                     {
                     GameObject parent = hitInfo.transform.parent.gameObject;
-                    if (parent.name.Contains("(ResourcePatch)-"))
+                    if (hitInfo.transform.gameObject.layer == LayerClass.ResourcePatch)
                         {
                         ResoucePatchUserInterface.SetActive(true);
                         ResouceBuildingUserInterface.SetActive(false);
                         SocialBuildingUserInterface.SetActive(false);
                         ShortInfoPanelToggeled?.Invoke(parent);
                         }
-                    else if (parent.name.Contains("(ResourceBuildingMain)-"))
+                    else if (hitInfo.transform.gameObject.layer == LayerClass.ResourceBuildings)
                         {
                         if (Input.GetMouseButtonDown(0) && ResouceBuildingUserInterface.activeSelf && hitInfo.transform.gameObject.layer == LayerClass.ResourceBuildings)
                             {
                             SocialBuildingInterfaceOnClick.SetActive(false);
                             ResourceBuildingInterfaceOnClick.SetActive(true);
+                            FindObjectOfType<BuildingMenuToggle>().panel.SetActive(false);
                             OnClickInfoPanelToggled?.Invoke(hitInfo.transform.gameObject);
                             OnClickInfoPanelTextUpdate?.Invoke();
                             }
@@ -61,12 +58,13 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                         SocialBuildingUserInterface.SetActive(false);
                         ShortInfoPanelToggeled?.Invoke(parent);
                         }
-                    else if (parent.name.Contains("(SocialBuildingMain)-"))
+                    else if (hitInfo.transform.gameObject.layer == LayerClass.SocialBuildings)
                         {
                         if (Input.GetMouseButtonDown(0) && SocialBuildingUserInterface.activeSelf && hitInfo.transform.gameObject.layer == LayerClass.SocialBuildings)
                             {
                             ResourceBuildingInterfaceOnClick.SetActive(false);
                             SocialBuildingInterfaceOnClick.SetActive(true);
+                            FindObjectOfType<BuildingMenuToggle>().panel.SetActive(false);
                             OnClickInfoPanelToggled?.Invoke(hitInfo.transform.gameObject);
                             }
                         SocialBuildingUserInterface.SetActive(true);
@@ -82,6 +80,12 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     SocialBuildingUserInterface.SetActive(false);
                     }
                 }
+            }
+
+        public void CloseOnClickUi()
+            {
+            ResourceBuildingInterfaceOnClick.SetActive(false);
+            SocialBuildingInterfaceOnClick.SetActive(false);
             }
         }
     }

@@ -142,11 +142,5 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             {
             SelectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().SetSelecedResource(ResourcesDropdown.value);
             }
-
-        private string GetObjectName(string name)
-            {
-            string[] BuildingNameArray = name.Split('-');
-            return BuildingNameArray[1].Split('(')[0];
-            }
         }
     }

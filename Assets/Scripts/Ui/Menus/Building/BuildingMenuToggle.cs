@@ -1,15 +1,22 @@
 ﻿using Assets.Scripts.Buildings;
+using Assets.Scripts.Ui.Menus.InfoUI;
 using UnityEngine;
 
 public class BuildingMenuToggle : MonoBehaviour
     {
     public GameObject panel;
     public BuildingSystem buildingSystem;
+    private GeneralUserInterfaceManagment generalUserInterfaceManagment;
+    private void Start()
+        {
+        generalUserInterfaceManagment = FindObjectOfType<GeneralUserInterfaceManagment>();
+        }
     public void PanelToggel()
         {
         if (panel != null)
             {
             bool isActive = panel.activeSelf;
+            generalUserInterfaceManagment.CloseOnClickUi();
             if (buildingSystem.CurrentPlaceableObject != null)
                 {
                 buildingSystem.ClearCurser();
