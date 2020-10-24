@@ -1,4 +1,5 @@
-﻿using ResourceGeneration.ResourceVariationen;
+﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using ResourceGeneration.ResourceVariationen;
 using TMPro;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
@@ -8,6 +9,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         private int PatchQuantity = 0;
         private int PatchSize = 0;
         private ResourceBase currentGameObjectScript;
+        internal override int Layer => LayerClass.ResourcePatch;
 
         private void Update()
             {

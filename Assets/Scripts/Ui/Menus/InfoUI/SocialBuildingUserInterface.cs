@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Buildings.SocialBuildings;
+﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using Assets.Scripts.Buildings.SocialBuildings;
 using TMPro;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
@@ -9,7 +10,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         public int People = 0;
         public int PeopleCapacity = 0;
         private SocialBuildingManagment currentGameObjectScript;
-
+        internal override int Layer => LayerClass.SocialBuildings;
         private void Update()
             {
             if (this.enabled)

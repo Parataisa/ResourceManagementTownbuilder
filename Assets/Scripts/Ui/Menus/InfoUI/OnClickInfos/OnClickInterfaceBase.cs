@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
@@ -11,14 +12,17 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         public string ObjectName { get => objectName; set => objectName = value; }
         public GameObject SavedGameObject { get => savedGameObject; set => savedGameObject = value; }
         public GameObject SelectedGameobject { get => selectedGameobject; set => selectedGameobject = value; }
+        internal virtual int Layer { get; }
+
         protected virtual void Start()
-            {        
+            {
             }
+
         internal void GetGameObject(GameObject gameObject)
             {
             selectedGameobject = gameObject;
             }
-        private void OnEnable()
+        protected virtual void OnEnable()
             {
             GeneralUserInterfaceManagment.OnClickInfoPanelToggled += GetGameObject;
             }

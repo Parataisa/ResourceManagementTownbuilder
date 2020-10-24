@@ -5,6 +5,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         {
         internal GameObject selectedGameobject;
         internal string ObjectName = "";
+        internal virtual int Layer { get; }
 
         private void Start()
             {

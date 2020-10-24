@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -34,38 +35,9 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     }
                 if (LayerClass.GetSolitObjectLayer().Contains(hitInfo.transform.gameObject.layer) && !EventSystem.IsPointerOverGameObject())
                     {
-                    //ResourcePatches
+                    //Open the different Uis
                     GameObject parent = hitInfo.transform.parent.gameObject;
-                    if (hitInfo.transform.gameObject.layer == LayerClass.ResourcePatch)
-                        {
-                        CloseGeneralUi(FindObjectOfType<ResourcePatchesUserInterface>(true));
-                        ShortInfoPanelToggeled?.Invoke(parent);
-                        }
-                    //Resourcebuildings
-                    else if (hitInfo.transform.gameObject.layer == LayerClass.ResourceBuildings)
-                        {
-                        CloseGeneralUi(FindObjectOfType<ResourceBuildingUserInterface>(true));
-                        ShortInfoPanelToggeled?.Invoke(parent);
-                        if (Input.GetMouseButtonDown(0) && hitInfo.transform.gameObject.layer == LayerClass.ResourceBuildings)
-                            {
-                            CloseOnClickUi(FindObjectOfType<ResourceBuildingInterfaceOnClick>(true));
-                            OnClickInfoPanelToggled?.Invoke(hitInfo.transform.gameObject);
-                            OnClickInfoPanelTextUpdate?.Invoke();
-                            FindObjectOfType<BuildingMenuToggle>().panel.SetActive(false);
-                            }
-                        }
-                    //SocialBuildings
-                    else if (hitInfo.transform.gameObject.layer == LayerClass.SocialBuildings)
-                        {
-                        CloseGeneralUi(FindObjectOfType<SocialBuildingUserInterface>(true));
-                        ShortInfoPanelToggeled?.Invoke(parent);
-                        if (Input.GetMouseButtonDown(0) && hitInfo.transform.gameObject.layer == LayerClass.SocialBuildings)
-                            {
-                            CloseOnClickUi(FindObjectOfType<SocialBuildingInterfaceOnClick>(true));
-                            OnClickInfoPanelToggled?.Invoke(hitInfo.transform.gameObject);
-                            FindObjectOfType<BuildingMenuToggle>().panel.SetActive(false);
-                            }
-                        }
+                    OpenUiForBuildingType(hitInfo, parent);
                     }
                 //Close shortUiInfo
                 else if (hitInfo.transform.gameObject.layer == LayerClass.Ground)
@@ -73,6 +45,25 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     CloseGeneralUi(null);
                     }
                 }
+            }
+
+        private void OpenUiForBuildingType(RaycastHit hitInfo, GameObject parent)
+            {
+            var hitObjectLayer = generalUserInterfaceBasesList.FirstOrDefault(x => x.Layer == hitInfo.transform.gameObject.layer);
+            CloseGeneralUi(hitObjectLayer);
+            ShortInfoPanelToggeled?.Invoke(parent);
+            if (Input.GetMouseButtonDown(0) && LayerClass.GetBuildingLayers().Contains(hitInfo.transform.gameObject.layer))
+                {
+                OpenOnClickUi(hitInfo);
+                }
+            }
+
+        private void OpenOnClickUi(RaycastHit hitInfo)
+            {
+            var hitObjectLayer = onClickInterfaceBasesList.FirstOrDefault(x => x.Layer == hitInfo.transform.gameObject.layer);
+            CloseOnClickUi(hitObjectLayer);
+            OnClickInfoPanelToggled?.Invoke(hitInfo.transform.gameObject);
+            FindObjectOfType<BuildingMenuToggle>().panel.SetActive(false);
             }
 
         public void CloseOnClickUi(OnClickInterfaceBase self)

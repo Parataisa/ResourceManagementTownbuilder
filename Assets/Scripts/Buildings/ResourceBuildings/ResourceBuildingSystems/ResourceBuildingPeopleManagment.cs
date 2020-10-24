@@ -14,7 +14,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems
         private void Start()
             {
             var generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
-            generalUi.OnClickInfoPanelTextUpdate += SetWorkingPeopleText;
+            ResourceBuidlingOnClickUi.OnClickInfoPanelTextUpdate += SetWorkingPeopleText;
             }
         public void IncreaseManpower()
             {

@@ -1,9 +1,11 @@
-﻿using TMPro;
+﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using TMPro;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
     class SocialBuildingInterfaceOnClick : OnClickInterfaceBase
         {
+        internal override int Layer => LayerClass.SocialBuildings;
         protected override void Start()
             {
             base.Start();

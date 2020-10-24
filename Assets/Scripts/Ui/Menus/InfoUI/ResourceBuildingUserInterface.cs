@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Buildings.ResourceBuildings;
+﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using Assets.Scripts.Buildings.ResourceBuildings;
 using System.Collections.Generic;
 using TMPro;
 
@@ -13,7 +14,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         public int WorkingPeople;
         public int GatheredResourcesOverall = 0;
         private ResourceBuildingsManagment currentGameObjectScript;
-
+        internal override int Layer => LayerClass.ResourceBuildings;
         private void Update()
             {
             if (this.enabled)

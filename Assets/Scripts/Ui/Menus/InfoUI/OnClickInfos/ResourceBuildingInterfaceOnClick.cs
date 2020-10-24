@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Buildings.ResourceBuildings;
+﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using Assets.Scripts.Buildings.ResourceBuildings;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -14,6 +15,8 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         public GameObject ItemImagePrefab;
         private List<string> keyList = new List<string>();
         private List<string> storedResourceList = new List<string>();
+        public event Action OnClickInfoPanelTextUpdate;
+        internal override int Layer => LayerClass.ResourceBuildings;
 
         protected override void Start()
             {
@@ -21,8 +24,9 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             AddingItems();
             ResourcesDropdown.onValueChanged.AddListener(delegate { DropdownValueChanged(); });
             }
-        private void Awake()
+        protected override void OnEnable()
             {
+            base.OnEnable();
             ResourcesDropdown = this.transform.Find("ListOfResourcesDropdown").GetComponent<TMP_Dropdown>();
             }
         private void OnDisable()
@@ -103,15 +107,18 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                 DropdownOptions.Clear();
                 DropDownMenuHandler();
+                OnClickInfoPanelTextUpdate?.Invoke();
                 }
             if (ObjectName.Length == 0)
                 {
                 ObjectName = GetObjectName(SelectedGameobject.transform.parent.name);
                 this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
+                OnClickInfoPanelTextUpdate?.Invoke();
                 }
             if (SelectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().SelecedResource != ResourcesDropdown.value)
                 {
                 ResourcesDropdown.value = SelectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().SelecedResource;
+                OnClickInfoPanelTextUpdate?.Invoke();
                 }
             }
 

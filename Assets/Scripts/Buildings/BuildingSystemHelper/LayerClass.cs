@@ -25,5 +25,15 @@ namespace Assets.Scripts.Buildings.BuildingSystemHelper
                 };
             return layerNumberList;
             }
+        public static List<int> GetBuildingLayers()
+            {
+            List<int> layerNumberList = new List<int>
+                {
+                SocialBuildings,
+                ResourceBuildings,
+                StorageBuildings
+                };
+            return layerNumberList;
+            }
         }
     }
