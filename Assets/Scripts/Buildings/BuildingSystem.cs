@@ -222,7 +222,7 @@ namespace Assets.Scripts.Buildings
                     {
                     return gameObjectArray;
                     }
-                if (collider.gameObject.layer == LayerClass.SocialBuildings || collider.gameObject.layer == LayerClass.ResourceBuildings || collider.gameObject.layer == LayerClass.ResourcePatch)
+                if (LayerClass.GetSolitObjectLayer().Contains(collider.gameObject.layer))
                     {
                     if (i > 20)
                         {

@@ -65,7 +65,7 @@ namespace Assets.Scripts.Buildings.BuildingSystemHelper
         private static bool IsPositionFree(Vector3 position, GameObject selectedGameobject)
             {
             Collider[] collidersInArea = new Collider[20];
-            _ = Physics.OverlapSphereNonAlloc(position, 1, collidersInArea);
+            _ = Physics.OverlapSphereNonAlloc(position, 0.8f, collidersInArea);
             foreach (Collider collider in collidersInArea)
                 {
                 if (collider == null)
@@ -76,7 +76,7 @@ namespace Assets.Scripts.Buildings.BuildingSystemHelper
                     {
                     continue;
                     }
-                else if (collider.gameObject.layer == LayerClass.SocialBuildings || collider.gameObject.layer == LayerClass.ResourceBuildings || collider.gameObject.layer == LayerClass.ResourcePatch)
+                else if (LayerClass.GetSolitObjectLayer().Contains(collider.gameObject.layer))
                     {
                     return false;
                     }
