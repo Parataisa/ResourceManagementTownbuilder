@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems
     {
@@ -7,7 +8,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems
         internal ResourceBuildingHandlingData buildingData;
         internal Dictionary<string, int> storedResources;
         public bool CoroutinRunning { get; set; }
-
+        public GameObject TargetBuilding;
 
         public int WorkingPeople
             {

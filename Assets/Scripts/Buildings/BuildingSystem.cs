@@ -20,7 +20,8 @@ namespace Assets.Scripts.Buildings
 
         private void Start()
             {
-            BuildingsListObjects = Resources.LoadAll("GameObjects/Buildings", typeof(GameObject));
+            MainBuildingList.BuildingMain.Clear();
+           BuildingsListObjects = Resources.LoadAll("GameObjects/Buildings", typeof(GameObject));
             PlaceableObjectPrefabs = new GameObject[BuildingsListObjects.Length];
             GetBuildingsInPlacableObjects(BuildingsListObjects, PlaceableObjectPrefabs);
             }
