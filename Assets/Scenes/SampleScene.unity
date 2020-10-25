@@ -493,7 +493,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 300}
+  m_SizeDelta: {x: 17, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &61396599
 MonoBehaviour:
@@ -1471,7 +1471,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 251199704}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName: BuildingMenuToggle, Assembly-CSharp
         m_MethodName: PanelToggel
         m_Mode: 1
         m_Arguments:
@@ -1529,7 +1529,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 251199699}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a14ff396e4bd1364eae919f600d6a89f, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b407732dc7ab1b46bb17155d3e1ad00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 917635955}
@@ -7306,7 +7306,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.9320001, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8186,7 +8186,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1342443624}
-        m_TargetAssemblyTypeName: Assets.Scripts.Ui.Menus.TagetListToggle, Assembly-CSharp
+        m_TargetAssemblyTypeName: Assets.Scripts.Ui.Menus.TargetListToggle, Assembly-CSharp
         m_MethodName: PanelToggel
         m_Mode: 1
         m_Arguments:
@@ -10411,9 +10411,9 @@ RectTransform:
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_SizeDelta: {x: -17, y: 20}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1333680185
 MonoBehaviour:
@@ -10519,7 +10519,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1342443623
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10549,7 +10549,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1342443622}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11c4bd80f2cb6604486ab40892ae4dff, type: 3}
+  m_Script: {fileID: 11500000, guid: f5fbbcb50baed914483086d007297763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 1342443622}
@@ -12829,7 +12829,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -13200,7 +13200,7 @@ RectTransform:
   m_GameObject: {fileID: 1639215378}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.84634995, y: 0.84634995, z: 0.84634995}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1719575844}
   m_Father: {fileID: 805331306}
@@ -13255,7 +13255,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1342443624}
-        m_TargetAssemblyTypeName: Assets.Scripts.Ui.Menus.TagetListToggle, Assembly-CSharp
+        m_TargetAssemblyTypeName: Assets.Scripts.Ui.Menus.TargetListToggle, Assembly-CSharp
         m_MethodName: PanelToggel
         m_Mode: 1
         m_Arguments:
@@ -14626,9 +14626,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1889133103
 MonoBehaviour:

@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using Assets.Scripts.Ui.Menus.TogglePanelUis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         private new Camera camera;
         private readonly List<GeneralUserInterface> generalUserInterfaceBasesList = new List<GeneralUserInterface>();
         private readonly List<OnClickInterfaceBase> onClickInterfaceBasesList = new List<OnClickInterfaceBase>();
+        private readonly List<TogglePanelBase> toggleInterfaceBasesList = new List<TogglePanelBase>();
         [SerializeField] private EventSystem EventSystem;
 
         public void Start()
@@ -23,6 +25,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             camera = Camera.main;
             onClickInterfaceBasesList.AddRange(transform.GetComponentsInChildren<OnClickInterfaceBase>(true));
             generalUserInterfaceBasesList.AddRange(transform.GetComponentsInChildren<GeneralUserInterface>(true));
+            toggleInterfaceBasesList.AddRange(transform.GetComponentsInChildren<TogglePanelBase>(true));
             }
         public void Update()
             {
@@ -88,6 +91,13 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     continue;
                     }
                 generalUi.CloseSelf();
+                }
+            }
+        private void CloseToggleUi()
+            {
+            foreach (var toggleUi in toggleInterfaceBasesList)
+                {
+                toggleUi.CloseSelf();
                 }
             }
         }

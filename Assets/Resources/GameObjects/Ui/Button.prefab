@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 1136103755384267508}
   - component: {fileID: 1136103755384267509}
   - component: {fileID: 3445248754698665061}
-  - component: {fileID: 1136103755384267466}
+  - component: {fileID: 8382465615900009871}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -258,8 +258,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1136103755384267466}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 8382465615900009871}
+        m_TargetAssemblyTypeName: BuildingMenuToggle, Assembly-CSharp
         m_MethodName: PanelToggel
         m_Mode: 1
         m_Arguments:
@@ -285,7 +285,7 @@ MonoBehaviour:
   buttonId: 0
   objectToBuild: 
   buildingPrefab: {fileID: 0}
---- !u!114 &1136103755384267466
+--- !u!114 &8382465615900009871
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -294,7 +294,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1136103755384267511}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a14ff396e4bd1364eae919f600d6a89f, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b407732dc7ab1b46bb17155d3e1ad00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 0}
