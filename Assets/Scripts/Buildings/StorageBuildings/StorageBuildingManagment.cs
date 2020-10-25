@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Buildings.ResourceBuildings;
 using Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems;
-using Assets.Scripts.Ui.Menus.InfoUI;
 using System.Collections.Generic;
 using UnityEngine;
 

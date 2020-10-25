@@ -1,9 +1,10 @@
 ﻿using Assets.Scripts.Buildings;
+using Assets.Scripts.Ui.Menus.TogglePanelUis;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuildingMenuButtonManagment : MonoBehaviour
+public class BuildingMenuButtonManagment : TogglePanelBase
     {
     public GameObject buttonPrefab;
     public GameObject panel;

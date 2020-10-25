@@ -35,6 +35,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 if (Input.GetMouseButtonDown(0) && !EventSystem.IsPointerOverGameObject())
                     {
                     CloseOnClickUi(null);
+                    CloseToggleUi();
                     }
                 if (LayerClass.GetSolitObjectLayer().Contains(hitInfo.transform.gameObject.layer) && !EventSystem.IsPointerOverGameObject())
                     {
@@ -93,7 +94,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 generalUi.CloseSelf();
                 }
             }
-        private void CloseToggleUi()
+        public void CloseToggleUi()
             {
             foreach (var toggleUi in toggleInterfaceBasesList)
                 {

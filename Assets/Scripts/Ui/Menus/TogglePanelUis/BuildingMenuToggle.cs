@@ -1,9 +1,8 @@
 ﻿using Assets.Scripts.Buildings;
 using Assets.Scripts.Ui.Menus.InfoUI;
-using Assets.Scripts.Ui.Menus.TogglePanelUis;
 using UnityEngine;
 
-public class BuildingMenuToggle : TogglePanelBase
+public class BuildingMenuToggle : MonoBehaviour
     {
     public GameObject panel;
     public BuildingSystem buildingSystem;
