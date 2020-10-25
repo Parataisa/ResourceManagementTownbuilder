@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
-    class GeneralUserInterfaceManagment : MonoBehaviour
+    class UserInterfaceManagment : MonoBehaviour
         {
         public static event Action<GameObject> ShortInfoPanelToggeled;
         public static event Action<GameObject> OnClickInfoPanelToggled;

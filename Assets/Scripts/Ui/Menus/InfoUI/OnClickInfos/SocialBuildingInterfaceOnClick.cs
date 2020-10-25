@@ -9,7 +9,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         protected override void Start()
             {
             base.Start();
-            GeneralUserInterfaceManagment.CurrentSelectedGameObject = SelectedGameobject;
+            UserInterfaceManagment.CurrentSelectedGameObject = SelectedGameobject;
             }
         private void OnDisable()
             {
@@ -27,7 +27,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 if (SelectedGameobject != SavedGameObject)
                     {
                     SavedGameObject = SelectedGameobject;
-                    GeneralUserInterfaceManagment.CurrentSelectedGameObject = SelectedGameobject;
+                    UserInterfaceManagment.CurrentSelectedGameObject = SelectedGameobject;
                     }
                 if (ObjectName.Length == 0)
                     {

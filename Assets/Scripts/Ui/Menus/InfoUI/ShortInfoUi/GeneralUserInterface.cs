@@ -9,8 +9,8 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
 
         private void Start()
             {
-            selectedGameobject = GeneralUserInterfaceManagment.CurrentSelectedGameObject;
-            GeneralUserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
+            selectedGameobject = UserInterfaceManagment.CurrentSelectedGameObject;
+            UserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
             }
         private void LateUpdate()
             {
@@ -18,17 +18,17 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 {
                 if (this.gameObject.activeSelf)
                     {
-                    GeneralUserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
+                    UserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
                     }
                 }
             }
         private void OnDisable()
             {
-            GeneralUserInterfaceManagment.ShortInfoPanelToggeled -= GetGameObject;
+            UserInterfaceManagment.ShortInfoPanelToggeled -= GetGameObject;
             }
         private void OnEnable()
             {
-            GeneralUserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
+            UserInterfaceManagment.ShortInfoPanelToggeled += GetGameObject;
             }
         private void GetGameObject(GameObject gameObject)
             {

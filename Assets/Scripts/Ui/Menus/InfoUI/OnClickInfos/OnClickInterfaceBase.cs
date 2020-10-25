@@ -8,6 +8,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         internal string objectName = "";
         internal GameObject savedGameObject;
         internal GameObject selectedGameobject;
+        internal event Action OnClickInfoPanelTextUpdate;
 
         public string ObjectName { get => objectName; set => objectName = value; }
         public GameObject SavedGameObject { get => savedGameObject; set => savedGameObject = value; }
@@ -24,7 +25,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             }
         protected virtual void OnEnable()
             {
-            GeneralUserInterfaceManagment.OnClickInfoPanelToggled += GetGameObject;
+            UserInterfaceManagment.OnClickInfoPanelToggled += GetGameObject;
             }
         internal string GetObjectName(string name)
             {
@@ -50,6 +51,11 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         internal void CloseSelf()
             {
             this.gameObject.SetActive(false);
+            }
+        protected void TextUpdateEvent()
+            {
+            var updateEvent = OnClickInfoPanelTextUpdate;
+            updateEvent?.Invoke();
             }
         }
     }

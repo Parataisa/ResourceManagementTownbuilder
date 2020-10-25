@@ -1,4 +1,5 @@
-﻿using ResourceGeneration.ResourceVariationen;
+﻿using Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems;
+using ResourceGeneration.ResourceVariationen;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,39 +7,17 @@ using UnityEngine;
 
 namespace Assets.Scripts.Buildings.ResourceBuildings
     {
-    class ResourceBuildingsManagment : BuildingManagmentBase
+    class ResourceBuildingsManagment : ResourceHandlingBuildingBase
         {
         private ResourceBuildingBase buildingTyp;
         private int gatheredResourcesOverall = 0;
-        private Dictionary<string, int> storedResources;
-        private ResourceBuildingData buildingData;
-        public bool CoroutinRunning { get; set; }
-        public int WorkingPeople
-            {
-            get => buildingData.WorkingPeople;
-            set => buildingData.WorkingPeople = value;
-            }
-        public int WorkingPeopleCapacity
-            {
-            get => buildingData.WorkingPeopleCapacity;
-            set => buildingData.WorkingPeopleCapacity = value;
-            }
-        public float ProduktionSpeed
-            {
-            get => buildingData.ProduktionSpeed;
-            set => buildingData.ProduktionSpeed = value;
-            }
-        public Dictionary<string, int> StoredResources
-            {
-            get => storedResources;
-            set => storedResources = value;
-            }
+
         public int GatheredResourcesOverall
             {
             get => gatheredResourcesOverall;
             set => gatheredResourcesOverall = value;
             }
-        internal ResourceBuildingBase BuildingTyp
+        public ResourceBuildingBase BuildingTyp
             {
             get => buildingTyp;
             set => buildingTyp = value;
@@ -49,7 +28,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
 
         protected override void Start()
             {
-            buildingData = new ResourceBuildingData();
+            buildingData = new ResourceBuildingHandlingData();
             StoredResources = new Dictionary<string, int>();
             base.Start();
             StartCoroutine(UpdateResoucesMethode());
@@ -91,9 +70,9 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
             UpdateWorkingPeople();
             }
 
-        public void UpdateWorkingPeople()
+        public override void UpdateWorkingPeople()
             {
-            buildingData.ProduktionSpeed = buildingData.WorkingPeople;
+            base.UpdateWorkingPeople();
             if (!CoroutinRunning)
                 StartCoroutine(UpdateResoucesMethode());
             }

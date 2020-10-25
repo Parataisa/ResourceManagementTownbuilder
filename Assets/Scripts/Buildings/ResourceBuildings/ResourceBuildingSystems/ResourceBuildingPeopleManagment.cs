@@ -6,15 +6,19 @@ namespace Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems
     {
     class ResourceBuildingPeopleManagment : MonoBehaviour
         {
-        [SerializeField] private ResourceBuildingInterfaceOnClick ResourceBuidlingOnClickUi;
-        [SerializeField] private GameObject WorkingPeopleText;
-        public ResourceBuildingsManagment selectedBuilding;
+        public GameObject WorkingPeopleText;
+        public OnClickInterfaceBase BuidlingOnClickUi;
+        public ResourceHandlingBuildingBase selectedBuilding;
         private int selectedBuildingCapacity = 0;
+        public bool TextUpdateSet;
 
-        private void Start()
+        private void Update()
             {
-            var generalUi = FindObjectOfType<GeneralUserInterfaceManagment>();
-            ResourceBuidlingOnClickUi.OnClickInfoPanelTextUpdate += SetWorkingPeopleText;
+            if (BuidlingOnClickUi != null && !TextUpdateSet)
+                {
+                BuidlingOnClickUi.OnClickInfoPanelTextUpdate += SetWorkingPeopleText;
+                TextUpdateSet = true;
+                }
             }
         public void IncreaseManpower()
             {
@@ -44,11 +48,11 @@ namespace Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems
 
         private void GetSelectedBuilding()
             {
-            selectedBuilding = ResourceBuidlingOnClickUi.SelectedGameobject.transform.parent
-                .GetComponent<ResourceBuildingsManagment>();
+            selectedBuilding = BuidlingOnClickUi.SelectedGameobject.transform.parent
+                .GetComponent<ResourceHandlingBuildingBase>();
             selectedBuildingCapacity = selectedBuilding.WorkingPeopleCapacity;
             }
-        private void SetWorkingPeopleText()
+        public void SetWorkingPeopleText()
             {
             GetSelectedBuilding();
             WorkingPeopleText.GetComponent<TMPro.TextMeshProUGUI>().SetText("Working People: " + selectedBuilding.WorkingPeople.ToString() + "/" + selectedBuildingCapacity.ToString());

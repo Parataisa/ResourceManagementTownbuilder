@@ -6,10 +6,10 @@ public class BuildingMenuToggle : MonoBehaviour
     {
     public GameObject panel;
     public BuildingSystem buildingSystem;
-    private GeneralUserInterfaceManagment generalUserInterfaceManagment;
+    private UserInterfaceManagment generalUserInterfaceManagment;
     private void Start()
         {
-        generalUserInterfaceManagment = FindObjectOfType<GeneralUserInterfaceManagment>();
+        generalUserInterfaceManagment = FindObjectOfType<UserInterfaceManagment>();
         }
     public void PanelToggel()
         {

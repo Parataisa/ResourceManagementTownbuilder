@@ -1,5 +1,7 @@
 ﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
 using Assets.Scripts.Buildings.ResourceBuildings;
+using Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems;
+using Assets.Scripts.Ui.Menus.InfoUI.OnClickInfos;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -7,15 +9,14 @@ using UnityEngine;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
-    class ResourceBuildingInterfaceOnClick : OnClickInterfaceBase
+    class ResourceBuildingInterfaceOnClick : ResourceHandlingBuildingInterfaceOnClick
         {
-        private List<string> DropdownOptions = new List<string>();
-        private TMP_Dropdown ResourcesDropdown;
         public GameObject ScrollViewContent;
         public GameObject ItemImagePrefab;
+        private List<string> DropdownOptions = new List<string>();
+        private TMP_Dropdown ResourcesDropdown;
         private List<string> keyList = new List<string>();
         private List<string> storedResourceList = new List<string>();
-        public event Action OnClickInfoPanelTextUpdate;
         internal override int Layer => LayerClass.ResourceBuildings;
 
         protected override void Start()
@@ -37,6 +38,8 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 }
             SavedGameObject = null;
             SelectedGameobject = null;
+            FindObjectOfType<ResourceBuildingPeopleManagment>().BuidlingOnClickUi = null;
+            FindObjectOfType<ResourceBuildingPeopleManagment>().TextUpdateSet = false;
             }
         private void Update()
             {
@@ -46,6 +49,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     {
                     return;
                     }
+                FindObjectOfType<ResourceBuildingPeopleManagment>().BuidlingOnClickUi = this;
                 foreach (var item in SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources)
                     {
                     if (item.Value != 0)
@@ -107,18 +111,18 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
                 DropdownOptions.Clear();
                 DropDownMenuHandler();
-                OnClickInfoPanelTextUpdate?.Invoke();
+                TextUpdateEvent();
                 }
             if (ObjectName.Length == 0)
                 {
                 ObjectName = GetObjectName(SelectedGameobject.transform.parent.name);
                 this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
-                OnClickInfoPanelTextUpdate?.Invoke();
+                TextUpdateEvent();
                 }
             if (SelectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().SelecedResource != ResourcesDropdown.value)
                 {
                 ResourcesDropdown.value = SelectedGameobject.transform.parent.GetComponent<ResourceBuildingAccountant>().SelecedResource;
-                OnClickInfoPanelTextUpdate?.Invoke();
+                TextUpdateEvent();
                 }
             }
 
@@ -142,7 +146,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             ResourcesDropdown.ClearOptions();
             ResourcesDropdown.AddOptions(DropdownOptions);
             SavedGameObject = SelectedGameobject;
-            GeneralUserInterfaceManagment.CurrentSelectedGameObject = SelectedGameobject;
+            UserInterfaceManagment.CurrentSelectedGameObject = SelectedGameobject;
             }
 
         void DropdownValueChanged()

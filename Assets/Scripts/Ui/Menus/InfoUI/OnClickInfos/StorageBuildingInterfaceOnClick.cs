@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Buildings.StorageBuildings;
+﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems;
+using Assets.Scripts.Buildings.StorageBuildings;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -6,13 +8,13 @@ using UnityEngine;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI.OnClickInfos
     {
-    class StorageBuildingInterfaceOnClick : OnClickInterfaceBase
+    class StorageBuildingInterfaceOnClick : ResourceHandlingBuildingInterfaceOnClick
         {
         public GameObject ScrollViewContent;
         public GameObject ItemImagePrefab;
         private List<string> keyList = new List<string>();
         private List<string> storedResourceList = new List<string>();
-
+        internal override int Layer => LayerClass.StorageBuildings;
         protected override void Start()
             {
             base.Start();
@@ -26,6 +28,8 @@ namespace Assets.Scripts.Ui.Menus.InfoUI.OnClickInfos
                 }
             savedGameObject = null;
             SelectedGameobject = null;
+            FindObjectOfType<ResourceBuildingPeopleManagment>().BuidlingOnClickUi = null;
+            FindObjectOfType<ResourceBuildingPeopleManagment>().TextUpdateSet = false;
             }
         private void Update()
             {
@@ -35,6 +39,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI.OnClickInfos
                     {
                     return;
                     }
+                FindObjectOfType<ResourceBuildingPeopleManagment>().BuidlingOnClickUi = this;
                 foreach (var item in SelectedGameobject.GetComponentInParent<StorageBuildingManagment>().StoredResources)
                     {
                     if (item.Value != 0)
@@ -94,6 +99,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI.OnClickInfos
                 {
                 ObjectName = GetObjectName(SelectedGameobject.transform.parent.name);
                 this.transform.Find("ObjectName").GetComponent<TextMeshProUGUI>().SetText(ObjectName);
+                UserInterfaceManagment.CurrentSelectedGameObject = SelectedGameobject;
                 }
             if (ObjectName.Length == 0)
                 {

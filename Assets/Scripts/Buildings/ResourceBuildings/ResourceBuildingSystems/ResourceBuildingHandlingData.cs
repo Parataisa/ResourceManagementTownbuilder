@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts.Buildings.ResourceBuildings
     {
-    class ResourceBuildingData
+    class ResourceBuildingHandlingData
         {
         private float produktionSpeed;
         private int workingPeopleCapacity;

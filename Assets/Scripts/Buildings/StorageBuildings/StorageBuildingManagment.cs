@@ -1,18 +1,29 @@
-﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+﻿using Assets.Scripts.Buildings.ResourceBuildings;
+using Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems;
+using Assets.Scripts.Ui.Menus.InfoUI;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Buildings.StorageBuildings
     {
-    class StorageBuildingManagment : BuildingManagmentBase
+    class StorageBuildingManagment : ResourceHandlingBuildingBase
         {
-        private Dictionary<string, int> storedResources = new Dictionary<string, int>();
-        public int MaxAmountOfWorker;
-        public int CurrentWorkers;
+        private BuildingBase buildingTyp;
         public int MaxAmountOfStorableResources;
         public int CurrentAmountOfStoredResources;
 
-        public Dictionary<string, int> StoredResources { get => storedResources; set => storedResources = value; }
+        public BuildingBase BuildingTyp
+            {
+            get => buildingTyp;
+            set => buildingTyp = value;
+            }
+        protected override void Start()
+            {
+            buildingData = new ResourceBuildingHandlingData();
+            StoredResources = new Dictionary<string, int>();
+            base.Start();
+            }
+
 
         private void Update()
             {
@@ -21,6 +32,7 @@ namespace Assets.Scripts.Buildings.StorageBuildings
                 CurrentAmountOfStoredResources = StoredResources.Values.Count;
                 }
             }
+
         public void AddResources(int amountToAdd, string ResouceNameOfAddedResource)
             {
             if (CurrentAmountOfStoredResources < MaxAmountOfStorableResources)
@@ -49,6 +61,23 @@ namespace Assets.Scripts.Buildings.StorageBuildings
                 {
                 Debug.Log("Resource not in storage");
                 }
+            }
+        internal override void AddingChildsToList()
+            {
+            int childCount = transform.childCount;
+            listOfChildren.Clear();
+            if (childCount != 0)
+                {
+                for (int i = 0; i < childCount; i++)
+                    {
+                    if (listOfChildren.Contains(transform.GetChild(i).gameObject))
+                        continue;
+                    else
+                        listOfChildren.Add(transform.GetChild(i).gameObject);
+                    }
+                }
+            buildingTyp = transform.GetChild(0).GetComponent<BuildingBase>();
+            WorkingPeopleCapacity = childCount * 10;
             }
         }
     }
