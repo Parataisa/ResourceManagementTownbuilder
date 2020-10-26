@@ -5,16 +5,12 @@ namespace Assets.Scripts.Buildings.BuildingSystemHelper
     {
     class BuildingDestructionSystem : MonoBehaviour
         {
-        [SerializeField] private UserInterfaceManagment GeneralUserInterfaceManagment;
-        [SerializeField] private GameObject ResourceBuildingInterfaceOnClick;
-        [SerializeField] private GameObject SocialBuildingInterfaceOnClick;
+        [SerializeField] private UserInterfaceManagment UserInterfaceManagment;
 
-        public void DestroyMainBuidling()
+        public void DestroyBuidling()
             {
             Destroy(UserInterfaceManagment.CurrentSelectedGameObject);
-            SocialBuildingInterfaceOnClick.SetActive(false);
-            ResourceBuildingInterfaceOnClick.SetActive(false);
+            UserInterfaceManagment.CloseOnClickUi(null);
             }
-
         }
     }

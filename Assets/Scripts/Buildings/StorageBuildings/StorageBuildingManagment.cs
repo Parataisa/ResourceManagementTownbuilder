@@ -31,6 +31,10 @@ namespace Assets.Scripts.Buildings.StorageBuildings
                 {
                 CurrentAmountOfStoredResources = StoredResources.Values.Count;
                 }
+            if (listOfChildren.Count.Equals(null))
+                return;
+            if (!(transform.GetComponentsInChildren<BuildingBase>().Length == listOfChildren.Count))
+                AddingChildsToList();
             }
 
         public void AddResources(Dictionary<string, int> resourcesToAdd)
@@ -68,7 +72,7 @@ namespace Assets.Scripts.Buildings.StorageBuildings
             }
         internal override void AddingChildsToList()
             {
-            int childCount = transform.childCount;
+            int childCount = transform.GetComponentsInChildren<BuildingBase>().Length;
             listOfChildren.Clear();
             if (childCount != 0)
                 {
@@ -81,7 +85,7 @@ namespace Assets.Scripts.Buildings.StorageBuildings
                     }
                 }
             buildingTyp = transform.GetChild(0).GetComponent<BuildingBase>();
-            WorkingPeopleCapacity = childCount * 10;
+            buildingData.WorkingPeopleCapacity = childCount * 10;
             }
         }
     }

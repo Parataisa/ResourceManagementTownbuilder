@@ -8,6 +8,8 @@ namespace Assets.Scripts.Buildings.BuildingTransportationSystem
     {
     class TransportUnitBehaviour : MonoBehaviour
         {
+        IEnumerator currentMoveCoroutine;
+        IEnumerator waitTimer;
         private Dictionary<string, int> transportedResource;
         private float moveSpeed = 4.5f;
         private int carryingCapacity = 5;
@@ -15,81 +17,112 @@ namespace Assets.Scripts.Buildings.BuildingTransportationSystem
         private GameObject targetBuilding;
         private bool targetReacht = false;
         private bool haveResources = false;
-
+        private bool noResourcesToGatherAtTheTime = false;
+        private bool waitTimerIsRunning = false;
         private void Start()
             {
-            StartCoroutine(GoingToTargetBuilding(targetBuilding));
+            waitTimer = WaitForResources();
+            currentMoveCoroutine = GoingToTargetBuilding(targetBuilding);
+            StartCoroutine(currentMoveCoroutine);
             }
 
         private void Update()
             {
+            //Target position
             if (transform.localPosition == targetBuilding.transform.GetChild(0).transform.localPosition)
                 {
                 targetReacht = true;
-                StopAllCoroutines();
-                CollectResources();
+                StopCoroutine(currentMoveCoroutine);
+                if (!waitTimerIsRunning)
+                    {
+                    CollectResources();
+                    }
                 }
-            if (transform.localPosition == origenBuilding.transform.GetChild(0).transform.localPosition && haveResources)
+            // Home building position
+            if (transform.localPosition == origenBuilding.transform.GetChild(0).transform.localPosition)
                 {
                 targetReacht = false;
-                StopAllCoroutines();
-                origenBuilding.GetComponent<StorageBuildingManagment>().AddResources(transportedResource);
+                StopCoroutine(currentMoveCoroutine);
+                if (haveResources)
+                    {
+                    origenBuilding.GetComponent<StorageBuildingManagment>().AddResources(transportedResource);
+                    }
                 haveResources = false;
                 transportedResource.Clear();
                 targetBuilding = origenBuilding.GetComponent<StorageBuildingManagment>().TargetBuilding;
-                StartCoroutine(GoingToTargetBuilding(targetBuilding));
+                currentMoveCoroutine = GoingToTargetBuilding(targetBuilding);
+                StartCoroutine(currentMoveCoroutine);
                 }
             }
 
         private void CollectResources()
             {
             transportedResource = new Dictionary<string, int>();
-            var targetBuildingStortedResources = targetBuilding.GetComponent<ResourceHandlingBuildingBase>();
+            var target = targetBuilding.GetComponent<ResourceHandlingBuildingBase>();
             int totalResources = 0;
-            foreach (var resource in targetBuildingStortedResources.StoredResources)
+            foreach (var resource in target.StoredResources)
                 {
                 totalResources += resource.Value;
                 }
-            if (targetBuildingStortedResources.ResourceCollectionAtTheTime || totalResources == 0)
+            if ((target.ResourceCollectionAtTheTime || totalResources == 0) && !noResourcesToGatherAtTheTime)
                 {
-                StartCoroutine(WaitForResources(totalResources));
+                StartCoroutine(waitTimer);
                 }
             else
                 {
-                string resourceToCollect = "";
-                targetBuildingStortedResources.ResourceCollectionAtTheTime = true;
-                foreach (var targetResource in targetBuildingStortedResources.StoredResources)
+                if (noResourcesToGatherAtTheTime)
                     {
-                    if (targetResource.Value == 0)
-                        {
-                        continue;
-                        }
-                    else
-                        {
-                        resourceToCollect = targetResource.Key;
-                        break;
-                        }
+                    haveResources = false;
+                    MoveBackToOrigenBuilding();
                     }
-                transportedResource.Add(resourceToCollect, targetBuildingStortedResources.StoredResources[resourceToCollect]);
-                targetBuildingStortedResources.StoredResources[resourceToCollect] = 0;
-                targetBuildingStortedResources.ResourceCollectionAtTheTime = false;
-                haveResources = true;
-                MoveBackToOrigenBuilding();
+                else
+                    {
+                    string resourceToCollect = "";
+                    target.ResourceCollectionAtTheTime = true;
+                    foreach (var targetResource in target.StoredResources)
+                        {
+                        if (targetResource.Value == 0)
+                            {
+                            continue;
+                            }
+                        else
+                            {
+                            resourceToCollect = targetResource.Key;
+                            break;
+                            }
+                        }
+                    transportedResource.Add(resourceToCollect, 0);
+                    int resourceAmountCollected = target.StoredResources[resourceToCollect] > carryingCapacity ? carryingCapacity : target.StoredResources[resourceToCollect];
+                    target.StoredResources[resourceToCollect] -= resourceAmountCollected;
+                    transportedResource[resourceToCollect] += resourceAmountCollected;
+                    target.ResourceCollectionAtTheTime = false;
+                    haveResources = true;
+                    MoveBackToOrigenBuilding();
+                    }
                 }
             }
 
-        private IEnumerator WaitForResources(int targetBuildingStortedResources)
+        private IEnumerator WaitForResources()
             {
-            while (targetBuildingStortedResources == 0)
+            float timer = 0.0f;
+            while (timer < 2f)
                 {
-                yield return new WaitForSeconds(0.5f);
+                waitTimerIsRunning = true;
+                timer += 0.2f;
+                yield return new WaitForSeconds(0.2f);
                 }
+            waitTimerIsRunning = false;
+            noResourcesToGatherAtTheTime = true;
+            StopCoroutine(waitTimer);
+            waitTimer = WaitForResources();
             }
 
         private void MoveBackToOrigenBuilding()
             {
+            noResourcesToGatherAtTheTime = false;
             targetReacht = false;
-            StartCoroutine(GoingToTargetBuilding(origenBuilding));
+            currentMoveCoroutine = GoingToTargetBuilding(origenBuilding);
+            StartCoroutine(currentMoveCoroutine);
             }
 
         private IEnumerator GoingToTargetBuilding(GameObject target)

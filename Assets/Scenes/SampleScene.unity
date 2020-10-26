@@ -3186,7 +3186,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1360479706}
         m_TargetAssemblyTypeName: Assets.Scripts.Buildings.BuildingSystemHelper.BuildingDestructionSystem,
           Assembly-CSharp
-        m_MethodName: DestroyMainBuidling
+        m_MethodName: DestroyBuidling
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3799,7 +3799,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1360479706}
         m_TargetAssemblyTypeName: Assets.Scripts.Buildings.BuildingSystemHelper.BuildingDestructionSystem,
           Assembly-CSharp
-        m_MethodName: DestroyMainBuidling
+        m_MethodName: DestroyBuidling
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10001,7 +10001,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1360479706}
         m_TargetAssemblyTypeName: Assets.Scripts.Buildings.BuildingSystemHelper.BuildingDestructionSystem,
           Assembly-CSharp
-        m_MethodName: DestroyMainBuidling
+        m_MethodName: DestroyBuidling
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10772,9 +10772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc2bf297acad6434380e99b4f11f4b91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GeneralUserInterfaceManagment: {fileID: 0}
-  ResourceBuildingInterfaceOnClick: {fileID: 847780743}
-  SocialBuildingInterfaceOnClick: {fileID: 48888179}
+  UserInterfaceManagment: {fileID: 552225512}
 --- !u!1 &1360625249
 GameObject:
   m_ObjectHideFlags: 0

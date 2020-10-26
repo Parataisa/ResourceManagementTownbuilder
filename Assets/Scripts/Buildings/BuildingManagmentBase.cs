@@ -32,6 +32,7 @@ namespace Assets.Scripts.Buildings
                 {
                 MainBuildingList.BuildingMain.Remove(this.gameObject);
                 Destroy(this.gameObject);
+                AvailableResouceManagment.AvailableManpower.UpdateWorkingPeopleCount();
                 }
             }
         }

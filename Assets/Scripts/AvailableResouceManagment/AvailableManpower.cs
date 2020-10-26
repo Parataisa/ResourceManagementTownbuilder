@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Buildings;
+using Assets.Scripts.Buildings.BuildingSystemHelper;
+using Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems;
 using Assets.Scripts.Buildings.SocialBuildings;
 using System.Collections.Generic;
 using UnityEngine;
@@ -57,6 +59,20 @@ namespace Assets.Scripts.AvailableResouceManagment
         private void BirthTimer()
             {
             AvailablePeople += 1;
+            }
+        public static void UpdateWorkingPeopleCount()
+            {
+            AvailablePeople = 0;
+            BusyPeople = 0;
+            foreach (var mainBuilding in MainBuildingList.BuildingMain)
+                {
+                if (mainBuilding.transform.GetChild(0).gameObject.layer == LayerClass.SocialBuildings)
+                    {
+                    AvailablePeople += mainBuilding.GetComponent<SocialBuildingManagment>().People;
+                    continue;
+                    }
+                BusyPeople += mainBuilding.GetComponent<ResourceHandlingBuildingBase>().WorkingPeople;
+                }
             }
         }
     }
