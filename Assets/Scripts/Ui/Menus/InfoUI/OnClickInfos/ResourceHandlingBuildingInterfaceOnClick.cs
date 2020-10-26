@@ -15,7 +15,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             }
         private void SetWorkingPeopleText()
             {
-            FindObjectOfType<ResourceBuildingPeopleManagment>().WorkingPeopleText = FindObjectOfType<ResourceHandlingBuildingInterfaceOnClick>().GetComponent<IResourceHandling>().WorkingPeopleText;
+            FindObjectOfType<ResourceBuildingPeopleManagment>().WorkingPeopleText = this.GetComponent<IResourceHandling>().WorkingPeopleText;
             }
 
         }

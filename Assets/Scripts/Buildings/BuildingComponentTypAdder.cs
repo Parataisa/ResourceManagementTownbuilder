@@ -2,6 +2,7 @@
 using Assets.Scripts.Buildings.ResourceBuildings;
 using Assets.Scripts.Buildings.SocialBuildings;
 using Assets.Scripts.Buildings.StorageBuildings;
+using Assets.Scripts.Buildings.StorageBuildings.StorageBuildingSystems;
 using UnityEngine;
 
 namespace Assets.Scripts.Buildings
@@ -23,6 +24,7 @@ namespace Assets.Scripts.Buildings
                     break;
                 case "(StorageBuildingMain)":
                     building.AddComponent<StorageBuildingManagment>();
+                    building.AddComponent<StorageBuildingTransportSystem>();
                     break;
                 default:
                     break;

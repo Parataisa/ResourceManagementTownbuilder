@@ -8,8 +8,9 @@ namespace Assets.Scripts.Buildings.StorageBuildings
     class StorageBuildingManagment : ResourceHandlingBuildingBase
         {
         private BuildingBase buildingTyp;
-        public int MaxAmountOfStorableResources;
+        public int MaxAmountOfStorableResources = 100000;
         public int CurrentAmountOfStoredResources;
+        public bool WarehouseFull = false;
 
         public BuildingBase BuildingTyp
             {
@@ -32,21 +33,25 @@ namespace Assets.Scripts.Buildings.StorageBuildings
                 }
             }
 
-        public void AddResources(int amountToAdd, string ResouceNameOfAddedResource)
+        public void AddResources(Dictionary<string, int> resourcesToAdd)
             {
             if (CurrentAmountOfStoredResources < MaxAmountOfStorableResources)
                 {
-                if (StoredResources.ContainsKey(ResouceNameOfAddedResource))
+                foreach (var resource in resourcesToAdd)
                     {
-                    StoredResources[ResouceNameOfAddedResource] += amountToAdd;
-                    }
-                else
-                    {
-                    StoredResources.Add(ResouceNameOfAddedResource, amountToAdd);
+                    if (StoredResources.ContainsKey(resource.Key))
+                        {
+                        StoredResources[resource.Key] += resource.Value;
+                        }
+                    else
+                        {
+                        StoredResources.Add(resource.Key, resource.Value);
+                        }
                     }
                 }
             else
                 {
+                WarehouseFull = true;
                 Debug.Log("Warehouse is full");
                 }
             }
