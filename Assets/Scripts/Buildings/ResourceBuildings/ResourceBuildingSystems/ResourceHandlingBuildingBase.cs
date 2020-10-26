@@ -9,6 +9,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems
         internal Dictionary<string, int> storedResources;
         public bool CoroutinRunning { get; set; }
         public GameObject TargetBuilding;
+        public bool ResourceCollectionAtTheTime = false;
 
         public int WorkingPeople
             {

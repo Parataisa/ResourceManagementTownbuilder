@@ -30,6 +30,7 @@ namespace Assets.Scripts.Buildings
             {
             if (this.transform.childCount == 0)
                 {
+                MainBuildingList.BuildingMain.Remove(this.gameObject);
                 Destroy(this.gameObject);
                 }
             }

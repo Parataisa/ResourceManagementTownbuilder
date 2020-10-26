@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Buildings;
+using Assets.Scripts.Buildings.BuildingSystemHelper;
+using Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems;
 using Assets.Scripts.Ui.Menus.Building;
 using Assets.Scripts.Ui.Menus.InfoUI;
 using Assets.Scripts.Ui.Menus.TogglePanelUis;
@@ -36,9 +38,16 @@ namespace Assets.Scripts.Ui.Menus
                     {
                     continue;
                     }
-                var newElement = Instantiate(ItemPrefab, scrollViewContent.transform) as GameObject;
-                newElement.GetComponentInChildren<TextMeshProUGUI>().SetText(GetName(mainBuilding));
-                newElement.GetComponentInChildren<TargetButtonData>().MainBuilding = mainBuilding;
+                else if (mainBuilding.transform.GetChild(0).gameObject.layer == LayerClass.SocialBuildings)
+                    {
+                    continue;
+                    }
+                else 
+                    { 
+                    var newElement = Instantiate(ItemPrefab, scrollViewContent.transform) as GameObject;
+                    newElement.GetComponentInChildren<TextMeshProUGUI>().SetText(GetName(mainBuilding));
+                    newElement.GetComponentInChildren<TargetButtonData>().MainBuilding = mainBuilding;
+                    }
                 }
             }
 

@@ -30,6 +30,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI.ShortInfoUi
                         }
                     if (!StortedResources.Equals(currentGameObjectScript.StoredResources))
                         {
+                        StortedResources.Clear();
                         StortedResources.AddRange(currentGameObjectScript.StoredResources.Keys);
                         this.transform.Find("StortedResources").GetComponent<TextMeshProUGUI>().SetText(string.Join(" , ", StortedResources));
                         }

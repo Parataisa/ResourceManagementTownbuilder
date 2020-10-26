@@ -7,7 +7,7 @@ namespace Assets.Scripts.Buildings.SocialBuildings
     class SocialBuildingManagment : BuildingManagmentBase
         {
         public string SocialBuildingType = "";
-        public float BirthRate = 0.2f;
+        public float BirthRate = 0.0f;
         public int People = 2;
         public int PeopleCapacity;
         public Action PersonBirth;
@@ -50,6 +50,7 @@ namespace Assets.Scripts.Buildings.SocialBuildings
                         {
                         listOfChildren.Add(transform.GetChild(i).gameObject);
                         PeopleCapacity += 10;
+                        BirthRate += 0.2f;
                         }
                     }
                 }
