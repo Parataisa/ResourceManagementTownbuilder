@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +17,13 @@ namespace Assets.Scripts.Buildings
             }
         public List<GameObject> ListOfChildren 
             { 
-            get => listOfChildren; 
+            get => ReturnNullFreeListOfChildrend(); 
+            }
+
+        private List<GameObject> ReturnNullFreeListOfChildrend()
+            {
+            listOfChildren.RemoveAll(item => item == null);
+            return listOfChildren;
             }
 
         protected virtual void  Start()

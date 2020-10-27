@@ -73,7 +73,6 @@ namespace Assets.Scripts.Buildings.StorageBuildings
         internal override void AddingChildsToList()
             {
             int childCount = transform.GetComponentsInChildren<BuildingBase>().Length;
-            listOfChildren.Clear();
             if (childCount != 0)
                 {
                 for (int i = 0; i < childCount; i++)

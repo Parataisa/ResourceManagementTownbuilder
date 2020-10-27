@@ -37,7 +37,6 @@ namespace Assets.Scripts.Buildings.SocialBuildings
         internal override void AddingChildsToList()
             {
             int childCount = transform.childCount;
-            listOfChildren.Clear();
             if (childCount != 0)
                 {
                 for (int i = 0; i < childCount; i++)
