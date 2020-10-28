@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems;
+﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems;
 using Assets.Scripts.Buildings.StorageBuildings;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,6 +25,12 @@ namespace Assets.Scripts.Buildings.BuildingTransportationSystem
             waitTimer = WaitForResources();
             currentMoveCoroutine = GoingToTargetBuilding(targetBuilding);
             StartCoroutine(currentMoveCoroutine);
+            }
+        private void OnEnable()
+            {
+            GameObject[] SetSubBuildings = FindTargetAndOrigenSubBuildingsWithShortestWay(targetBuilding, origenBuilding);
+            targetBuilding = SetSubBuildings[0];
+            origenBuilding = SetSubBuildings[1];
             }
 
         private void Update()
@@ -148,6 +155,34 @@ namespace Assets.Scripts.Buildings.BuildingTransportationSystem
             {
             targetBuilding = target;
             }
-
+        private GameObject[] FindTargetAndOrigenSubBuildingsWithShortestWay(GameObject targetMain, GameObject origenMain)
+            {
+            GameObject[] bestBuildings = new GameObject[2];
+            float closestDistanceSqr = Mathf.Infinity;
+            Vector3 currentPosition = origenBuilding.transform.position;
+            foreach (var target in targetMain.GetComponent<IBuildingManagment>().ListOfChildren)
+                {
+                Vector3 directionToTarget = target.transform.position - currentPosition;
+                float dSqrToTarget = directionToTarget.sqrMagnitude;
+                if (dSqrToTarget < closestDistanceSqr)
+                    {
+                    closestDistanceSqr = dSqrToTarget;
+                    bestBuildings[0] = target;
+                    }
+                }
+            foreach (var nearestHomeBuilding in origenMain.GetComponent<IBuildingManagment>().ListOfChildren)
+                {
+                Vector3 directionToTarget = nearestHomeBuilding.transform.position - bestBuildings[0].transform.position;
+                float dSqrToTarget = directionToTarget.sqrMagnitude;
+                if (dSqrToTarget < closestDistanceSqr)
+                    {
+                    closestDistanceSqr = dSqrToTarget;
+                    bestBuildings[1] = nearestHomeBuilding;
+                    }
+                }
+            return bestBuildings;
+            }
         }
+
     }
+
