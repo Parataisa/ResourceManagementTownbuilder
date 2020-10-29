@@ -1,8 +1,7 @@
-﻿using Assets.Scripts.Buildings.BuildingTransportationSystem;
-using System;
+﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using Assets.Scripts.Buildings.BuildingTransportationSystem;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 namespace Assets.Scripts.Buildings.StorageBuildings.StorageBuildingSystems
     {
@@ -32,14 +31,47 @@ namespace Assets.Scripts.Buildings.StorageBuildings.StorageBuildingSystems
         private void SendPeopleToCollectResourcesFromBuilding()
             {
             sendWorker++;
+            GameObject[] subBuildingPosition = FindTargetAndOrigenSubBuildingsWithShortestWay(buildingManagment.gameObject, buildingManagment.TargetBuilding);
             var newWorker = Instantiate(workerPrefab, this.gameObject.transform);
-            newWorker.transform.position = this.gameObject.transform.GetChild(0).transform.localPosition + Vector3.forward + Vector3.right;
-            newWorker.GetComponent<TransportUnitBehaviour>().SetBuildingData(buildingManagment.gameObject, buildingManagment.TargetBuilding);
+            newWorker.transform.position = subBuildingPosition[1].transform.position;
+            newWorker.GetComponent<TransportUnitBehaviour>().SetBuildingData(subBuildingPosition);
             }
-        public void OnWorkerReturn(Dictionary<string,int> resources)
+        public GameObject[] OnWorkerReturn(Dictionary<string, int> resources, bool haveResources)
             {
-            sendWorker--;
-            buildingManagment.AddResources(resources);
+          //  sendWorker--;
+            if (haveResources)
+                {
+                buildingManagment.AddResources(resources);
+                }
+            GameObject[] subBuildingPosition = FindTargetAndOrigenSubBuildingsWithShortestWay(buildingManagment.gameObject, buildingManagment.TargetBuilding);
+            return subBuildingPosition;
+            }
+        private GameObject[] FindTargetAndOrigenSubBuildingsWithShortestWay(GameObject origenMain, GameObject targetMain)
+            {
+            GameObject[] bestBuildings = new GameObject[2];
+            float closestDistanceSqr = Mathf.Infinity;
+            Vector3 currentPosition = origenMain.transform.position;
+            foreach (var target in targetMain.GetComponent<IBuildingManagment>().ListOfChildren)
+                {
+                Vector3 directionToTarget = target.transform.position - currentPosition;
+                float dSqrToTarget = directionToTarget.sqrMagnitude;
+                if (dSqrToTarget < closestDistanceSqr)
+                    {
+                    closestDistanceSqr = dSqrToTarget;
+                    bestBuildings[0] = target;
+                    }
+                }
+            foreach (var nearestHomeBuilding in origenMain.GetComponent<IBuildingManagment>().ListOfChildren)
+                {
+                Vector3 directionToTarget = nearestHomeBuilding.transform.position - bestBuildings[0].transform.position;
+                float dSqrToTarget = directionToTarget.sqrMagnitude;
+                if (dSqrToTarget < closestDistanceSqr)
+                    {
+                    closestDistanceSqr = dSqrToTarget;
+                    bestBuildings[1] = nearestHomeBuilding;
+                    }
+                }
+            return bestBuildings;
             }
         }
     }

@@ -79,8 +79,10 @@ namespace Assets.Scripts.Buildings.StorageBuildings
                     {
                     if (listOfChildren.Contains(transform.GetChild(i).gameObject))
                         continue;
-                    else
+                    else if (transform.GetChild(i).TryGetComponent<BuildingBase>(out BuildingBase buildingBase))
                         listOfChildren.Add(transform.GetChild(i).gameObject);
+                    else
+                        continue;
                     }
                 }
             buildingTyp = transform.GetChild(0).GetComponent<BuildingBase>();
