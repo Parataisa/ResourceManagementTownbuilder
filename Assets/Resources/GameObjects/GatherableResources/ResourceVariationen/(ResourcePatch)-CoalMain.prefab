@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2243755962412709496}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0.5, y: -0.2, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3327082988530244024}
@@ -40,7 +40,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2243755962412709496}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 289301614986012343, guid: 7ba8820f3a2b55e40a814d75fce41a9c, type: 3}
 --- !u!23 &5443017349664080617
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 3327082988530244024}
   - component: {fileID: 145115665421402712}
   m_Layer: 0
-  m_Name: CoalMain
+  m_Name: (ResourcePatch)-CoalMain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -139,10 +139,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6e58634e31d57b4792472a90f85cd88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceName: 
-  sizeOfTheResource: 0
-  quantityOfTheResource: 0
-  numberOfIterationen: 20
-  positionOnTheMap: {x: 0, y: 0, z: 0}
-  areaOfTheResource: {x: 0, y: 0}
-  sizeOfTheModel: {x: 0, y: 0, z: 0}
+  SizeOfTheResource: 0
+  PositionOnTheMap: {x: 0, y: 0, z: 0}
+  AreaOfTheResource: {x: 0, y: 0}
+  SizeOfTheModel: {x: 0, y: 0, z: 0}
+  FractionValiesForThePatch: 0

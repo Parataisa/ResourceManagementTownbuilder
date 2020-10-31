@@ -403,7 +403,7 @@ GameObject:
   - component: {fileID: 2871235239629508560}
   - component: {fileID: 2533393920768532066}
   m_Layer: 0
-  m_Name: (ResoucePatch)-TreeMain
+  m_Name: (ResourcePatch)-TreeMain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -437,7 +437,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SizeOfTheResource: 0
-  QuantityOfTheResource: 0
   PositionOnTheMap: {x: 0, y: 0, z: 0}
   AreaOfTheResource: {x: 0, y: 0}
   SizeOfTheModel: {x: 0, y: 0, z: 0}
@@ -454,7 +453,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc79135e4d31a5f4c892ada886ff27df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  QuantityOfTheResource: 0
 --- !u!1 &4450551465871069179
 GameObject:
   m_ObjectHideFlags: 0

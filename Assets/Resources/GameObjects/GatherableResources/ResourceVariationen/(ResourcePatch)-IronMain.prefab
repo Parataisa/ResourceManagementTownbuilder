@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1960935420624288789}
   - component: {fileID: 4497901700179851465}
   m_Layer: 0
-  m_Name: IronMain
+  m_Name: (ResourcePatch)-IronMain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,13 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea48b23463c64e042b16d79bfdffeb8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceName: 
-  sizeOfTheResource: 0
-  quantityOfTheResource: 0
-  numberOfIterationen: 20
-  positionOnTheMap: {x: 0, y: 0, z: 0}
-  areaOfTheResource: {x: 0, y: 0}
-  sizeOfTheModel: {x: 0, y: 0, z: 0}
+  SizeOfTheResource: 0
+  PositionOnTheMap: {x: 0, y: 0, z: 0}
+  AreaOfTheResource: {x: 0, y: 0}
+  SizeOfTheModel: {x: 0, y: 0, z: 0}
+  FractionValiesForThePatch: 0
 --- !u!1 &3520291649670805548
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,7 +76,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3520291649670805548}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1960935420624288789}
@@ -91,7 +89,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3520291649670805548}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 289301614986012343, guid: 7ba8820f3a2b55e40a814d75fce41a9c, type: 3}
 --- !u!23 &1037338311737065996
 MeshRenderer:
   m_ObjectHideFlags: 0
