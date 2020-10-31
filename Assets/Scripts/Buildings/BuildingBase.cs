@@ -18,7 +18,7 @@ namespace Assets.Scripts.Buildings
             }
         internal Color GetBuildingsColor()
             {
-            Color color = this.GetComponent<Renderer>().material.color;
+            Color color = this.GetComponentInChildren<Renderer>().material.color;
             return color;
             }
         }
