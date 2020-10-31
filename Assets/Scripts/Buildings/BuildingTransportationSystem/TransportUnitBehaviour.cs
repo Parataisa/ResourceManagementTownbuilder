@@ -1,6 +1,4 @@
-﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
-using Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems;
-using Assets.Scripts.Buildings.StorageBuildings;
+﻿using Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems;
 using Assets.Scripts.Buildings.StorageBuildings.StorageBuildingSystems;
 using System.Collections;
 using System.Collections.Generic;
@@ -50,6 +48,10 @@ namespace Assets.Scripts.Buildings.BuildingTransportationSystem
                 origenBuilding = newTargetPosition[1];
                 haveResources = false;
                 transportedResource.Clear();
+                if (GetComponentInParent<StorageBuildingTransportSystem>().DestoryWorkingPeople())
+                    {
+                    Destroy(this.gameObject);
+                    }
                 currentMoveCoroutine = GoingToTargetBuilding(targetBuilding);
                 StartCoroutine(currentMoveCoroutine);
                 }

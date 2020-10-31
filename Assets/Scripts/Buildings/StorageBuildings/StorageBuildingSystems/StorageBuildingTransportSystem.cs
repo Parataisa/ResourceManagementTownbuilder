@@ -38,7 +38,6 @@ namespace Assets.Scripts.Buildings.StorageBuildings.StorageBuildingSystems
             }
         public GameObject[] OnWorkerReturn(Dictionary<string, int> resources, bool haveResources)
             {
-          //  sendWorker--;
             if (haveResources)
                 {
                 buildingManagment.AddResources(resources);
@@ -46,6 +45,20 @@ namespace Assets.Scripts.Buildings.StorageBuildings.StorageBuildingSystems
             GameObject[] subBuildingPosition = FindTargetAndOrigenSubBuildingsWithShortestWay(buildingManagment.gameObject, buildingManagment.TargetBuilding);
             return subBuildingPosition;
             }
+        public bool DestoryWorkingPeople()
+            {
+            if (sendWorker < buildingManagment.WorkingPeople)
+                {
+                return false;
+                }
+            else if (sendWorker > buildingManagment.WorkingPeople)
+                {
+                --sendWorker;
+                return true;
+                }
+            return false;
+            }
+
         private GameObject[] FindTargetAndOrigenSubBuildingsWithShortestWay(GameObject origenMain, GameObject targetMain)
             {
             GameObject[] bestBuildings = new GameObject[2];
