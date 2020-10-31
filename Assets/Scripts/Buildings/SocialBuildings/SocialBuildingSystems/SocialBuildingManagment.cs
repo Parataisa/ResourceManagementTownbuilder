@@ -11,12 +11,12 @@ namespace Assets.Scripts.Buildings.SocialBuildings
         public int People = 2;
         public int PeopleCapacity;
         public Action PersonBirth;
-
+        public float BirthProgress = 0;
         protected override void Start()
             {
             base.Start();
             SocialBuildingType = GetSocialBuildingName();
-            StartCoroutine(BirthTimer(BirthRate));
+            StartCoroutine(BirthTimer());
             }
         private void Update()
             {
@@ -60,19 +60,21 @@ namespace Assets.Scripts.Buildings.SocialBuildings
             string[] BuildingNameArray = listOfChildren[0].gameObject.name.Split('-');
             return BuildingNameArray[1].Split('(')[0];
             }
-        IEnumerator BirthTimer(float birthRate)
+        IEnumerator BirthTimer()
             {
             if (People != PeopleCapacity)
                 {
                 float birthTime = 0;
                 while (birthTime < 1)
                     {
-                    birthTime += birthRate;
-                    yield return new WaitForSeconds(1f);
+                    birthTime += 0.001f;
+                    BirthProgress += 0.001f;
+                    yield return new WaitForSeconds(0.05f / BirthRate);
                     }
+                BirthProgress = 0;
                 People += 1;
                 PersonBirth?.Invoke();
-                StartCoroutine(BirthTimer(BirthRate));
+                StartCoroutine(BirthTimer());
                 }
             }
         }

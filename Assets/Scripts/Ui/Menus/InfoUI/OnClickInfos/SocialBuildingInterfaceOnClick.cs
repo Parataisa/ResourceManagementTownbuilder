@@ -1,11 +1,15 @@
 ﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using Assets.Scripts.Buildings.SocialBuildings;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
     class SocialBuildingInterfaceOnClick : OnClickInterfaceBase
         {
         internal override int Layer => LayerClass.SocialBuildings;
+        [SerializeField] private Slider Progressbar;
         protected override void Start()
             {
             base.Start();
@@ -24,6 +28,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     {
                     return;
                     }
+                Progressbar.value = SelectedGameobject.GetComponentInParent<SocialBuildingManagment>().BirthProgress;
                 if (SelectedGameobject != SavedGameObject)
                     {
                     SavedGameObject = SelectedGameobject;
