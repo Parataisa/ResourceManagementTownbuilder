@@ -1,11 +1,11 @@
 ﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
 using Assets.Scripts.Buildings.ResourceBuildings;
 using Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems;
-using Assets.Scripts.Ui.Menus.InfoUI.OnClickInfos;
 using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Ui.Menus.InfoUI
     {
@@ -13,6 +13,8 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         {
         public GameObject ScrollViewContent;
         public GameObject ItemImagePrefab;
+        [SerializeField] private Slider Progressbar;
+        private ResourceBuildingsManagment buildingsManagment;
         private List<string> DropdownOptions = new List<string>();
         private TMP_Dropdown ResourcesDropdown;
         private List<string> keyList = new List<string>();
@@ -22,7 +24,6 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         protected override void Start()
             {
             base.Start();
-            AddingItems();
             ResourcesDropdown.onValueChanged.AddListener(delegate { DropdownValueChanged(); });
             }
         protected override void OnEnable()
@@ -45,12 +46,14 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
             {
             if (this.enabled)
                 {
+                buildingsManagment = SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>();
                 if (SelectedGameobject == null)
                     {
                     return;
                     }
+                Progressbar.value = buildingsManagment.GatherProgress;
                 FindObjectOfType<ResourceBuildingPeopleManagment>().BuidlingOnClickUi = this;
-                foreach (var item in SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources)
+                foreach (var item in buildingsManagment.StoredResources)
                     {
                     if (item.Value != 0)
                         {
@@ -70,9 +73,9 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                     }
                 foreach (var Resource in storedResourceList)
                     {
-                    if (SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources[Resource] != Convert.ToInt32(ScrollViewContent.transform.Find(Resource).transform.GetChild(1).GetComponent<TextMeshProUGUI>().text))
+                    if (buildingsManagment.StoredResources[Resource] != Convert.ToInt32(ScrollViewContent.transform.Find(Resource).transform.GetChild(1).GetComponent<TextMeshProUGUI>().text))
                         {
-                        ScrollViewContent.transform.Find(Resource).transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources[Resource].ToString());
+                        ScrollViewContent.transform.Find(Resource).transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(buildingsManagment.StoredResources[Resource].ToString());
                         }
                     }
                 UpdateUiBuildingInformationen();
@@ -81,7 +84,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
         private void AddingItems()
             {
             keyList.Clear();
-            keyList.AddRange(SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources.Keys);
+            keyList.AddRange(buildingsManagment.StoredResources.Keys);
             storedResourceList.Clear();
             foreach (Transform child in ScrollViewContent.transform)
                 {
@@ -89,7 +92,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 }
             foreach (var Resource in keyList)
                 {
-                if (SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources[Resource] != 0)
+                if (buildingsManagment.StoredResources[Resource] != 0)
                     {
                     storedResourceList.Add(Resource);
                     continue;
@@ -99,7 +102,7 @@ namespace Assets.Scripts.Ui.Menus.InfoUI
                 {
                 var Item = Instantiate(ItemImagePrefab, ScrollViewContent.transform);
                 Item.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(storedResource);
-                Item.transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(SelectedGameobject.GetComponentInParent<ResourceBuildingsManagment>().StoredResources[storedResource].ToString());
+                Item.transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(buildingsManagment.StoredResources[storedResource].ToString());
                 Item.name = storedResource;
                 }
             }

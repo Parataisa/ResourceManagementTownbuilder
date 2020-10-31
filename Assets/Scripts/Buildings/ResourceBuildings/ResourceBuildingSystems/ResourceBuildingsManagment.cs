@@ -11,6 +11,7 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
         {
         private ResourceBuildingBase buildingTyp;
         private int gatheredResourcesOverall = 0;
+        public float GatherProgress = 0;
 
         public int GatheredResourcesOverall
             {
@@ -83,9 +84,11 @@ namespace Assets.Scripts.Buildings.ResourceBuildings
                 float gatherTimer = 0;
                 while (gatherTimer < 1)
                     {
-                    gatherTimer += 0.1f;
+                    GatherProgress += 0.01f;
+                    gatherTimer += 0.01f;
                     yield return new WaitForSeconds(2 / buildingData.ProduktionSpeed);
                     }
+                GatherProgress = 0;
                 UpdateResouces?.Invoke(this.gameObject);
                 ResourceQuantityDecrease?.Invoke(this);
                 StartCoroutine(UpdateResoucesMethode());

@@ -50,6 +50,7 @@ namespace Assets.Scripts.Buildings.BuildingTransportationSystem
                 transportedResource.Clear();
                 if (GetComponentInParent<StorageBuildingTransportSystem>().DestoryWorkingPeople())
                     {
+                    //Destory the Worker when true(SendWorker > WorkingPeople
                     Destroy(this.gameObject);
                     }
                 currentMoveCoroutine = GoingToTargetBuilding(targetBuilding);
