@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Buildings.ResourceBuildings;
+﻿using Assets.Scripts.Buildings.BuildingSystemHelper;
+using Assets.Scripts.Buildings.ResourceBuildings;
 using Assets.Scripts.Buildings.ResourceBuildings.ResourceBuildingSystems;
 using System.Collections.Generic;
 using UnityEngine;
@@ -75,18 +76,20 @@ namespace Assets.Scripts.Buildings.StorageBuildings
             int childCount = transform.GetComponentsInChildren<BuildingBase>().Length;
             if (childCount != 0)
                 {
-                for (int i = 0; i < childCount; i++)
+                foreach (Transform ChildBuilding in GetComponentInChildren<Transform>())
                     {
-                    if (listOfChildren.Contains(transform.GetChild(i).gameObject))
-                        continue;
-                    else if (transform.GetChild(i).TryGetComponent<BuildingBase>(out BuildingBase buildingBase))
-                        listOfChildren.Add(transform.GetChild(i).gameObject);
-                    else
-                        continue;
+                        {
+                        if (listOfChildren.Contains(ChildBuilding.gameObject))
+                            continue;
+                        else if (ChildBuilding.gameObject.layer == LayerClass.StorageBuildings)
+                            listOfChildren.Add(ChildBuilding.gameObject);
+                        else
+                            continue;
+                        }
                     }
                 }
             buildingTyp = transform.GetChild(0).GetComponent<BuildingBase>();
-            buildingData.WorkingPeopleCapacity = childCount * 10;
+            buildingData.WorkingPeopleCapacity = listOfChildren.Count * 10;
             }
         }
     }
